@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using IntegrationEvemts;
+using MediatR;
 using Rebus.Bus;
 
 namespace Domain.Orders
@@ -10,7 +11,7 @@ namespace Domain.Orders
 
         public async Task Handle(OrderCreatedDomainEvent notification, CancellationToken cancellationToken)
         {
-            //await _bus.Send();
+            await _bus.Send(new OrderCreatedIntegrationEvent(notification.Id.Value));
         }
     }
 }

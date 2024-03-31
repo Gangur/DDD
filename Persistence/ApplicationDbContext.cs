@@ -8,17 +8,12 @@ namespace Persistence
     {
         private IPublisher _publisher;
 
-        public ApplicationDbContext(IPublisher publisher)
+        public DbSet<T> GetAll<T>() where T : class => Set<T>();
+        public IQueryable<T> GetQuery<T>() where T : class => Set<T>().AsNoTracking();
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> optionsBuilder, IPublisher publisher) : base(optionsBuilder)
         {
             _publisher = publisher;
-        }
-
-        public DbSet<T> GetAll<T>() where T : class => Set<T>();
-        private IQueryable<T> GetQuery<T>() where T : class => Set<T>().AsNoTracking();
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> optionsBuilder) : base(optionsBuilder)
-        {
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

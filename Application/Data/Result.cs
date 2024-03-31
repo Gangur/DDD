@@ -37,10 +37,10 @@
 
         }
 
-        public static Result CreateSuccessful(T value)
+        public static Result<T> CreateSuccessful(T value)
             => new Result<T>(true, value);
 
-        public static Result CreateFailed(string errorMessage)
+        public static new Result<T> CreateFailed(string errorMessage)
             => new Result<T>(errorMessage);
     }
 }

@@ -1,12 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Application;
+using Rebus.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AssemblyReference.Assembly));
+//builder.Services.AddRebus(configure =>
+//{
+//    var configurer = configure
+//        .Logging(l => l.ColoredConsole())
+//        .Transport(t => t.UseRabbitMqAsOneWayClient("amqp://guest:guest@localhost:5672"));
+//    return configurer;
+//});
 
 builder.Services.AddControllers();
 

@@ -7,6 +7,8 @@ namespace Domain.LineItems
 {
     public class LineItem : Entity<LineItemId>
     {
+        public LineItem() { }
+
         internal LineItem(LineItemId id, OrderId orderId, ProductId productId, Money price) : this(id, orderId)
         {
             ProductId = productId;

@@ -4,6 +4,7 @@ namespace Domain.Customers
 {
     public class Customer : Entity<CustomerId>
     {
+        public Customer() { }
         private Customer(string email, string name)
         {
             Id = new CustomerId(Guid.NewGuid());

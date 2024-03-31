@@ -1,6 +1,12 @@
-﻿using Application.Data;
+﻿using Application.Customers.Get;
+using Application.Customers.List;
+using Application.Data;
 using Application.Products.Create;
+using Application.Products.Get;
+using Application.Products.List;
+using Domain.Customers;
 using Domain.Data;
+using Domain.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +20,7 @@ namespace WebApi.Controllers
         public ProductController(IMediator mediator) => _mediator = mediator;
 
         [HttpPost("create")]
-        public async Task<Result> Create(string name, string priceCurrency, decimal priceAmount, string sku)
+        public async Task<Result> CreateAsync(string name, string priceCurrency, decimal priceAmount, string sku)
         {
             var price = Money.Create(priceCurrency, priceAmount);
             if (price is null)
@@ -29,6 +35,26 @@ namespace WebApi.Controllers
                 skuObj);
 
             var result = await _mediator.Send(command);
+
+            return result;
+        }
+
+        [HttpGet("get")]
+        public async Task<Result<Product>> GetAsync(Guid id)
+        {
+            var query = new GetProductQuery(new ProductId(id));
+
+            var result = await _mediator.Send(query);
+
+            return result;
+        }
+
+        [HttpGet("list")]
+        public async Task<Result<IReadOnlyCollection<Product>>> ListAsync()
+        {
+            var query = new ListProductsQuery();
+
+            var result = await _mediator.Send(query);
 
             return result;
         }

@@ -5,6 +5,7 @@ namespace Domain.Products
 {
     public class Product : Entity<ProductId>
     {
+        public Product() { }
         private Product(string name, Money price, Sku sku)
         {
             Id = new ProductId(Guid.NewGuid());
@@ -13,13 +14,13 @@ namespace Domain.Products
             Sku = sku;
         }
 
-        public ProductId Id { get; private set; }
+        public ProductId Id { get; init; }
 
-        public string Name { get; private set; } = string.Empty;
+        public string Name { get; init; } = string.Empty;
 
-        public Money Price { get; private set; } 
+        public Money Price { get; init; } 
 
-        public Sku Sku { get; private set; }
+        public Sku Sku { get; init; }
 
         public static Product Create(string name, Money price, Sku sku)
         {
