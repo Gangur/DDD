@@ -1,5 +1,4 @@
 ﻿using Domain.Customers;
-using Domain.Orders;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories
@@ -8,7 +7,7 @@ namespace Persistence.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        internal CustomerRepository(ApplicationDbContext context)
+        public CustomerRepository(ApplicationDbContext context)
         {
             _context = context;
         }

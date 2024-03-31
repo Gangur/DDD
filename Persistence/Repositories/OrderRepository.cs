@@ -9,7 +9,7 @@ namespace Persistence.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        internal OrderRepository(ApplicationDbContext context)
+        public OrderRepository(ApplicationDbContext context)
         {
             _context = context;
         }

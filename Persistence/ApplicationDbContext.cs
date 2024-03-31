@@ -5,7 +5,7 @@ using Application.Abstraction;
 
 namespace Persistence
 {
-    internal sealed class ApplicationDbContext : DbContext, IUnitOfWork
+    public sealed class ApplicationDbContext : DbContext, IUnitOfWork
     {
         private IPublisher _publisher;
 

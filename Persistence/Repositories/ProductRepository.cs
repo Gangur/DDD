@@ -7,7 +7,7 @@ namespace Persistence.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        internal ProductRepository(ApplicationDbContext context)
+        public ProductRepository(ApplicationDbContext context)
         {
             _context = context;
         }
