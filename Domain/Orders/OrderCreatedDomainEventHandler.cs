@@ -1,4 +1,4 @@
-﻿using IntegrationEvemts;
+﻿using IntegrationEvents;
 using MediatR;
 using Rebus.Bus;
 

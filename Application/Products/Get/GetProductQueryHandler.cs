@@ -1,22 +1,21 @@
 ﻿using Application.Abstraction;
 using Application.Data;
-using Domain.Orders;
 using Domain.Products;
-using Persistence;
 
 namespace Application.Products.Get
 {
     internal sealed class GetProductQueryHandler : IQueryHandler<GetProductQuery, Product>
     {
-        private readonly ApplicationDbContext _dbContext;
-        public GetProductQueryHandler(ApplicationDbContext dbContext)
+        private readonly IProductRepository _productRepository;
+
+        public GetProductQueryHandler(IProductRepository productRepository)
         {
-            _dbContext = dbContext;
+            _productRepository = productRepository;
         }
 
         public async Task<Result<Product>> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
-            var product = await _dbContext.FindAsync<Product>(request.ProductId, cancellationToken);
+            var product = await _productRepository.FindAsync(request.ProductId, cancellationToken);
 
             if (product == null)
             {

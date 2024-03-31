@@ -1,25 +1,24 @@
 ﻿using Application.Abstraction;
 using Application.Data;
 using Domain.Orders;
-using Domain.Products;
 using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace Application.Orders.List
 {
     internal sealed class ListOrdersQueryHandler : IQueryHandler<ListOrdersQuery, IReadOnlyCollection<Order>>
     {
-        private readonly ApplicationDbContext _dbContext;
-        public ListOrdersQueryHandler(ApplicationDbContext dbContext)
+        private readonly IOrderRepository _orderRepository;
+
+        public ListOrdersQueryHandler(IOrderRepository orderRepository)
         {
-            _dbContext = dbContext;
+            _orderRepository = orderRepository;
         }
 
         public async Task<Result<IReadOnlyCollection<Order>>> Handle(ListOrdersQuery request, CancellationToken cancellationToken)
         {
-            var products = await _dbContext.GetQuery<Order>().ToListAsync(cancellationToken);
+            var products = await _orderRepository.ListAsync(cancellationToken);
 
-            return Result<IReadOnlyCollection<Order>>.CreateSuccessful(products.AsReadOnly());
+            return Result<IReadOnlyCollection<Order>>.CreateSuccessful(products);
         }
     }
 }

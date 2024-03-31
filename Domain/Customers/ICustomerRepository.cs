@@ -1,7 +1,9 @@
-﻿namespace Domain.Customers
+﻿using Domain.Abstraction;
+
+namespace Domain.Customers
 {
-    public interface ICustomerRepository
+    public interface ICustomerRepository : IRepository<Customer, CustomerId>
     {
-        Task<Customer?> GetByIdAsync(CustomerId id);
+        
     }
 }

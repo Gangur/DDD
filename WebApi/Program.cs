@@ -1,11 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 using Application;
-using Rebus.Config;
+using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+IConfiguration configuration = builder.Configuration;
+IWebHostEnvironment environment = builder.Environment;
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AssemblyReference.Assembly));
 //builder.Services.AddRebus(configure =>
@@ -18,8 +17,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AssemblyRe
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<ApplicationDbContext>(
-        options => options.UseSqlServer("Server=.; Database=DDD_DB; Integrated Security=true; MultipleActiveResultSets=true; TrustServerCertificate=True;"));
+builder.Services.AddPersistence(configuration);
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddEndpointsApiExplorer();

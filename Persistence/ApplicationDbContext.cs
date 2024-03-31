@@ -1,10 +1,11 @@
 ﻿using Domain.Abstraction;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Application.Abstraction;
 
 namespace Persistence
 {
-    public sealed class ApplicationDbContext : DbContext
+    internal sealed class ApplicationDbContext : DbContext, IUnitOfWork
     {
         private IPublisher _publisher;
 

@@ -1,24 +1,23 @@
 ﻿using Application.Abstraction;
 using Application.Data;
 using Domain.Customers;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace Application.Customers.List
 {
     internal sealed class ListCustomersQueryHandler : IQueryHandler<ListCustomersQuery, IReadOnlyCollection<Customer>>
     {
-        private readonly ApplicationDbContext _dbContext;
-        public ListCustomersQueryHandler(ApplicationDbContext dbContext)
+        private readonly ICustomerRepository _customerRepository;
+
+        public ListCustomersQueryHandler(ICustomerRepository customerRepository)
         {
-            _dbContext = dbContext;
+            _customerRepository = customerRepository;
         }
 
         public async Task<Result<IReadOnlyCollection<Customer>>> Handle(ListCustomersQuery request, CancellationToken cancellationToken)
         {
-            var products = await _dbContext.GetQuery<Customer>().ToListAsync(cancellationToken);
+            var products = await _customerRepository.ListAsync(cancellationToken);
 
-            return Result<IReadOnlyCollection<Customer>>.CreateSuccessful(products.AsReadOnly());
+            return Result<IReadOnlyCollection<Customer>>.CreateSuccessful(products);
         }
     }
 }

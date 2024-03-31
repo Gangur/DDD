@@ -1,21 +1,21 @@
 ﻿using Application.Abstraction;
 using Application.Data;
 using Domain.Customers;
-using Persistence;
 
 namespace Application.Customers.Get
 {
     internal sealed class GetCustomerQueryHandler : IQueryHandler<GetCustomerQuery, Customer>
     {
-        private readonly ApplicationDbContext _dbContext;
-        public GetCustomerQueryHandler(ApplicationDbContext dbContext)
+        private readonly ICustomerRepository _customerRepository;
+
+        public GetCustomerQueryHandler(ICustomerRepository customerRepository)
         {
-            _dbContext = dbContext;
+            _customerRepository = customerRepository;
         }
 
         public async Task<Result<Customer>> Handle(GetCustomerQuery request, CancellationToken cancellationToken)
         {
-            var customer = await _dbContext.FindAsync<Customer>(request.CustomerId, cancellationToken);
+            var customer = await _customerRepository.FindAsync(request.CustomerId, cancellationToken);
 
             if (customer == null)
             {
