@@ -24,7 +24,7 @@ namespace Application.Orders.RemoveLineItem
 
             if (order is null)
             {
-                return Result.CreateFailed("Заказ не найден!");
+                return Result.CreateFailed("The order has not been found!");
             }
 
             order.RemoveLineItem(request.LineItemId);

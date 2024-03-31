@@ -1,4 +1,5 @@
 ﻿using Application.Abstraction;
+using Domain.LineItems;
 using Domain.Orders;
 using MediatR;
 

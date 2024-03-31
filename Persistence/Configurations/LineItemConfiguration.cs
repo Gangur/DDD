@@ -1,4 +1,5 @@
-﻿using Domain.Orders;
+﻿using Domain.LineItems;
+using Domain.Orders;
 using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

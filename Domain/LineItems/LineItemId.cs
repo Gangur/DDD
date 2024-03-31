@@ -1,6 +1,6 @@
 ﻿using Domain.Abstraction;
 
-namespace Domain.Orders
+namespace Domain.LineItems
 {
     public record LineItemId(Guid Value) : IEntityId;
 }

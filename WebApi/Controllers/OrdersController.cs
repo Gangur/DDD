@@ -15,7 +15,7 @@ namespace WebApi.Controllers
         private readonly IMediator _mediator;
         public OrdersController(IMediator mediator) => _mediator = mediator;
 
-        [HttpPost(Name = "create")]
+        [HttpPost("create")]
         public async Task<Result> Create(Guid customerId)
         {
             var command = new CreateOrderCommand(new CustomerId(customerId));
@@ -25,7 +25,7 @@ namespace WebApi.Controllers
             return result;
         }
 
-        [HttpPost(Name = "remove-order")]
+        [HttpPost("remove-order")]
         public async Task<Result> RemoveOrderAsync(Guid orderId, Guid lineItemId)
         {
             var command = new RemoveLineItemCommand(new OrderId(orderId), new LineItemId(lineItemId));

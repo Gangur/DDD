@@ -2,7 +2,6 @@
 using Application.Data;
 using Domain.Customers;
 using Domain.Orders;
-using MediatR;
 using Persistence;
 
 namespace Application.Orders.Create
@@ -19,10 +18,10 @@ namespace Application.Orders.Create
         {
             var customer = await _dbContext.GetAll<Customer>()
                 .FindAsync(request.customerId, cancellationToken);
-            
+
             if (customer is null)
             {
-                return Result.CreateFailed("Клиент не найден!");
+                return Result.CreateFailed("The customer has not been found!");
             }
 
             var order = Order.Create(customer);

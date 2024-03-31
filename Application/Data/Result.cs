@@ -23,14 +23,9 @@
             => new Result(errorMessage);
     }
 
-    public record Result<T> : Result
+    public sealed record Result<T> : Result
     {
         public T Value { get; set; }
-
-        private Result(bool success) : base(success)
-        {
-            
-        }
 
         private Result(bool success, T value) : base(success) 
         {

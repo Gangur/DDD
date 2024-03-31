@@ -1,4 +1,4 @@
-﻿namespace Domain.Products
+﻿namespace Domain.Data
 {
     // Stock Keeping Unit
     public record Sku
@@ -8,7 +8,7 @@
         public string Value { get; init; }
         public static Sku? Create(string value)
         {
-            if (string.IsNullOrWhiteSpace(value)) 
+            if (string.IsNullOrWhiteSpace(value))
                 return null;
 
             if (value.Length != DefaultLength)

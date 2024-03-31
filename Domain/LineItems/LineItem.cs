@@ -1,9 +1,11 @@
 ﻿using Domain.Abstraction;
+using Domain.Data;
+using Domain.Orders;
 using Domain.Products;
 
-namespace Domain.Orders
+namespace Domain.LineItems
 {
-    public class LineItem : IEntity<LineItemId>
+    public class LineItem : Entity<LineItemId>
     {
         internal LineItem(LineItemId id, OrderId orderId, ProductId productId, Money price) : this(id, orderId)
         {

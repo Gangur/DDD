@@ -1,14 +1,24 @@
 ﻿using Domain.Abstraction;
-using Domain.Orders;
 
 namespace Domain.Customers
 {
-    public class Customer : IEntity<CustomerId>
+    public class Customer : Entity<CustomerId>
     {
+        private Customer(string email, string name)
+        {
+            Id = new CustomerId(Guid.NewGuid());
+            Email = email;
+            Name = name;
+        }
+
         public CustomerId Id { get; private set; }
 
         public string Email { get; private set; } = string.Empty;
 
         public string Name { get; private set; } = string.Empty;
+
+
+        public static Customer Create(string email, string name) 
+            => new Customer(email, name);
     }
 }

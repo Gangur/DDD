@@ -1,10 +1,11 @@
 ﻿using Domain.Abstraction;
 using Domain.Customers;
+using Domain.LineItems;
 using Domain.Products;
 
 namespace Domain.Orders
 {
-    public class Order : IEntity<OrderId>
+    public class Order : Entity<OrderId>
     {
         private readonly HashSet<LineItem> _lineItems = new();
 
@@ -26,6 +27,8 @@ namespace Domain.Orders
                 Id = new OrderId(Guid.NewGuid()),
                 CustomerId = customer.Id,
             };
+
+            order.Raise(new OrderCreatedDomainEvent(order.Id));
 
             return order;
         }
@@ -51,6 +54,8 @@ namespace Domain.Orders
             }
 
             _lineItems.Remove(lineItem);
+
+            Raise(new LineItemRemovedDomainEvent(lineItem.Id, Id));
         }
     }
 }
