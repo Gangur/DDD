@@ -1,10 +1,8 @@
-﻿using Application.Customers.Get;
-using Application.Customers.List;
-using Application.Data;
+﻿using Application.Data;
 using Application.Products.Create;
 using Application.Products.Get;
 using Application.Products.List;
-using Domain.Customers;
+using Asp.Versioning;
 using Domain.Data;
 using Domain.Products;
 using MediatR;
@@ -13,7 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("product")]
+    [ApiVersion("1.0")]
+    [Route("product/v{version:apiVersion}")]
     public class ProductController : Controller
     {
         private readonly IMediator _mediator;

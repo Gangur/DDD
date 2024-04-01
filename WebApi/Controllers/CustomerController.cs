@@ -2,15 +2,16 @@
 using Application.Customers.Get;
 using Application.Customers.List;
 using Application.Data;
+using Asp.Versioning;
 using Domain.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("customer")]
+    [ApiVersion("1.0")]
+    [Route("customer/v{version:apiVersion}")]
     public class CustomerController : Controller
     {
         private readonly IMediator _mediator;

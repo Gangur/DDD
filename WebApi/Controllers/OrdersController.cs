@@ -5,6 +5,7 @@ using Application.Orders.Create;
 using Application.Orders.Get;
 using Application.Orders.List;
 using Application.Orders.RemoveLineItem;
+using Asp.Versioning;
 using Domain.Customers;
 using Domain.LineItems;
 using Domain.Orders;
@@ -14,7 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("orders")]
+    [ApiVersion("1.0")]
+    [Route("orders/v{version:apiVersion}")]
     public class OrdersController : Controller
     {
         private readonly IMediator _mediator;
