@@ -6,3 +6,10 @@ services:
     build:
       context: .
       dockerfile: WebApi/Dockerfile
+
+  func:
+    image: func-test:dev
+    build:
+      context: ../../repos/Functions
+      dockerfile: Dockerfile
+    init: true
