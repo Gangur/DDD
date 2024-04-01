@@ -7,7 +7,7 @@ namespace Application.Abstraction
     {
     }
 
-    public interface ICommand<TResponse> : IRequest<Result<TResponse>>
+    public interface ICommand<TResponse> : IRequest<Result<TResponse>>, ICommand
     {
 
     }

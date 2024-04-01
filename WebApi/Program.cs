@@ -1,14 +1,14 @@
 using Application;
-using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Persistence;
+using WebApi.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 IConfiguration configuration = builder.Configuration;
 IWebHostEnvironment environment = builder.Environment;
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AssemblyReference.Assembly));
+
 //builder.Services.AddRebus(configure =>
 //{
 //    var configurer = configure
@@ -17,22 +17,10 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AssemblyRe
 //    return configurer;
 //});
 
-builder.Services.AddApiVersioning(options =>
-{
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.AssumeDefaultVersionWhenUnspecified = true;
-    options.ReportApiVersions = true;
-    options.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader(),
-                                                    new HeaderApiVersionReader("x-api-version"),
-                                                    new MediaTypeApiVersionReader("x-api-version"));
-}).AddApiExplorer(options =>
-{
-    options.GroupNameFormat = "'v'V";
-    options.SubstituteApiVersionInUrl = true;
-});
-
 builder.Services.AddControllers();
 
+builder.Services.AddVersioning();
+builder.Services.AddApplication();
 builder.Services.AddPersistence(configuration);
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -41,6 +29,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
+
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
 // Configure the HTTP request pipeline.

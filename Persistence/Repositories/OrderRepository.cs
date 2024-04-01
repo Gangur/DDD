@@ -1,6 +1,5 @@
 ﻿using Domain.LineItems;
 using Domain.Orders;
-using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories
@@ -24,6 +23,13 @@ namespace Persistence.Repositories
             => await _context.GetAll<Order>()
                 .Include(o => o.LineItems.Where(li => li.Id == listItemId))
                 .FirstOrDefaultAsync(cancellationToken);
+
+        public async Task<bool> HasOneLineItemAsync(OrderId orderId, CancellationToken cancellationToken)
+        {
+            var amount = await _context.GetQuery<LineItem>().CountAsync(o => o.OrderId == orderId, cancellationToken);
+
+            return amount == 1;
+        }
 
         public async Task<IReadOnlyCollection<Order>> ListAsync(CancellationToken cancellationToken)
             => await _context.GetQuery<Order>().ToListAsync(cancellationToken);

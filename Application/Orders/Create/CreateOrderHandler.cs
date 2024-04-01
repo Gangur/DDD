@@ -9,13 +9,11 @@ namespace Application.Orders.Create
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IOrderRepository _orderRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateOrderHandler(ICustomerRepository customerRepository, IOrderRepository orderRepository, IUnitOfWork unitOfWork)
+        public CreateOrderHandler(ICustomerRepository customerRepository, IOrderRepository orderRepository)
         {
             _customerRepository = customerRepository;
             _orderRepository = orderRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -30,8 +28,6 @@ namespace Application.Orders.Create
             var order = Order.Create(customer);
 
             await _orderRepository.AddAsync(order, cancellationToken);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.CreateSuccessful();
         }

@@ -3,8 +3,8 @@ using MediatR;
 
 namespace Application.Abstraction
 {
-    public interface IQueryHandler<TQuery, TResponce> : IRequestHandler<TQuery, Result<TResponce>>
-        where TQuery : IQuery<TResponce>
+    public interface IQueryHandler<TQuery, TResponse> : IRequestHandler<TQuery, Result<TResponse>>
+        where TQuery : IQuery<TResponse>
     {
     }
 }

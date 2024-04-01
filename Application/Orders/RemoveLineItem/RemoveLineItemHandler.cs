@@ -1,5 +1,6 @@
 ﻿using Application.Abstraction;
 using Application.Data;
+using Domain.LineItems;
 using Domain.Orders;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,13 +18,18 @@ namespace Application.Orders.RemoveLineItem
 
         public async Task<Result> Handle(RemoveLineItemCommand request, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.FindWithIncludedLineItemAsync(request.OrderId, 
+            var order = await _orderRepository.FindWithIncludedLineItemAsync(request.OrderId,
                 request.LineItemId, 
                 cancellationToken);
 
             if (order is null)
             {
                 return Result.CreateFailed("The order has not been found!");
+            }
+
+            if (await _orderRepository.HasOneLineItemAsync(request.OrderId, cancellationToken))
+            {
+                return Result.CreateFailed("The order contains only one item!");
             }
 
             order.RemoveLineItem(request.LineItemId);

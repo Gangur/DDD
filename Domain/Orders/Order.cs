@@ -30,7 +30,7 @@ namespace Domain.Orders
             return order;
         }
 
-        public void Add(Product pruduct)
+        public void AddLineItem(Product pruduct)
         {
             var lineItem = new LineItem(
                 new LineItemId(Guid.NewGuid()), 
@@ -39,6 +39,8 @@ namespace Domain.Orders
                 pruduct.Price);
 
             _lineItems.Add(lineItem);
+
+            Raise(new LineItemAddedDomailEvent(lineItem.Id, Id));
         }
 
         public void RemoveLineItem(LineItemId lineItemId)
