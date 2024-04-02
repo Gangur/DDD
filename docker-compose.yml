@@ -1,6 +1,15 @@
 version: '3.4'
 
 services:
+  mssql:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: DDD_DB
+    ports:
+      - "1433:1433" 
+    environment:
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=12345678_qaz
+
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
     build:
@@ -13,3 +22,14 @@ services:
       context: ../../repos/Functions
       dockerfile: Dockerfile
     init: true
+
+  message-broker:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    hostname: message-broker
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"

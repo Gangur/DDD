@@ -1,6 +1,7 @@
 ﻿using Domain.LineItems;
 using Domain.Orders;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Persistence.Repositories
 {

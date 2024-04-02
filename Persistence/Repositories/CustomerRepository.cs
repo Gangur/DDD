@@ -1,5 +1,6 @@
 ﻿using Domain.Customers;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Persistence.Repositories
 {

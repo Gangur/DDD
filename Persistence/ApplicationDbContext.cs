@@ -15,6 +15,10 @@ namespace Persistence
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> optionsBuilder, IPublisher publisher) : base(optionsBuilder)
         {
             _publisher = publisher;
+
+#if DEBUG
+            Database.EnsureCreated();
+#endif
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

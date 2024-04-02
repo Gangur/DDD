@@ -1,5 +1,6 @@
 using Application;
 using Asp.Versioning.ApiExplorer;
+using Infrastructure;
 using Persistence;
 using WebApi.Configurations;
 
@@ -19,8 +20,10 @@ IWebHostEnvironment environment = builder.Environment;
 
 builder.Services.AddControllers();
 
+
 builder.Services.AddVersioning();
 builder.Services.AddApplication();
+builder.Services.AddInfrastructure(configuration);
 builder.Services.AddPersistence(configuration);
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
