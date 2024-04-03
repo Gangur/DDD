@@ -69,6 +69,8 @@ namespace Infrastructure
                         h.Username(settings.Username);
                         h.Password(settings.Password);
                     });
+
+                    configuratior.ConfigureEndpoints(context);
                 });
             });
 
