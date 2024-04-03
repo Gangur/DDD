@@ -19,8 +19,8 @@ services:
   func:
     image: func-test:dev
     build:
-      context: ../../repos/Functions
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Functions/Dockerfile
     init: true
 
   message-broker:
@@ -38,5 +38,5 @@ services:
     image: ${DOCKER_REGISTRY-}consoleapp
     restart: on-failure
     build:
-      context: ../../repos/EmailsSender
-      dockerfile: Dockerfile  
+      context: .
+      dockerfile: EmailsSender/Dockerfile  
