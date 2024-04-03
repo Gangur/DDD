@@ -2,6 +2,7 @@
 using EmailsSender.Configurations;
 using EmailsSender.Consumers;
 using EmailsSender.Services;
+using Infrastructure;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,15 +11,8 @@ public static class Program
 {
     private static async Task Main(string[] args)
     {
-        var services = CreateServices();
-        var busControl = Bus.Factory.CreateUsingRabbitMq(cfg =>
-        {
-            cfg.ReceiveEndpoint("customer-deleted-event", e =>
-            {
-                e.Consumer<CustomerDeletedEventConsumer>();
-            });
-        });
-
+        var serviceProvider = CreateServices();
+        var busControl = serviceProvider.GetRequiredService<IBusControl>();
         await busControl.StartAsync(new CancellationToken());
     }
 
@@ -37,6 +31,10 @@ public static class Program
                 senderEmailSettings.Host,
                 senderEmailSettings.UserName,
                 senderEmailSettings.Password))
+            .AddConsumerInfrastructure(configuration, new[]
+            {
+                typeof(CustomerDeletedEventConsumer)
+            })
             .BuildServiceProvider();
 
         return serviceProvider;

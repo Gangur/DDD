@@ -8,11 +8,6 @@ namespace EmailsSender.Consumers
     {
         public readonly IEmailSender _emailSender;
 
-        public CustomerDeletedEventConsumer()
-        {
-
-        }
-
         public CustomerDeletedEventConsumer(IEmailSender emailSender)
         {
             _emailSender = emailSender;
