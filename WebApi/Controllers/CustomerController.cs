@@ -1,4 +1,5 @@
 ﻿using Application.Customers.Create;
+using Application.Customers.Delete;
 using Application.Customers.Get;
 using Application.Customers.List;
 using Application.Data;
@@ -43,6 +44,16 @@ namespace WebApi.Controllers
             var query = new ListCustomersQuery();
 
             var result = await _mediator.Send(query);
+
+            return result;
+        }
+
+        [HttpDelete("delete")]
+        public async Task<Result> DeleteAsync(Guid id)
+        {
+            var command = new DeleteCustomerCommand(new CustomerId(id));
+
+            var result = await _mediator.Send(command);
 
             return result;
         }

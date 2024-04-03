@@ -33,3 +33,10 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  email-sender:
+    image: ${DOCKER_REGISTRY-}consoleapp
+    restart: on-failure
+    build:
+      context: ../../repos/EmailsSender
+      dockerfile: Dockerfile  

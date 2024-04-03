@@ -20,5 +20,8 @@ namespace Persistence.Repositories
 
         public async Task<IReadOnlyCollection<Product>> ListAsync(CancellationToken cancellationToken)
             => await _context.GetQuery<Product>().ToListAsync(cancellationToken);
+
+        public void Remove(Product entity)
+            => _context.Remove(entity);
     }
 }

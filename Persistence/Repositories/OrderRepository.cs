@@ -1,4 +1,5 @@
-﻿using Domain.LineItems;
+﻿using Domain.Customers;
+using Domain.LineItems;
 using Domain.Orders;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -34,5 +35,8 @@ namespace Persistence.Repositories
 
         public async Task<IReadOnlyCollection<Order>> ListAsync(CancellationToken cancellationToken)
             => await _context.GetQuery<Order>().ToListAsync(cancellationToken);
+
+        public void Remove(Order entity)
+            => _context.Remove(entity);
     }
 }
