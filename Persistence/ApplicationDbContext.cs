@@ -2,6 +2,8 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Application.Abstraction;
+using Domain.OutboxMessage;
+using Newtonsoft.Json;
 
 namespace Persistence
 {
@@ -33,14 +35,36 @@ namespace Persistence
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var domainEvents = ChangeTracker.Entries<AggregateRoot>()
+            var entities = ChangeTracker.Entries<AggregateRoot>()
                 .Select(e => e.Entity)
-                .Where(e => e.DomainEvents.Any())
-                .SelectMany(e => e.DomainEvents);
+                .Where(e => e.DomainEvents.Any());
+
+            var events = entities
+                .SelectMany(entities =>
+                {
+                    var domainEvents = entities.DomainEvents;
+
+                    entities.ClearDomainEvents();
+
+                    return domainEvents;
+                }).Select(de => new OutboxMessage()
+                {
+                    Id = Guid.NewGuid(),
+                    OccurredOnUtc = DateTime.UtcNow,
+                    Type = de.GetType().Name,
+                    Content = JsonConvert.SerializeObject(de, new JsonSerializerSettings()
+                    {
+                        TypeNameHandling = TypeNameHandling.All,
+                    })
+                }).ToList();
+
+            await GetAll<OutboxMessage>().AddRangeAsync(events, cancellationToken);
 
             var result = await base.SaveChangesAsync(cancellationToken);
 
-            await Task.WhenAll(domainEvents.Select(x => _publisher.Publish(x, cancellationToken)));
+            await Task.WhenAll(entities
+                .SelectMany(e => e.DomainEvents)
+                .Select(x => _publisher.Publish(x, cancellationToken)));
 
             return result;
         }

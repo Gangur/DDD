@@ -30,7 +30,7 @@ namespace Functions
             }
 
             var messages = await _outboxMessageRepository.ResiveUnprocessedMessagesAsync(20, 
-                typeof(CustomerCreatedDomainEvent).Name, CancellationToken.None);
+                nameof(CustomerCreatedDomainEvent), CancellationToken.None);
 
             for(int i = 0; i < messages.Count; i++)
             {

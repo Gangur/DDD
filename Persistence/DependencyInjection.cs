@@ -6,7 +6,6 @@ using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence.Interceptors;
 using Persistence.Repositories;
 
 namespace Persistence
@@ -16,14 +15,10 @@ namespace Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
-
             services.AddDbContext<ApplicationDbContext>(
                 (sp, options) =>
                 {
-                    var interceptor = sp.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>();
-                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-                        .AddInterceptors(interceptor);
+                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
                 });
 
             services.AddScoped<IUnitOfWork>(x => x.GetRequiredService<ApplicationDbContext>());
