@@ -2,7 +2,7 @@
 
 namespace Domain.Customers
 {
-    public class Customer : Entity<CustomerId>
+    public class Customer : BaseEntity<CustomerId>
     {
         public Customer() { }
         private Customer(string email, string name)
@@ -19,7 +19,13 @@ namespace Domain.Customers
         public string Name { get; private set; } = string.Empty;
 
 
-        public static Customer Create(string email, string name) 
-            => new Customer(email, name);
+        public static Customer Create(string email, string name)
+        {
+            var customer = new Customer(email, name);
+
+            customer.Raise(new CustomerCreatedDomainEvent(customer.Id));
+
+            return customer;
+        }
     }
 }

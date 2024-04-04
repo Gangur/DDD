@@ -5,7 +5,7 @@ using Domain.Products;
 
 namespace Domain.LineItems
 {
-    public class LineItem : Entity<LineItemId>
+    public class LineItem : BaseEntity<LineItemId>
     {
         public LineItem() { }
 

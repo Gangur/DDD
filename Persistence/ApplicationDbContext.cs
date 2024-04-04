@@ -33,7 +33,7 @@ namespace Persistence
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var domainEvents = ChangeTracker.Entries<Entity<IEntityId>>()
+            var domainEvents = ChangeTracker.Entries<AggregateRoot>()
                 .Select(e => e.Entity)
                 .Where(e => e.DomainEvents.Any())
                 .SelectMany(e => e.DomainEvents);

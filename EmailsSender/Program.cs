@@ -36,7 +36,6 @@ public static class Program
                 {
                     typeof(CustomerDeletedEventConsumer)
                 });
-
             })
             .ConfigureLogging((hostingContext, logging) =>
             {

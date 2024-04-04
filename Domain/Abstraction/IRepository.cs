@@ -1,7 +1,7 @@
 ﻿namespace Domain.Abstraction
 {
     public interface IRepository<TEntity, TEntityId> 
-        where TEntity : Entity<TEntityId>
+        where TEntity : BaseEntity<TEntityId>
         where TEntityId : class, IEntityId
     {
         Task AddAsync(TEntity entity, CancellationToken cancellationToken);

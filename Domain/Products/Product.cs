@@ -3,7 +3,7 @@ using Domain.Data;
 
 namespace Domain.Products
 {
-    public class Product : Entity<ProductId>
+    public class Product : BaseEntity<ProductId>
     {
         public Product() { }
         private Product(string name, Money price, Sku sku)
