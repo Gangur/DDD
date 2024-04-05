@@ -26,3 +26,21 @@ services:
       - AzureFunctionsJobHost__Logging__Console__IsEnabled=true
     volumes:
       - ./Functions:/src/Functions:delegated  
+
+  message-broker:
+    environment:
+       - RABBITMQ_DEFAULT_USER=guest
+       - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"  
+    
+  email-sender:
+    restart: on-failure 
+
+  frontend:
+    volumes:
+      - ".:/app"
+      - "/app/node_modules"
+    ports:
+      - 80:80
