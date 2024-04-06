@@ -11,8 +11,6 @@ namespace Domain.Orders
 
         private Order() { }
 
-        public OrderId Id { get; private set; }
-
         public CustomerId CustomerId { get; private set; }
 
         public HashSet<LineItem> LineItems { get => _lineItems; }

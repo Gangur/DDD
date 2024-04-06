@@ -21,8 +21,6 @@ namespace Domain.LineItems
             OrderId = orderId;
         }
 
-        public LineItemId Id { get; private set; }
-
         public OrderId OrderId { get; private set; }
 
         public ProductId ProductId { get; private set; }

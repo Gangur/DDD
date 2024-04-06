@@ -22,6 +22,8 @@ services:
       context: .
       dockerfile: Functions/Dockerfile
     init: true
+    depends_on: 
+      - webapi
 
   message-broker:
     image: rabbitmq:management
@@ -38,4 +40,5 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile
-    
+    depends_on: 
+      - webapi

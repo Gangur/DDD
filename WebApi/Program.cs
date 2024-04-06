@@ -2,6 +2,8 @@ using Application;
 using Asp.Versioning.ApiExplorer;
 using Infrastructure;
 using Persistence;
+using Persistence.Data;
+using WebApi;
 using WebApi.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +34,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+EnsureDatabaseInit.EnsureCreated(context);
 
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 

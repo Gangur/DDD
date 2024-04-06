@@ -14,8 +14,6 @@ namespace Domain.Products
             Sku = sku;
         }
 
-        public ProductId Id { get; init; }
-
         public string Name { get; init; } = string.Empty;
 
         public Money Price { get; init; } 

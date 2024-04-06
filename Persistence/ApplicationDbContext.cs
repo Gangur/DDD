@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Application.Abstraction;
 using Domain.OutboxMessage;
 using Newtonsoft.Json;
+using Persistence.Data;
 
 namespace Persistence
 {
@@ -17,10 +18,6 @@ namespace Persistence
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> optionsBuilder, IPublisher publisher) : base(optionsBuilder)
         {
             _publisher = publisher;
-
-#if DEBUG
-            Database.EnsureCreated();
-#endif
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

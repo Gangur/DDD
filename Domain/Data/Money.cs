@@ -2,6 +2,10 @@
 {
     public record Money
     {
+        public const string USD = "USD";
+
+        public const string EUR = "EUR";
+
         private Money(string currency, decimal amount)
         {
             Currency = currency;
@@ -11,13 +15,13 @@
         public string Currency { get; init; }
         public decimal Amount { get; init; }
 
-        public static Money? Create(string currency, decimal amount)
+        public static Money Create(string currency, decimal amount)
         {
             if (string.IsNullOrWhiteSpace(currency) || currency.Length != 3)
-                return null;
+                throw new ArgumentException("Invalid format of the currency!");
 
-            if (amount < 0) 
-                return null;
+            if (amount < 0)
+                throw new ArgumentException("Invalid amount!");
 
             return new Money(currency, amount);
         }
