@@ -35,9 +35,9 @@ builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
-var scope = app.Services.CreateScope();
-var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-EnsureDatabaseInit.EnsureCreated(context);
+#if DEBUG
+EnsureDatabaseInit.EnsureCreated(app);
+#endif
 
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 

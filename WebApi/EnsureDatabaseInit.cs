@@ -5,12 +5,15 @@ namespace WebApi
 {
     public static class EnsureDatabaseInit
     {
-        public static void EnsureCreated(ApplicationDbContext dbContext)
+        public static void EnsureCreated(WebApplication app)
         {
-#if DEBUG
-            dbContext.Database.EnsureCreated();
-            DbInitializer.Initialize(dbContext);
-#endif
+            var scope = app.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            if (context.Database.EnsureCreated())
+            {
+                DbInitializer.Initialize(context);
+            }
         }
     }
 }
