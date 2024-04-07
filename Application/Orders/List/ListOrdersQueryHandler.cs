@@ -1,11 +1,11 @@
 ﻿using Application.Abstraction;
 using Application.Data;
 using Domain.Orders;
-using Microsoft.EntityFrameworkCore;
+using Presentation;
 
 namespace Application.Orders.List
 {
-    internal sealed class ListOrdersQueryHandler : IQueryHandler<ListOrdersQuery, IReadOnlyCollection<Order>>
+    internal sealed class ListOrdersQueryHandler : IQueryHandler<ListOrdersQuery, IReadOnlyCollection<OrderDto>>
     {
         private readonly IOrderRepository _orderRepository;
 
@@ -14,11 +14,12 @@ namespace Application.Orders.List
             _orderRepository = orderRepository;
         }
 
-        public async Task<Result<IReadOnlyCollection<Order>>> Handle(ListOrdersQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IReadOnlyCollection<OrderDto>>> Handle(ListOrdersQuery request, CancellationToken cancellationToken)
         {
-            var products = await _orderRepository.ListAsync(cancellationToken);
+            var orders = await _orderRepository.ListAsync(cancellationToken);
 
-            return Result<IReadOnlyCollection<Order>>.CreateSuccessful(products);
+            return Result<IReadOnlyCollection<OrderDto>>
+                .CreateSuccessful(orders.Select(p => new OrderDto(p.Id.Value, p.CustomerId.Value)).ToList());
         }
     }
 }

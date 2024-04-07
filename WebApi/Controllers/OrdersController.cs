@@ -1,6 +1,4 @@
-﻿using Application.Customers.Get;
-using Application.Customers.List;
-using Application.Data;
+﻿using Application.Data;
 using Application.Orders.Create;
 using Application.Orders.Get;
 using Application.Orders.List;
@@ -11,6 +9,7 @@ using Domain.LineItems;
 using Domain.Orders;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Presentation;
 
 namespace WebApi.Controllers
 {
@@ -43,7 +42,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("get")]
-        public async Task<Result<Order>> GetAsync(Guid id)
+        public async Task<Result<OrderDto>> GetAsync(Guid id)
         {
             var query = new GetOrderQuery(new OrderId(id));
 
@@ -53,7 +52,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<Result<IReadOnlyCollection<Order>>> ListAsync()
+        public async Task<Result<IReadOnlyCollection<OrderDto>>> ListAsync()
         {
             var query = new ListOrdersQuery();
 

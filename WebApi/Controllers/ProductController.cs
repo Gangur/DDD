@@ -7,6 +7,7 @@ using Domain.Data;
 using Domain.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Presentation;
 
 namespace WebApi.Controllers
 {
@@ -39,7 +40,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("get")]
-        public async Task<Result<Product>> GetAsync(Guid id)
+        public async Task<Result<ProductDto>> GetAsync(Guid id)
         {
             var query = new GetProductQuery(new ProductId(id));
 
@@ -49,7 +50,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<Result<IReadOnlyCollection<Product>>> ListAsync()
+        public async Task<Result<IReadOnlyCollection<ProductDto>>> ListAsync()
         {
             var query = new ListProductsQuery();
 

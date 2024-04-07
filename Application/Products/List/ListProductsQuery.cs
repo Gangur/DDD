@@ -1,7 +1,7 @@
 ﻿using Application.Abstraction;
-using Domain.Products;
+using Presentation;
 
 namespace Application.Products.List
 {
-    public record ListProductsQuery : IQuery<IReadOnlyCollection<Product>>;
+    public record ListProductsQuery : IQuery<IReadOnlyCollection<ProductDto>>;
 }

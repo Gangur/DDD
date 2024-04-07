@@ -1,10 +1,11 @@
 ﻿using Application.Abstraction;
 using Application.Data;
 using Domain.Products;
+using Presentation;
 
 namespace Application.Products.Get
 {
-    internal sealed class GetProductQueryHandler : IQueryHandler<GetProductQuery, Product>
+    internal sealed class GetProductQueryHandler : IQueryHandler<GetProductQuery, ProductDto>
     {
         private readonly IProductRepository _productRepository;
 
@@ -13,16 +14,16 @@ namespace Application.Products.Get
             _productRepository = productRepository;
         }
 
-        public async Task<Result<Product>> Handle(GetProductQuery request, CancellationToken cancellationToken)
+        public async Task<Result<ProductDto>> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
             var product = await _productRepository.FindAsync(request.ProductId, cancellationToken);
 
             if (product == null)
             {
-                return Result<Product>.CreateFailed("The product has not been found!");
+                return Result<ProductDto>.CreateFailed("The product has not been found!");
             }
 
-            return Result<Product>.CreateSuccessful(product);
+            return Result<ProductDto>.CreateSuccessful(new ProductDto(product.Id.Value, product.Name, product.Price.Currency, product.Price.Amount, product.Sku.Value));
         }
     }
 }

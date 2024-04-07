@@ -7,6 +7,7 @@ using Asp.Versioning;
 using Domain.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Presentation;
 
 namespace WebApi.Controllers
 {
@@ -29,7 +30,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("get")]
-        public async Task<Result<Customer>> GetAsync(Guid id)
+        public async Task<Result<CustomerDto>> GetAsync(Guid id)
         {
             var query = new GetCustomerQuery(new CustomerId(id));
 
@@ -39,7 +40,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<Result<IReadOnlyCollection<Customer>>> ListAsync()
+        public async Task<Result<IReadOnlyCollection<CustomerDto>>> ListAsync()
         {
             var query = new ListCustomersQuery();
 

@@ -32,6 +32,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -54,6 +55,14 @@ if (app.Environment.IsDevelopment())
         }
     });
 }
+
+app.UseCors(opt =>
+{
+    opt.AllowAnyHeader()
+       .AllowAnyMethod()
+       .WithOrigins(configuration.GetRequiredSection("Cors")["Frontend"] ?? 
+            throw new ArgumentException("Cors configuration missing Frontend sources!"));
+});
 
 app.UseHttpsRedirection();
 

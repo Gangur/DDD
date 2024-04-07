@@ -1,7 +1,7 @@
 ﻿using Application.Abstraction;
-using Domain.Customers;
+using Presentation;
 
 namespace Application.Customers.List
 {
-    public record ListCustomersQuery : IQuery<IReadOnlyCollection<Customer>>;
+    public record ListCustomersQuery : IQuery<IReadOnlyCollection<CustomerDto>>;
 }

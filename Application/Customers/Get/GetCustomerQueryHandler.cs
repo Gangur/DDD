@@ -1,10 +1,11 @@
 ﻿using Application.Abstraction;
 using Application.Data;
 using Domain.Customers;
+using Presentation;
 
 namespace Application.Customers.Get
 {
-    internal sealed class GetCustomerQueryHandler : IQueryHandler<GetCustomerQuery, Customer>
+    internal sealed class GetCustomerQueryHandler : IQueryHandler<GetCustomerQuery, CustomerDto>
     {
         private readonly ICustomerRepository _customerRepository;
 
@@ -13,16 +14,16 @@ namespace Application.Customers.Get
             _customerRepository = customerRepository;
         }
 
-        public async Task<Result<Customer>> Handle(GetCustomerQuery request, CancellationToken cancellationToken)
+        public async Task<Result<CustomerDto>> Handle(GetCustomerQuery request, CancellationToken cancellationToken)
         {
             var customer = await _customerRepository.FindAsync(request.CustomerId, cancellationToken);
 
             if (customer == null)
             {
-                return Result<Customer>.CreateFailed("The customer has not been found!");
+                return Result<CustomerDto>.CreateFailed("The customer has not been found!");
             }
 
-            return Result<Customer>.CreateSuccessful(customer);
+            return Result<CustomerDto>.CreateSuccessful(new CustomerDto(customer.Id.Value, customer.Email, customer.Name));
         }
     }
 }

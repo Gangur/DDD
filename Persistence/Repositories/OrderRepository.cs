@@ -33,7 +33,7 @@ namespace Persistence.Repositories
             return amount == 1;
         }
 
-        public async Task<IReadOnlyCollection<Order>> ListAsync(CancellationToken cancellationToken)
+        public async Task<ICollection<Order>> ListAsync(CancellationToken cancellationToken)
             => await _context.GetQuery<Order>().ToListAsync(cancellationToken);
 
         public void Remove(Order entity)

@@ -19,7 +19,7 @@ namespace Persistence.Repositories
         public async Task<Customer?> FindAsync(CustomerId entityId, CancellationToken cancellationToken)
             => await _context.FindAsync<Customer>(entityId, cancellationToken);
 
-        public async Task<IReadOnlyCollection<Customer>> ListAsync(CancellationToken cancellationToken)
+        public async Task<ICollection<Customer>> ListAsync(CancellationToken cancellationToken)
             => await _context.GetQuery<Customer>().ToListAsync(cancellationToken);
 
         public void Remove(Customer entity)

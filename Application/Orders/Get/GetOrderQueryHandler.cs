@@ -1,10 +1,11 @@
 ﻿using Application.Abstraction;
 using Application.Data;
 using Domain.Orders;
+using Presentation;
 
 namespace Application.Orders.Get
 {
-    internal sealed class GetOrderQueryHandler : IQueryHandler<GetOrderQuery, Order>
+    internal sealed class GetOrderQueryHandler : IQueryHandler<GetOrderQuery, OrderDto>
     {
         private readonly IOrderRepository _orderRepository;
 
@@ -13,16 +14,16 @@ namespace Application.Orders.Get
             _orderRepository = orderRepository;
         }
 
-        public async Task<Result<Order>> Handle(GetOrderQuery request, CancellationToken cancellationToken)
+        public async Task<Result<OrderDto>> Handle(GetOrderQuery request, CancellationToken cancellationToken)
         {
             var order = await _orderRepository.FindAsync(request.OrderId, cancellationToken);
 
             if (order == null)
             {
-                return Result<Order>.CreateFailed("The order has not been found!");
+                return Result<OrderDto>.CreateFailed("The order has not been found!");
             }
 
-            return Result<Order>.CreateSuccessful(order);
+            return Result<OrderDto>.CreateSuccessful(new OrderDto(order.Id.Value, order.CustomerId.Value));
         }
     }
 }

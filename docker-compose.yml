@@ -38,7 +38,9 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: frontend/Dockerfile
-    depends_on: 
-      - webapi
+      context: frontend
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules

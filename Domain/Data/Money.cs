@@ -2,10 +2,6 @@
 {
     public record Money
     {
-        public const string USD = "USD";
-
-        public const string EUR = "EUR";
-
         private Money(string currency, decimal amount)
         {
             Currency = currency;
