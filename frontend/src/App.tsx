@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
+import { Product } from './project'
 
 function App() {
-    const [products, setProducts] = useState([{ id: "", name: "", priceCurrency: "", priceAmount: 0, sku: "" }]);
+    const [products, setProducts] = useState<Product[]>([]);
 
     useEffect(() => {
         fetch('https://localhost:44370/product/v1/list')
@@ -28,7 +29,6 @@ function App() {
           ))}</ul>
           <button onClick={addProduct}>Add product</button>
     </div>
-
   )
 }
 
