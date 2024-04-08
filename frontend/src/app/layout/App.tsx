@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Product } from './project'
+import { Product } from '../models/project'
+import Catalog from '../../features/catalog/Catalog';
+import { Container, CssBaseline } from '@mui/material';
+import Header from './Header';
 
 function App() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -18,16 +21,23 @@ function App() {
     }, []);
 
     function addProduct() {
-        setProducts(prevState => [...prevState, { id: "", name: "", priceCurrency: "", priceAmount: 0, sku: "" }]);
+        setProducts(prevState => [...prevState,
+            {
+                id: "",
+                name: "",
+                priceCurrency: "",
+                priceAmount: 0,
+                sku: ""
+            }]);
     }
 
   return (
-    <div>
-          <h1>DDD Practice</h1>
-          <ul>{products.map((item, index) => (
-              <li key={index}>{item.name} - {item.priceAmount} {item.priceCurrency} - {item.sku}</li>
-          ))}</ul>
-          <button onClick={addProduct}>Add product</button>
+      <div>
+          <CssBaseline />
+          <Header />
+          <Container>
+              <Catalog products={products} addProduct={addProduct} />
+          </Container>
     </div>
   )
 }

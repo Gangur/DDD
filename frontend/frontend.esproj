@@ -11,4 +11,7 @@
   <ItemGroup>
     <None Include=".nginx\nginx.conf" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\features\catalog\" />
+  </ItemGroup>
 </Project>

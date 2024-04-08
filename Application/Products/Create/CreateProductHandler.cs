@@ -5,7 +5,7 @@ using IntegrationEvents;
 
 namespace Application.Products.Create
 {
-    internal class CreateProductHandler : ICommandHandler<CreateProductCommand>
+    internal class CreateProductHandler : ICommandHandler<CreateProductCommand, Guid>
     {
         private readonly IProductRepository _productRepository;
         private readonly IEventBus _eventBus;
@@ -16,7 +16,7 @@ namespace Application.Products.Create
             _eventBus = eventBus;
         }
 
-        public async Task<Result> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var product = Product.Create(request.Name, request.Price, request.Sku);
 
@@ -26,7 +26,7 @@ namespace Application.Products.Create
                 new ProductCreatedIntegrationEvent(product.Id.Value, product.Name, product.Price.Amount),
                 cancellationToken);
 
-            return Result.CreateSuccessful();
+            return Result<Guid>.CreateSuccessful(product.Id.Value);
         }
     }
 }

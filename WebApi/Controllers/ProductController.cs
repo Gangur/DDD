@@ -20,15 +20,15 @@ namespace WebApi.Controllers
         public ProductController(IMediator mediator) => _mediator = mediator;
 
         [HttpPost("create")]
-        public async Task<Result> CreateAsync(string name, string priceCurrency, decimal priceAmount, string sku)
+        public async Task<Result<Guid>> CreateAsync(string name, string priceCurrency, decimal priceAmount, string sku)
         {
             var price = Money.Create(priceCurrency, priceAmount);
             if (price is null)
-                return Result.CreateFailed("Price data is invalid!");
+                return Result<Guid>.CreateFailed("Price data is invalid!");
 
             var skuObj = Sku.Create(sku);
             if (skuObj is null)
-                return Result.CreateFailed("Sku data is invalid!");
+                return Result<Guid>.CreateFailed("Sku data is invalid!");
 
             var command = new CreateProductCommand(name,
                 price,
@@ -38,7 +38,7 @@ namespace WebApi.Controllers
 
             return result;
         }
-
+        
         [HttpGet("get")]
         public async Task<Result<ProductDto>> GetAsync(Guid id)
         {

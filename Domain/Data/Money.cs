@@ -11,13 +11,13 @@
         public string Currency { get; init; }
         public decimal Amount { get; init; }
 
-        public static Money Create(string currency, decimal amount)
+        public static Money? Create(string currency, decimal amount)
         {
             if (string.IsNullOrWhiteSpace(currency) || currency.Length != 3)
-                throw new ArgumentException("Invalid format of the currency!");
+                return null;
 
             if (amount < 0)
-                throw new ArgumentException("Invalid amount!");
+                return null;
 
             return new Money(currency, amount);
         }
