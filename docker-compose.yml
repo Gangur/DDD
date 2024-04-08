@@ -4,11 +4,6 @@ services:
   mssql:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
     container_name: DDD_DB
-    ports:
-      - "1433:1433" 
-    environment:
-      - ACCEPT_EULA=y
-      - SA_PASSWORD=12345678_qaz
 
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
