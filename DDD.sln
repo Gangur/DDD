@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailsSender", "EmailsSende
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "frontend", "frontend\frontend.esproj", "{447E01E9-037A-4440-9710-56BD0CD23A10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "..\Presentation\Presentation.csproj", "{06AA5493-4FB6-47C3-9603-D835E1D951DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentation\Presentation.csproj", "{D548BB32-1E6C-428D-B742-0780DAC90C38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,10 +73,10 @@ Global
 		{447E01E9-037A-4440-9710-56BD0CD23A10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{447E01E9-037A-4440-9710-56BD0CD23A10}.Release|Any CPU.Build.0 = Release|Any CPU
 		{447E01E9-037A-4440-9710-56BD0CD23A10}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{06AA5493-4FB6-47C3-9603-D835E1D951DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06AA5493-4FB6-47C3-9603-D835E1D951DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06AA5493-4FB6-47C3-9603-D835E1D951DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06AA5493-4FB6-47C3-9603-D835E1D951DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D548BB32-1E6C-428D-B742-0780DAC90C38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D548BB32-1E6C-428D-B742-0780DAC90C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D548BB32-1E6C-428D-B742-0780DAC90C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D548BB32-1E6C-428D-B742-0780DAC90C38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         public ProductController(IMediator mediator) => _mediator = mediator;
 
         [HttpPost("create")]
-        public async Task<Result<Guid>> CreateAsync(string name, string priceCurrency, decimal priceAmount, string sku)
+        public async Task<Result<Guid>> CreateAsync(string name, string priceCurrency, decimal priceAmount, string sku, CancellationToken cancellationToken)
         {
             var price = Money.Create(priceCurrency, priceAmount);
             if (price is null)
@@ -34,27 +34,27 @@ namespace WebApi.Controllers
                 price,
                 skuObj);
 
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command, cancellationToken);
 
             return result;
         }
         
         [HttpGet("get")]
-        public async Task<Result<ProductDto>> GetAsync(Guid id)
+        public async Task<Result<ProductDto>> GetAsync(Guid id, CancellationToken cancellationToken)
         {
             var query = new GetProductQuery(new ProductId(id));
 
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(query, cancellationToken);
 
             return result;
         }
 
         [HttpGet("list")]
-        public async Task<Result<IReadOnlyCollection<ProductDto>>> ListAsync()
+        public async Task<Result<IReadOnlyCollection<ProductDto>>> ListAsync(CancellationToken cancellationToken)
         {
             var query = new ListProductsQuery();
 
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(query, cancellationToken);
 
             return result;
         }

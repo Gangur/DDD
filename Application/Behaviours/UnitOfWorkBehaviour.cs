@@ -18,7 +18,8 @@ namespace Application.Behaviours
             RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
         {
-            if (request is not ICommand)
+            if (request is not IDatabaseCommand || 
+                request is not IDatabaseCommand<TResponse>)
             {
                 await next();
             }

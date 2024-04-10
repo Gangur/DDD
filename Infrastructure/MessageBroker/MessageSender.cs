@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
-using static MassTransit.MessageHeaders;
 
 namespace Infrastructure.MessageBroker
 {
@@ -23,6 +22,8 @@ namespace Infrastructure.MessageBroker
             where T : class
                 => Task.Run(() =>
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
+
                     var factory = new ConnectionFactory()
                     {
                         Uri = new Uri($"amqp://{_username}:{_password}@{_host}/")
@@ -41,8 +42,6 @@ namespace Infrastructure.MessageBroker
                     channel.ExchangeDeclare(messageType.FullName, ExchangeType.Direct, arguments: ttl);
 
                     var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
-
-                    cancellationToken.ThrowIfCancellationRequested();
 
                     channel.BasicPublish(messageType.Name, $"{messageType.Name.ToLower()}.init", null, body);
                 });

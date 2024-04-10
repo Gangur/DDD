@@ -4,5 +4,5 @@ using Domain.Products;
 
 namespace Application.Orders.AddLineItem
 {
-    public record AddLineItemCommand(OrderId OrderId, ProductId ProductId) : ICommand;
+    public record AddLineItemCommand(OrderId OrderId, ProductId ProductId) : IDatabaseCommand;
 }

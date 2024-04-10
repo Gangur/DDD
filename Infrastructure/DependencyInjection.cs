@@ -1,4 +1,6 @@
 ﻿using Application.Abstraction;
+using Azure.Storage.Blobs;
+using Infrastructure.Blobs;
 using Infrastructure.MessageBroker;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,7 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             IConfiguration configuration)
         {
-            var settings = services.ConfigureMessageBroker(configuration);
+            var messageBrokerSettings = services.ConfigureMessageBroker(configuration);
 
             services.AddMassTransit(busConfiguratior =>
             {
@@ -30,20 +32,24 @@ namespace Infrastructure
 
                 busConfiguratior.UsingRabbitMq((context, configuratior) =>
                 {
-                    configuratior.Host(new Uri("amqp://" + settings.Host), h =>
+                    configuratior.Host(new Uri("amqp://" + messageBrokerSettings.Host), h =>
                     {
-                        h.Username(settings.Username);
-                        h.Password(settings.Password);
+                        h.Username(messageBrokerSettings.Username);
+                        h.Password(messageBrokerSettings.Password);
                     });
                 });
             });
 
             services.AddTransient<IMessageSender>(p =>
                 new MessageSender(
-                    settings.Host,
-                    settings.Username,
-                    settings.Password));
+                    messageBrokerSettings.Host,
+                    messageBrokerSettings.Username,
+                    messageBrokerSettings.Password));
             services.AddTransient<IEventBus, EventBus>();
+
+            var blobsConnectionString = configuration.GetConnectionString("StorageAccount")!;
+            services.AddSingleton(x => new BlobServiceClient(blobsConnectionString));
+            services.AddSingleton<IBlobService, BlobService>();
 
             return services;
         }

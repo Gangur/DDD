@@ -3,5 +3,5 @@ using Domain.Customers;
 
 namespace Application.Orders.Create
 {
-    public record CreateOrderCommand(CustomerId customerId) : ICommand;
+    public record CreateOrderCommand(CustomerId customerId) : IDatabaseCommand;
 }
