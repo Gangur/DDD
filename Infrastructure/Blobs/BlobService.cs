@@ -32,7 +32,7 @@ namespace Infrastructure.Blobs
             }
         }
 
-        public async Task<Result<BlobDto>> 
+        public async Task<Result<BlobDto>>
             DownloadAsync(string fileName, CancellationToken cancellationToke)
         {
             try
@@ -43,7 +43,7 @@ namespace Infrastructure.Blobs
                 memoryStream.Position = 0;
                 var contentType = blobClient.GetProperties().Value.ContentType;
                 return Result<BlobDto>
-                    .CreateSuccessful(new (memoryStream, contentType));
+                    .CreateSuccessful(new(memoryStream, contentType));
             }
             catch (Exception ex)
             {

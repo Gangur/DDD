@@ -24,7 +24,7 @@ namespace WebApi.Controllers
 
         [HttpPost("create")]
         public async Task<Result> CreateAsync(
-            [Required] Guid customerId, 
+            [Required] Guid customerId,
             CancellationToken cancellationToken)
         {
             var command = new CreateOrderCommand(new CustomerId(customerId));
@@ -36,8 +36,8 @@ namespace WebApi.Controllers
 
         [HttpDelete("remove-line-item")]
         public async Task<Result> RemoveLineItemAsync(
-            [Required] Guid orderId, 
-            [Required] Guid lineItemId, 
+            [Required] Guid orderId,
+            [Required] Guid lineItemId,
             CancellationToken cancellationToken)
         {
             var command = new RemoveLineItemCommand(new OrderId(orderId), new LineItemId(lineItemId));
@@ -49,7 +49,7 @@ namespace WebApi.Controllers
 
         [HttpGet("get")]
         public async Task<Result<OrderDto>> GetAsync(
-            [Required] Guid id, 
+            [Required] Guid id,
             CancellationToken cancellationToken)
         {
             var query = new GetOrderQuery(new OrderId(id));
