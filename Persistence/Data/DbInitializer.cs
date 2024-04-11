@@ -14,9 +14,9 @@ namespace Persistence.Data
             const string products =
                 $"INSERT INTO [{nameof(Product)}] " +
                 $"([{nameof(Product.Id)}] ,[{nameof(Product.Name)}], [{nameof(Product.PictureName)}] ,[{nameof(Product.Price)}_{nameof(Product.Price.Currency)}] ,[{nameof(Product.Price)}_{nameof(Product.Price.Amount)}] ,[{nameof(Sku)}])" +
-                "VALUES (NEWID(), 'phone', 'phone.png', 'USD', 1000, '4225-7276-32342')," +
-                       "(NEWID(), 'book', 'book.png', 'USD', 100, '5131-2252-36336')," +
-                       "(NEWID(), 'tablet', 'tablet.png', 'EUR', 700, '1431-7622-38653');",
+                "VALUES (NEWID(), 'Phone', 'phone.png', 'USD', 100000, '4225-7276-32342')," +
+                       "(NEWID(), 'Book', 'book.png', 'USD', 10000, '5131-2252-36336')," +
+                       "(NEWID(), 'Tablet', 'tablet.png', 'EUR', 70000, '1431-7622-38653');",
             customers = 
                 $"INSERT INTO [{nameof(Customer)}] " +
                 $"([{nameof(Customer.Id)}], [{nameof(Customer.Email)}], [{nameof(Customer.Name)}])" +

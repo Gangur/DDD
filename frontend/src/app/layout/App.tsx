@@ -1,45 +1,32 @@
-import { useEffect, useState } from 'react'
-import { Product } from '../models/project'
-import Catalog from '../../features/catalog/Catalog';
-import { Container, CssBaseline } from '@mui/material';
+import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import Header from './Header';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 function App() {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [darkMode, setDarkMode] = useState(true);
+    const paletteType = darkMode ? 'dark' : 'light'
+    const theme = createTheme({
+        palette: {
+            mode: paletteType,
+            background: {
+                default: darkMode ? '#121212' : '#eaeaea'
+            }
+        }
+    });
 
-    useEffect(() => {
-        fetch('https://localhost:44370/product/v1/list')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    setProducts(data.value)
-                }
-                else {
-                    throw Error(data.errorMessage);
-                }
-            });
-    }, []);
-
-    function addProduct() {
-        setProducts(prevState => [...prevState,
-            {
-                id: "",
-                name: "",
-                pictureName: "",
-                priceCurrency: "",
-                priceAmount: 0,
-                sku: ""
-            }]);
+    function handleThemeChange() {
+        setDarkMode(!darkMode);
     }
 
-  return (
-      <div>
-          <CssBaseline />
-          <Header />
-          <Container>
-              <Catalog products={products} addProduct={addProduct} />
-          </Container>
-    </div>
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
+            <Container>
+                <Outlet />
+            </Container>
+        </ThemeProvider>
   )
 }
 
