@@ -6,23 +6,26 @@ namespace Domain.Products
     public class Product : BaseEntity<ProductId>
     {
         public Product() { }
-        private Product(string name, Money price, Sku sku)
+        private Product(string name, string pictureName, Money price, Sku sku)
         {
             Id = new ProductId(Guid.NewGuid());
             Name = name;
             Price = price;
             Sku = sku;
+            PictureName = pictureName;
         }
 
         public string Name { get; init; } = string.Empty;
+
+        public string PictureName { get; init; } = string.Empty;
 
         public Money Price { get; init; } 
 
         public Sku Sku { get; init; }
 
-        public static Product Create(string name, Money price, Sku sku)
+        public static Product Create(string name, string pictureName, Money price, Sku sku)
         {
-            var product = new Product(name, price, sku);
+            var product = new Product(name, pictureName, price, sku);
 
             product.Raise(new ProductCreatedDomainEvent(product.Id));
 

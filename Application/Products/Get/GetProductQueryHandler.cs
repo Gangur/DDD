@@ -23,7 +23,7 @@ namespace Application.Products.Get
                 return Result<ProductDto>.CreateFailed("The product has not been found!");
             }
 
-            return Result<ProductDto>.CreateSuccessful(new ProductDto(product.Id.Value, product.Name, product.Price.Currency, product.Price.Amount, product.Sku.Value));
+            return Result<ProductDto>.CreateSuccessful(new ProductDto(product.Id.Value, product.Name, product.PictureName, product.Price.Currency, product.Price.Amount, product.Sku.Value));
         }
     }
 }

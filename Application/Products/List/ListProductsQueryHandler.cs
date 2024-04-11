@@ -2,6 +2,7 @@
 using Application.Data;
 using Domain.Products;
 using Presentation;
+using System.Linq;
 
 namespace Application.Products.List
 {
@@ -20,7 +21,7 @@ namespace Application.Products.List
 
             return Result<IReadOnlyCollection<ProductDto>>
                 .CreateSuccessful(products
-                    .Select(p => new ProductDto(p.Id.Value, p.Name, p.Price.Currency, p.Price.Amount, p.Sku.Value))
+                    .Select(p => new ProductDto(p.Id.Value, p.Name, p.PictureName, p.Price.Currency, p.Price.Amount, p.Sku.Value))
                     .ToList());
         }
     }

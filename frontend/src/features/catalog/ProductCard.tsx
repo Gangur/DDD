@@ -10,7 +10,7 @@ export default function ProductCard({ product }: Props) {
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
                 sx={{ height: 140 }}
-                image=""
+                image={"https://dddstoragedemo.blob.core.windows.net/pictures-ddd-container/" + product.pictureName}
                 title={product.name}
             />
             <CardContent>

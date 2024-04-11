@@ -9,16 +9,23 @@ namespace Application.Products.Create
     {
         private readonly IProductRepository _productRepository;
         private readonly IEventBus _eventBus;
+        private readonly IBlobService _blobService;
 
-        public CreateProductHandler(IProductRepository productRepository, IEventBus eventBus)
+        public CreateProductHandler(IProductRepository productRepository, IEventBus eventBus, IBlobService blobService)
         {
             _productRepository = productRepository;
             _eventBus = eventBus;
+            _blobService = blobService;
         }
 
         public async Task<Result<Guid>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = Product.Create(request.Name, request.Price, request.Sku);
+            if (!await _blobService.ExistsAsync(request.PictureName, cancellationToken))
+            {
+                Result<Guid>.CreateFailed($"The picture {request.PictureName} has not been found!");
+            }
+
+            var product = Product.Create(request.Name, request.PictureName, request.Price, request.Sku);
 
             await _productRepository.AddAsync(product, cancellationToken);
 

@@ -1,6 +1,7 @@
 ﻿using Application.Abstraction;
 using Application.Data;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace Infrastructure.Blobs
 {
@@ -15,7 +16,7 @@ namespace Infrastructure.Blobs
         {
             _blobServiceClient = blobServiceClient;
             _containerClient = _blobServiceClient.GetBlobContainerClient(PicturesContainer);
-            _containerClient.CreateIfNotExists();
+            _containerClient.CreateIfNotExists(PublicAccessType.Blob);
         }
 
         public async Task<Result> UploadAsync(Stream fileStream, string fileName, CancellationToken cancellationToken)
@@ -50,6 +51,12 @@ namespace Infrastructure.Blobs
                 return Result<BlobDto>
                     .CreateFailed("An error occurred while downloading the file: " + ex.Message);
             }
+        }
+
+        public async Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToke)
+        {
+            var blobClient = _containerClient.GetBlobClient(fileName);
+            return await blobClient.ExistsAsync(cancellationToke);
         }
     }
 }

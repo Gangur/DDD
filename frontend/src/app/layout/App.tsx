@@ -25,6 +25,7 @@ function App() {
             {
                 id: "",
                 name: "",
+                pictureName: "",
                 priceCurrency: "",
                 priceAmount: 0,
                 sku: ""
