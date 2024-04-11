@@ -3,7 +3,7 @@ targetScope='subscription'
 param localtion string = 'northcentralus'
 
 var rgName = 'ddd-rg'
-var storageName = 'ddd-storage'
+var storageName = 'dddstoragegangurdv'
 var functionAppName = 'ddd-func'
 var applicationInsightsName = 'ddd-application-insights'
 
