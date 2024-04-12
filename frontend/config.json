@@ -1,0 +1,4 @@
+{
+  "SERVER_URL": "https://localhost:44370",
+  "PICTURES_STORAGE_URL": "https://dddstoragedemo.blob.core.windows.net/pictures-ddd-container"
+}

@@ -1,9 +1,9 @@
 import { Grid, List } from "@mui/material";
-import { Product } from "../../app/models/project";
 import ProductCard from "./ProductCard";
+import { ProductDto } from "../../tools/HttpClient";
 
 interface Props {
-    products: Product[];
+    products: ProductDto[];
 }
 
 export default function ProductList({ products }: Props) {

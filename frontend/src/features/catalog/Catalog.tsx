@@ -1,16 +1,17 @@
-import { Product } from "../../app/models/project";
+import { ProductDto } from "../../tools/HttpClient";
+import HttpClient from "../../tools/HttpClientFactory";
 import ProductList from "./ProductList";
 import { useEffect, useState } from "react";
 
 export default function Ctatalog() {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductDto[]>([]);
 
     useEffect(() => {
-        fetch('https://localhost:44370/product/v1/list')
-            .then(response => response.json())
+        HttpClient()
+            .productV1List()
             .then(data => {
                 if (data.success) {
-                    setProducts(data.value)
+                    setProducts(data.value!)
                 }
                 else {
                     throw Error(data.errorMessage);
