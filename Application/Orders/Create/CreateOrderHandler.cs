@@ -22,7 +22,7 @@ namespace Application.Orders.Create
 
             if (customer is null)
             {
-                return Result.CreateFailed("The customer has not been found!");
+                return Result.CreateValidationProblem("The customer has not been found!");
             }
 
             var order = Order.Create(customer);

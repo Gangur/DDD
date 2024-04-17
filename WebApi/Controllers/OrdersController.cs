@@ -1,9 +1,7 @@
-﻿using Application.Data;
-using Application.Orders.Create;
+﻿using Application.Orders.Create;
 using Application.Orders.Get;
 using Application.Orders.List;
 using Application.Orders.RemoveLineItem;
-using Asp.Versioning;
 using Domain.Customers;
 using Domain.LineItems;
 using Domain.Orders;
@@ -11,19 +9,19 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation;
 using System.ComponentModel.DataAnnotations;
+using WebApi.Abstraction;
 
 namespace WebApi.Controllers
 {
-    [ApiController]
-    [ApiVersion("1.0")]
-    [Route("orders/v{version:apiVersion}")]
-    public class OrdersController : Controller
+    [Route("v{version:apiVersion}/orders")]
+    public class OrdersController : BaseApiV1Controller
     {
-        private readonly IMediator _mediator;
-        public OrdersController(IMediator mediator) => _mediator = mediator;
+        public OrdersController(IMediator mediator) : base(mediator)
+        {
+        }
 
         [HttpPost("create")]
-        public async Task<Result> CreateAsync(
+        public async Task<ActionResult> CreateAsync(
             [Required] Guid customerId,
             CancellationToken cancellationToken)
         {
@@ -31,11 +29,11 @@ namespace WebApi.Controllers
 
             var result = await _mediator.Send(command, cancellationToken);
 
-            return result;
+            return ActionFromResult(result);
         }
 
         [HttpDelete("remove-line-item")]
-        public async Task<Result> RemoveLineItemAsync(
+        public async Task<ActionResult> RemoveLineItemAsync(
             [Required] Guid orderId,
             [Required] Guid lineItemId,
             CancellationToken cancellationToken)
@@ -44,11 +42,11 @@ namespace WebApi.Controllers
 
             var result = await _mediator.Send(command, cancellationToken);
 
-            return result;
+            return ActionFromResult(result);
         }
 
-        [HttpGet("get")]
-        public async Task<Result<OrderDto>> GetAsync(
+        [HttpGet("{id}")]
+        public async Task<ActionResult<OrderDto>> GetAsync(
             [Required] Guid id,
             CancellationToken cancellationToken)
         {
@@ -56,17 +54,17 @@ namespace WebApi.Controllers
 
             var result = await _mediator.Send(query, cancellationToken);
 
-            return result;
+            return ActionFromResult(result);
         }
 
         [HttpGet("list")]
-        public async Task<Result<IReadOnlyCollection<OrderDto>>> ListAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult<IReadOnlyCollection<OrderDto>>> ListAsync(CancellationToken cancellationToken)
         {
             var query = new ListOrdersQuery();
 
             var result = await _mediator.Send(query, cancellationToken);
 
-            return result;
+            return ActionFromResult(result);
         }
     }
 }

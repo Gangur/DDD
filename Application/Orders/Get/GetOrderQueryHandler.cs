@@ -20,7 +20,7 @@ namespace Application.Orders.Get
 
             if (order == null)
             {
-                return Result<OrderDto>.CreateFailed("The order has not been found!");
+                return Result<OrderDto>.CreateNotFount("The order has not been found!");
             }
 
             return Result<OrderDto>.CreateSuccessful(new OrderDto(order.Id.Value, order.CustomerId.Value));

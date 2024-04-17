@@ -1,10 +1,10 @@
 import { Divider, Grid, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ProductDto } from "../../tools/HttpClient";
-import HttpClient from "../../tools/HttpClientFactory";
+import { ProductDto } from "../../app/api/http-client";
 import PictureUrl from "../../tools/PicturesUrlFactory";
 import DisplayPrice from "../../tools/PriceFactory";
+import agent from "../../app/api/agent";
 
 export default function ProductDetailes() {
     const { id } = useParams<{ id: string }>();
@@ -12,8 +12,8 @@ export default function ProductDetailes() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        HttpClient()
-            .productV1Get(id)
+        agent
+            .v1ProductsGet(id)
             .then(data => {
                 if (data.success) {
                     setProduct(data.value!)
@@ -28,12 +28,14 @@ export default function ProductDetailes() {
 
     if (loading)
     {
-        return
-        <>
-            <Skeleton />
-            <Skeleton animation="wave" />
-            <Skeleton animation={false} />
-        </>
+        return (<Grid container spacing={5}>
+                    <Grid item xs={4}></Grid>
+                    <Grid item xs={4}>
+                        <Skeleton />
+                        <Skeleton animation="wave" />
+                        <Skeleton animation={false} />
+                    </Grid>
+                </Grid>)
     }
 
     if (!product) {

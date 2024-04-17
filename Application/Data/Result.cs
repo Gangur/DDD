@@ -1,46 +1,56 @@
-﻿namespace Application.Data
+﻿using Application.Enums;
+
+namespace Application.Data
 {
     public record Result
     {
-        public bool Success { get; init; }
+        public bool Success { get => this.Type == ResultType.Success; } 
+        public ResultType Type { get; init; }
 
         public string ErrorMessage { get; init; }
 
-        internal Result(bool success)
+        internal Result(ResultType type)
         {
-            this.Success = success;
+            this.Type = type;
         }
 
-        internal Result(string errorMessage)
+        internal Result(string errorMessage, ResultType type)
         {
             this.ErrorMessage = errorMessage;
+            this.Type = type;
         }
 
         public static Result CreateSuccessful()
-            => new Result(true);
+            => new Result(ResultType.Success);
 
-        public static Result CreateFailed(string errorMessage)
-            => new Result(errorMessage);
+        public static Result CreateValidationProblem(string errorMessage)
+            => new Result(errorMessage, ResultType.ValidationProblem);
+
+        public static Result CreateNotFount(string errorMessage)
+            => new Result(errorMessage, ResultType.NotFount);
     }
 
     public sealed record Result<T> : Result
     {
         public T Value { get; set; }
 
-        private Result(bool success, T value) : base(success) 
+        private Result(ResultType type, T value) : base(type) 
         {
             Value = value;
         }
 
-        private Result(string errorMessage) : base(errorMessage)
+        private Result(string errorMessage, ResultType type) : base(errorMessage, type)
         {
 
         }
 
         public static Result<T> CreateSuccessful(T value)
-            => new Result<T>(true, value);
+            => new Result<T>(ResultType.Success, value);
 
-        public static new Result<T> CreateFailed(string errorMessage)
-            => new Result<T>(errorMessage);
+        public static new Result<T> CreateValidationProblem(string errorMessage)
+            => new Result<T>(errorMessage, ResultType.ValidationProblem);
+
+        public static new Result<T> CreateNotFount(string errorMessage)
+            => new Result<T>(errorMessage, ResultType.NotFount);
     }
 }

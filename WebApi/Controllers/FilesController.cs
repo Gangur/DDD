@@ -1,29 +1,28 @@
-﻿using Application.Data;
-using Application.Files.Download;
+﻿using Application.Files.Download;
 using Application.Files.Upload;
-using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using WebApi.Abstraction;
 
 namespace WebApi.Controllers
 {
-    [ApiController]
-    [ApiVersion("1.0")]
-    [Route("files/v{version:apiVersion}")]
-    public class FilesController : Controller
+
+    [Route("v{version:apiVersion}/files")]
+    public class FilesController : BaseApiV1Controller
     {
-        private readonly IMediator _mediator;
-        public FilesController(IMediator mediator) => _mediator = mediator;
+        public FilesController(IMediator mediator) : base(mediator)
+        {
+        }
 
         [HttpPost("upload")]
-        public async Task<Result> UploadAsync([Required] IFormFile file, CancellationToken cancellationToke)
+        public async Task<ActionResult> UploadAsync([Required] IFormFile file, CancellationToken cancellationToke)
         {
             var command = new UploadFileCommand(file.OpenReadStream(), file.FileName);
 
             var result = await _mediator.Send(command, cancellationToke);
 
-            return result;
+            return ActionFromResult(result);
         }
 
         [HttpGet("download")]

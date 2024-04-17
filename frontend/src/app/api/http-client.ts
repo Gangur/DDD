@@ -10,6 +10,7 @@
 
 import axios, { AxiosError } from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
+import { toast } from 'react-toastify';
 
 export class Client {
     protected instance: AxiosInstance;
@@ -27,8 +28,238 @@ export class Client {
     /**
      * @return Success
      */
-    customerV1Create(email: string, name: string, cancelToken?: CancelToken): Promise<Result> {
-        let url_ = this.baseUrl + "/customer/v1/create?";
+    v1BuggyNotFound(cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/v1/buggy/not-found";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1BuggyNotFound(_response);
+        });
+    }
+
+    protected processV1BuggyNotFound(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    v1BuggyBadRequest(cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/v1/buggy/bad-request";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1BuggyBadRequest(_response);
+        });
+    }
+
+    protected processV1BuggyBadRequest(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    v1BuggyUnauthorized(cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/v1/buggy/unauthorized";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1BuggyUnauthorized(_response);
+        });
+    }
+
+    protected processV1BuggyUnauthorized(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    v1BuggyValidationProblem(cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/v1/buggy/validation-problem";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1BuggyValidationProblem(_response);
+        });
+    }
+
+    protected processV1BuggyValidationProblem(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    v1BuggyServerError(cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/v1/buggy/server-error";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1BuggyServerError(_response);
+        });
+    }
+
+    protected processV1BuggyServerError(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    v1CustomeresCreate(email: string, name: string, cancelToken?: CancelToken): Promise<Result> {
+        let url_ = this.baseUrl + "/v1/customeres/create?";
         if (email === undefined || email === null)
             throw new Error("The parameter 'email' must be defined and cannot be null.");
         else
@@ -55,11 +286,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processCustomerV1Create(_response);
+            return this.processV1CustomeresCreate(_response);
         });
     }
 
-    protected processCustomerV1Create(response: AxiosResponse): Promise<Result> {
+    protected processV1CustomeresCreate(response: AxiosResponse): Promise<Result> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -86,12 +317,11 @@ export class Client {
     /**
      * @return Success
      */
-    customerV1Get(id: string, cancelToken?: CancelToken): Promise<CustomerDtoResult> {
-        let url_ = this.baseUrl + "/customer/v1/get?";
+    v1Customeres(id: string, cancelToken?: CancelToken): Promise<CustomerDtoResult> {
+        let url_ = this.baseUrl + "/v1/customeres/{id}";
         if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined and cannot be null.");
-        else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -110,11 +340,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processCustomerV1Get(_response);
+            return this.processV1Customeres(_response);
         });
     }
 
-    protected processCustomerV1Get(response: AxiosResponse): Promise<CustomerDtoResult> {
+    protected processV1Customeres(response: AxiosResponse): Promise<CustomerDtoResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -141,8 +371,8 @@ export class Client {
     /**
      * @return Success
      */
-    customerV1List(cancelToken?: CancelToken): Promise<CustomerDtoIReadOnlyCollectionResult> {
-        let url_ = this.baseUrl + "/customer/v1/list";
+    v1CustomeresList(cancelToken?: CancelToken): Promise<CustomerDtoIReadOnlyCollectionResult> {
+        let url_ = this.baseUrl + "/v1/customeres/list";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -161,11 +391,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processCustomerV1List(_response);
+            return this.processV1CustomeresList(_response);
         });
     }
 
-    protected processCustomerV1List(response: AxiosResponse): Promise<CustomerDtoIReadOnlyCollectionResult> {
+    protected processV1CustomeresList(response: AxiosResponse): Promise<CustomerDtoIReadOnlyCollectionResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -192,12 +422,11 @@ export class Client {
     /**
      * @return Success
      */
-    customerV1Delete(id: string, cancelToken?: CancelToken): Promise<Result> {
-        let url_ = this.baseUrl + "/customer/v1/delete?";
+    v1CustomeresDelete(id: string, cancelToken?: CancelToken): Promise<Result> {
+        let url_ = this.baseUrl + "/v1/customeres/delete/{id}";
         if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined and cannot be null.");
-        else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -216,11 +445,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processCustomerV1Delete(_response);
+            return this.processV1CustomeresDelete(_response);
         });
     }
 
-    protected processCustomerV1Delete(response: AxiosResponse): Promise<Result> {
+    protected processV1CustomeresDelete(response: AxiosResponse): Promise<Result> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -248,8 +477,8 @@ export class Client {
      * @param body (optional) 
      * @return Success
      */
-    filesV1Upload(body: Body | undefined, cancelToken?: CancelToken): Promise<Result> {
-        let url_ = this.baseUrl + "/files/v1/upload";
+    v1FilesUpload(body: Body | undefined, cancelToken?: CancelToken): Promise<Result> {
+        let url_ = this.baseUrl + "/v1/files/upload";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -272,11 +501,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processFilesV1Upload(_response);
+            return this.processV1FilesUpload(_response);
         });
     }
 
-    protected processFilesV1Upload(response: AxiosResponse): Promise<Result> {
+    protected processV1FilesUpload(response: AxiosResponse): Promise<Result> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -303,8 +532,8 @@ export class Client {
     /**
      * @return Success
      */
-    filesV1Download(fileName: string, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/files/v1/download?";
+    v1FilesDownload(fileName: string, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/v1/files/download?";
         if (fileName === undefined || fileName === null)
             throw new Error("The parameter 'fileName' must be defined and cannot be null.");
         else
@@ -326,11 +555,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processFilesV1Download(_response);
+            return this.processV1FilesDownload(_response);
         });
     }
 
-    protected processFilesV1Download(response: AxiosResponse): Promise<void> {
+    protected processV1FilesDownload(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -341,7 +570,6 @@ export class Client {
             }
         }
         if (status === 200) {
-            const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
@@ -354,8 +582,8 @@ export class Client {
     /**
      * @return Success
      */
-    ordersV1Create(customerId: string, cancelToken?: CancelToken): Promise<Result> {
-        let url_ = this.baseUrl + "/orders/v1/create?";
+    v1OrdersCreate(customerId: string, cancelToken?: CancelToken): Promise<Result> {
+        let url_ = this.baseUrl + "/v1/orders/create?";
         if (customerId === undefined || customerId === null)
             throw new Error("The parameter 'customerId' must be defined and cannot be null.");
         else
@@ -378,11 +606,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processOrdersV1Create(_response);
+            return this.processV1OrdersCreate(_response);
         });
     }
 
-    protected processOrdersV1Create(response: AxiosResponse): Promise<Result> {
+    protected processV1OrdersCreate(response: AxiosResponse): Promise<Result> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -409,8 +637,8 @@ export class Client {
     /**
      * @return Success
      */
-    ordersV1RemoveLineItem(orderId: string, lineItemId: string, cancelToken?: CancelToken): Promise<Result> {
-        let url_ = this.baseUrl + "/orders/v1/remove-line-item?";
+    v1OrdersRemoveLineItem(orderId: string, lineItemId: string, cancelToken?: CancelToken): Promise<Result> {
+        let url_ = this.baseUrl + "/v1/orders/remove-line-item?";
         if (orderId === undefined || orderId === null)
             throw new Error("The parameter 'orderId' must be defined and cannot be null.");
         else
@@ -437,11 +665,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processOrdersV1RemoveLineItem(_response);
+            return this.processV1OrdersRemoveLineItem(_response);
         });
     }
 
-    protected processOrdersV1RemoveLineItem(response: AxiosResponse): Promise<Result> {
+    protected processV1OrdersRemoveLineItem(response: AxiosResponse): Promise<Result> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -468,12 +696,11 @@ export class Client {
     /**
      * @return Success
      */
-    ordersV1Get(id: string, cancelToken?: CancelToken): Promise<OrderDtoResult> {
-        let url_ = this.baseUrl + "/orders/v1/get?";
+    v1Orders(id: string, cancelToken?: CancelToken): Promise<OrderDtoResult> {
+        let url_ = this.baseUrl + "/v1/orders/{id}";
         if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined and cannot be null.");
-        else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -492,11 +719,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processOrdersV1Get(_response);
+            return this.processV1Orders(_response);
         });
     }
 
-    protected processOrdersV1Get(response: AxiosResponse): Promise<OrderDtoResult> {
+    protected processV1Orders(response: AxiosResponse): Promise<OrderDtoResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -523,8 +750,8 @@ export class Client {
     /**
      * @return Success
      */
-    ordersV1List(cancelToken?: CancelToken): Promise<OrderDtoIReadOnlyCollectionResult> {
-        let url_ = this.baseUrl + "/orders/v1/list";
+    v1OrdersList(cancelToken?: CancelToken): Promise<OrderDtoIReadOnlyCollectionResult> {
+        let url_ = this.baseUrl + "/v1/orders/list";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -543,11 +770,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processOrdersV1List(_response);
+            return this.processV1OrdersList(_response);
         });
     }
 
-    protected processOrdersV1List(response: AxiosResponse): Promise<OrderDtoIReadOnlyCollectionResult> {
+    protected processV1OrdersList(response: AxiosResponse): Promise<OrderDtoIReadOnlyCollectionResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -579,8 +806,8 @@ export class Client {
      * @param sku (optional) 
      * @return Success
      */
-    productV1Create(name: string | undefined, priceCurrency: string | undefined, priceAmount: number | undefined, pictureName: string | undefined, sku: string | undefined, cancelToken?: CancelToken): Promise<GuidResult> {
-        let url_ = this.baseUrl + "/product/v1/create?";
+    v1ProductsCreate(name: string | undefined, priceCurrency: string | undefined, priceAmount: number | undefined, pictureName: string | undefined, sku: string | undefined, cancelToken?: CancelToken): Promise<GuidResult> {
+        let url_ = this.baseUrl + "/v1/products/create?";
         if (name === null)
             throw new Error("The parameter 'name' cannot be null.");
         else if (name !== undefined)
@@ -619,11 +846,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processProductV1Create(_response);
+            return this.processV1ProductsCreate(_response);
         });
     }
 
-    protected processProductV1Create(response: AxiosResponse): Promise<GuidResult> {
+    protected processV1ProductsCreate(response: AxiosResponse): Promise<GuidResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -651,8 +878,8 @@ export class Client {
      * @param id (optional) 
      * @return Success
      */
-    productV1Get(id: string | undefined, cancelToken?: CancelToken): Promise<ProductDtoResult> {
-        let url_ = this.baseUrl + "/product/v1/get?";
+    v1ProductsGet(id: string | undefined, cancelToken?: CancelToken): Promise<ProductDtoResult> {
+        let url_ = this.baseUrl + "/v1/products/get?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -675,11 +902,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processProductV1Get(_response);
+            return this.processV1ProductsGet(_response);
         });
     }
 
-    protected processProductV1Get(response: AxiosResponse): Promise<ProductDtoResult> {
+    protected processV1ProductsGet(response: AxiosResponse): Promise<ProductDtoResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -706,8 +933,8 @@ export class Client {
     /**
      * @return Success
      */
-    productV1List(cancelToken?: CancelToken): Promise<ProductDtoIReadOnlyCollectionResult> {
-        let url_ = this.baseUrl + "/product/v1/list";
+    v1ProductsList(cancelToken?: CancelToken): Promise<ProductDtoIReadOnlyCollectionResult> {
+        let url_ = this.baseUrl + "/v1/products/list";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -726,11 +953,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processProductV1List(_response);
+            return this.processV1ProductsList(_response);
         });
     }
 
-    protected processProductV1List(response: AxiosResponse): Promise<ProductDtoIReadOnlyCollectionResult> {
+    protected processV1ProductsList(response: AxiosResponse): Promise<ProductDtoIReadOnlyCollectionResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -858,10 +1085,23 @@ export class ApiException extends Error {
 }
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
+    var data = JSON.parse(response);
     if (result !== null && result !== undefined)
         throw result;
     else
-        throw new ApiException(message, status, response, headers, null);
+        switch (status) {
+            case 400:
+                toast.error(data.title)
+                break;
+            case 401:
+                toast.error(data.title)
+                break;
+            case 500:
+                toast.error(data.title)
+                break;
+            default:
+                break;
+        }
 }
 
 function isAxiosError(obj: any): obj is AxiosError {

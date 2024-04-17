@@ -22,7 +22,7 @@ namespace Application.Products.Create
         {
             if (!await _blobService.ExistsAsync(request.PictureName, cancellationToken))
             {
-                Result<Guid>.CreateFailed($"The picture {request.PictureName} has not been found!");
+                Result<Guid>.CreateValidationProblem($"The picture {request.PictureName} has not been found!");
             }
 
             var product = Product.Create(request.Name, request.PictureName, request.Price, request.Sku);

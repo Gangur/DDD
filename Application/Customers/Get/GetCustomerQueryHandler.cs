@@ -20,7 +20,7 @@ namespace Application.Customers.Get
 
             if (customer == null)
             {
-                return Result<CustomerDto>.CreateFailed("The customer has not been found!");
+                return Result<CustomerDto>.CreateNotFount("The customer has not been found!");
             }
 
             return Result<CustomerDto>.CreateSuccessful(new CustomerDto(customer.Id.Value, customer.Email, customer.Name));

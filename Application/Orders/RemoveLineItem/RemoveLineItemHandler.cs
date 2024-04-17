@@ -24,12 +24,12 @@ namespace Application.Orders.RemoveLineItem
 
             if (order is null)
             {
-                return Result.CreateFailed("The order has not been found!");
+                return Result.CreateValidationProblem("The order has not been found!");
             }
 
             if (await _orderRepository.HasOneLineItemAsync(request.OrderId, cancellationToken))
             {
-                return Result.CreateFailed("The order contains only one item!");
+                return Result.CreateValidationProblem("The order contains only one item!");
             }
 
             order.RemoveLineItem(request.LineItemId);

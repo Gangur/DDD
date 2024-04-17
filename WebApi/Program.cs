@@ -2,9 +2,9 @@ using Application;
 using Asp.Versioning.ApiExplorer;
 using Infrastructure;
 using Persistence;
-using Persistence.Data;
 using WebApi;
 using WebApi.Configurations;
+using WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +35,8 @@ builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddCors();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 #if DEBUG
 EnsureDatabaseInit.EnsureCreated(app);

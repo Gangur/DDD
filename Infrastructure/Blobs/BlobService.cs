@@ -21,36 +21,21 @@ namespace Infrastructure.Blobs
 
         public async Task<Result> UploadAsync(Stream fileStream, string fileName, CancellationToken cancellationToken)
         {
-            try
-            {
-                var blobClient = _containerClient.GetBlobClient(fileName);
-                await blobClient.UploadAsync(fileStream, true, cancellationToken);
-                return Result.CreateSuccessful();
-            }
-            catch (Exception ex)
-            {
-                return Result.CreateFailed("An error occurred while uploading the file: " + ex.Message);
-            }
+            var blobClient = _containerClient.GetBlobClient(fileName);
+            await blobClient.UploadAsync(fileStream, true, cancellationToken);
+            return Result.CreateSuccessful();
         }
 
         public async Task<Result<BlobDto>>
             DownloadAsync(string fileName, CancellationToken cancellationToke)
         {
-            try
-            {
-                var blobClient = _containerClient.GetBlobClient(fileName);
-                var memoryStream = new MemoryStream();
-                await blobClient.DownloadToAsync(memoryStream, cancellationToke);
-                memoryStream.Position = 0;
-                var contentType = blobClient.GetProperties().Value.ContentType;
-                return Result<BlobDto>
-                    .CreateSuccessful(new(memoryStream, contentType));
-            }
-            catch (Exception ex)
-            {
-                return Result<BlobDto>
-                    .CreateFailed("An error occurred while downloading the file: " + ex.Message);
-            }
+            var blobClient = _containerClient.GetBlobClient(fileName);
+            var memoryStream = new MemoryStream();
+            await blobClient.DownloadToAsync(memoryStream, cancellationToke);
+            memoryStream.Position = 0;
+            var contentType = blobClient.GetProperties().Value.ContentType;
+            return Result<BlobDto>
+                .CreateSuccessful(new(memoryStream, contentType));
         }
 
         public async Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToke)

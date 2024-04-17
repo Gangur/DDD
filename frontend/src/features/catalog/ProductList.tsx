@@ -1,6 +1,6 @@
 import { Grid, List } from "@mui/material";
 import ProductCard from "./ProductCard";
-import { ProductDto } from "../../tools/HttpClient";
+import { ProductDto } from "../../app/api/HttpClient";
 
 interface Props {
     products: ProductDto[];

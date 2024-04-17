@@ -2,26 +2,24 @@
 using Application.Customers.Delete;
 using Application.Customers.Get;
 using Application.Customers.List;
-using Application.Data;
-using Asp.Versioning;
 using Domain.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation;
 using System.ComponentModel.DataAnnotations;
+using WebApi.Abstraction;
 
 namespace WebApi.Controllers
 {
-    [ApiController]
-    [ApiVersion("1.0")]
-    [Route("customer/v{version:apiVersion}")]
-    public class CustomerController : Controller
+    [Route("v{version:apiVersion}/customeres")]
+    public class CustomerController : BaseApiV1Controller
     {
-        private readonly IMediator _mediator;
-        public CustomerController(IMediator mediator) => _mediator = mediator;
+        public CustomerController(IMediator mediator) : base(mediator)
+        {
+        }
 
         [HttpPost("create")]
-        public async Task<Result> CreateAsync(
+        public async Task<ActionResult> CreateAsync(
             [Required] string email,
             [Required] string name,
             CancellationToken cancellationToken)
@@ -30,11 +28,11 @@ namespace WebApi.Controllers
 
             var result = await _mediator.Send(command, cancellationToken);
 
-            return result;
+            return ActionFromResult(result);
         }
 
-        [HttpGet("get")]
-        public async Task<Result<CustomerDto>> GetAsync(
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CustomerDto>> GetAsync(
             [Required] Guid id,
             CancellationToken cancellationToken)
         {
@@ -42,21 +40,21 @@ namespace WebApi.Controllers
 
             var result = await _mediator.Send(query, cancellationToken);
 
-            return result;
+            return ActionFromResult(result);
         }
 
         [HttpGet("list")]
-        public async Task<Result<IReadOnlyCollection<CustomerDto>>> ListAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult<IReadOnlyCollection<CustomerDto>>> ListAsync(CancellationToken cancellationToken)
         {
             var query = new ListCustomersQuery();
 
             var result = await _mediator.Send(query, cancellationToken);
 
-            return result;
+            return ActionFromResult(result);
         }
 
-        [HttpDelete("delete")]
-        public async Task<Result> DeleteAsync(
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> DeleteAsync(
             [Required] Guid id,
             CancellationToken cancellationToken)
         {
@@ -64,7 +62,7 @@ namespace WebApi.Controllers
 
             var result = await _mediator.Send(command, cancellationToken);
 
-            return result;
+            return ActionFromResult(result);
         }
     }
 }
