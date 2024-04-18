@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation;
 using System.ComponentModel.DataAnnotations;
 using WebApi.Abstraction;
-
 namespace WebApi.Controllers
 {
     [Route("v{version:apiVersion}/orders")]

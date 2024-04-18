@@ -58,12 +58,16 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-var fronend = configuration.GetRequiredSection("Cors")["Frontend"];
+var corsConf = configuration.GetRequiredSection("Cors");
+
+ArgumentException.ThrowIfNullOrEmpty(corsConf["FrontendReact"]);
+ArgumentException.ThrowIfNullOrEmpty(corsConf["FrontendAngular"]);
+
 app.UseCors(opt =>
 {
     opt.AllowAnyHeader()
        .AllowAnyMethod()
-       .WithOrigins(fronend ?? throw new ArgumentException("Cors configuration missing Frontend sources!"));
+       .WithOrigins(new [] { corsConf["FrontendReact"]!, corsConf["FrontendAngular"]! });
 });
 
 app.UseHttpsRedirection();
