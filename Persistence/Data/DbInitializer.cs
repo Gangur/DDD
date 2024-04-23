@@ -13,10 +13,22 @@ namespace Persistence.Data
         {
             const string products =
                 $"INSERT INTO [{nameof(Product)}] " +
-                $"([{nameof(Product.Id)}] ,[{nameof(Product.Name)}], [{nameof(Product.PictureName)}] ,[{nameof(Product.Price)}_{nameof(Product.Price.Currency)}] ,[{nameof(Product.Price)}_{nameof(Product.Price.Amount)}] ,[{nameof(Sku)}])" +
-                "VALUES (NEWID(), 'Phone', 'phone.png', 'USD', 100000, '4225-7276-32342')," +
-                       "(NEWID(), 'Book', 'book.png', 'USD', 10000, '5131-2252-36336')," +
-                       "(NEWID(), 'Tablet', 'tablet.png', 'EUR', 70000, '1431-7622-38653');",
+                @$"([{nameof(Product.Id)}], 
+                        [{nameof(Product.Name)}], 
+                        [{nameof(Product.Brand)}], 
+                        [{nameof(Product.PictureName)}], 
+                        [{nameof(Product.Price)}_{nameof(Product.Price.Currency)}],
+                        [{nameof(Product.Price)}_{nameof(Product.Price.Amount)}],  
+                        [{nameof(Sku)}], [{nameof(Product.Category)}]) VALUES" +
+                            "(NEWID(), 'Phone 1', 'Samsung', 'phone.png', 'EUR', 320000, '4225-7276-32342', 1)," +
+                            "(NEWID(), 'Phone 2', 'Xiaomi', 'phone.png', 'USD', 1000000, '4225-7276-32342', 1)," +
+                            "(NEWID(), 'Phone 3', 'Apple', 'phone.png', 'USD', 2000000, '4225-7276-32342', 1)," +
+                            "(NEWID(), 'Book 1', 'Mystery','book.png', 'EUR', 10000, '5131-2252-36336', 3)," +
+                            "(NEWID(), 'Book 2', 'Umbrella','book.png', 'EUR', 10000, '5131-2252-36336', 3)," +
+                            "(NEWID(), 'Book 3', 'Mystery','book.png', 'USD', 10000, '5131-2252-36336', 3)," +
+                            "(NEWID(), 'Tablet 1', 'Xiaomi','tablet.png', 'EUR', 40000, '1431-7622-38653', 2)," +
+                            "(NEWID(), 'Tablet 2', 'Samsung','tablet.png', 'EUR', 73000, '1431-7622-38653', 2)," +
+                            "(NEWID(), 'Tablet 3', 'Apple','tablet.png', 'EUR', 100000, '1431-7622-38653', 2);",
             customers = 
                 $"INSERT INTO [{nameof(Customer)}] " +
                 $"([{nameof(Customer.Id)}], [{nameof(Customer.Email)}], [{nameof(Customer.Name)}])" +

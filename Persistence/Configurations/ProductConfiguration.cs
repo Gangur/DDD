@@ -19,6 +19,10 @@ namespace Persistence.Configurations
                 sku => sku.Value,
                 value => Sku.Create(value)!);
 
+            builder.Property(p => p.Brand).HasConversion(
+                b => b.Name,
+                value => Brand.Create(value)!);
+
             builder.OwnsOne(p => p.Price, priceBuilder =>
             {
                 priceBuilder.Property(m => m.Currency).HasMaxLength(3);

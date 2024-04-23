@@ -3,5 +3,5 @@ using Domain.Data;
 
 namespace Application.Products.Create
 {
-    public record CreateProductCommand(string Name, string PictureName, Money Price, Sku Sku) : IDatabaseCommand<Guid>;
+    public record CreateProductCommand(string Name, Brand Brand, string PictureName, Money Price, Sku Sku, Category Category) : IDatabaseCommand<Guid>;
 }

@@ -11,6 +11,7 @@
 import axios, { AxiosError } from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
 import { toast } from 'react-toastify';
+import { router } from '../router/Routes';
 
 export class Client {
     protected instance: AxiosInstance;
@@ -62,6 +63,7 @@ export class Client {
             }
         }
         if (status === 200) {
+            const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
@@ -108,6 +110,7 @@ export class Client {
             }
         }
         if (status === 200) {
+            const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
@@ -154,6 +157,7 @@ export class Client {
             }
         }
         if (status === 200) {
+            const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
@@ -200,6 +204,7 @@ export class Client {
             }
         }
         if (status === 200) {
+            const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
@@ -246,6 +251,7 @@ export class Client {
             }
         }
         if (status === 200) {
+            const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
@@ -258,7 +264,7 @@ export class Client {
     /**
      * @return Success
      */
-    v1CustomeresCreate(email: string, name: string, cancelToken?: CancelToken): Promise<Result> {
+    v1CustomeresCreate(email: string, name: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/v1/customeres/create?";
         if (email === undefined || email === null)
             throw new Error("The parameter 'email' must be defined and cannot be null.");
@@ -274,7 +280,6 @@ export class Client {
             method: "POST",
             url: url_,
             headers: {
-                "Accept": "text/plain; x-api-version=1.0"
             },
             cancelToken
         };
@@ -290,7 +295,7 @@ export class Client {
         });
     }
 
-    protected processV1CustomeresCreate(response: AxiosResponse): Promise<Result> {
+    protected processV1CustomeresCreate(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -302,22 +307,19 @@ export class Client {
         }
         if (status === 200) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<Result>(result200);
+            return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<Result>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * @return Success
      */
-    v1Customeres(id: string, cancelToken?: CancelToken): Promise<CustomerDtoResult> {
+    v1Customeres(id: string, cancelToken?: CancelToken): Promise<CustomerDto> {
         let url_ = this.baseUrl + "/v1/customeres/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -344,7 +346,7 @@ export class Client {
         });
     }
 
-    protected processV1Customeres(response: AxiosResponse): Promise<CustomerDtoResult> {
+    protected processV1Customeres(response: AxiosResponse): Promise<CustomerDto> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -359,19 +361,19 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<CustomerDtoResult>(result200);
+            return Promise.resolve<CustomerDto>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CustomerDtoResult>(null as any);
+        return Promise.resolve<CustomerDto>(null as any);
     }
 
     /**
      * @return Success
      */
-    v1CustomeresList(cancelToken?: CancelToken): Promise<CustomerDtoIReadOnlyCollectionResult> {
+    v1CustomeresList(cancelToken?: CancelToken): Promise<CustomerDto[]> {
         let url_ = this.baseUrl + "/v1/customeres/list";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -395,7 +397,7 @@ export class Client {
         });
     }
 
-    protected processV1CustomeresList(response: AxiosResponse): Promise<CustomerDtoIReadOnlyCollectionResult> {
+    protected processV1CustomeresList(response: AxiosResponse): Promise<CustomerDto[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -410,19 +412,19 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<CustomerDtoIReadOnlyCollectionResult>(result200);
+            return Promise.resolve<CustomerDto[]>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CustomerDtoIReadOnlyCollectionResult>(null as any);
+        return Promise.resolve<CustomerDto[]>(null as any);
     }
 
     /**
      * @return Success
      */
-    v1CustomeresDelete(id: string, cancelToken?: CancelToken): Promise<Result> {
+    v1CustomeresDelete(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/v1/customeres/delete/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -433,7 +435,6 @@ export class Client {
             method: "DELETE",
             url: url_,
             headers: {
-                "Accept": "text/plain; x-api-version=1.0"
             },
             cancelToken
         };
@@ -449,7 +450,7 @@ export class Client {
         });
     }
 
-    protected processV1CustomeresDelete(response: AxiosResponse): Promise<Result> {
+    protected processV1CustomeresDelete(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -461,23 +462,20 @@ export class Client {
         }
         if (status === 200) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<Result>(result200);
+            return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<Result>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return Success
      */
-    v1FilesUpload(body: Body | undefined, cancelToken?: CancelToken): Promise<Result> {
+    v1FilesUpload(body: Body | undefined, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/v1/files/upload";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -489,7 +487,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "multipart/form-data; x-api-version=1.0",
-                "Accept": "text/plain; x-api-version=1.0"
             },
             cancelToken
         };
@@ -505,7 +502,7 @@ export class Client {
         });
     }
 
-    protected processV1FilesUpload(response: AxiosResponse): Promise<Result> {
+    protected processV1FilesUpload(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -517,16 +514,13 @@ export class Client {
         }
         if (status === 200) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<Result>(result200);
+            return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<Result>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -570,6 +564,7 @@ export class Client {
             }
         }
         if (status === 200) {
+            const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
@@ -582,7 +577,7 @@ export class Client {
     /**
      * @return Success
      */
-    v1OrdersCreate(customerId: string, cancelToken?: CancelToken): Promise<Result> {
+    v1OrdersCreate(customerId: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/v1/orders/create?";
         if (customerId === undefined || customerId === null)
             throw new Error("The parameter 'customerId' must be defined and cannot be null.");
@@ -594,7 +589,6 @@ export class Client {
             method: "POST",
             url: url_,
             headers: {
-                "Accept": "text/plain; x-api-version=1.0"
             },
             cancelToken
         };
@@ -610,7 +604,7 @@ export class Client {
         });
     }
 
-    protected processV1OrdersCreate(response: AxiosResponse): Promise<Result> {
+    protected processV1OrdersCreate(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -622,22 +616,19 @@ export class Client {
         }
         if (status === 200) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<Result>(result200);
+            return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<Result>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * @return Success
      */
-    v1OrdersRemoveLineItem(orderId: string, lineItemId: string, cancelToken?: CancelToken): Promise<Result> {
+    v1OrdersRemoveLineItem(orderId: string, lineItemId: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/v1/orders/remove-line-item?";
         if (orderId === undefined || orderId === null)
             throw new Error("The parameter 'orderId' must be defined and cannot be null.");
@@ -653,7 +644,6 @@ export class Client {
             method: "DELETE",
             url: url_,
             headers: {
-                "Accept": "text/plain; x-api-version=1.0"
             },
             cancelToken
         };
@@ -669,7 +659,7 @@ export class Client {
         });
     }
 
-    protected processV1OrdersRemoveLineItem(response: AxiosResponse): Promise<Result> {
+    protected processV1OrdersRemoveLineItem(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -681,22 +671,19 @@ export class Client {
         }
         if (status === 200) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<Result>(result200);
+            return Promise.resolve<void>(null as any);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<Result>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * @return Success
      */
-    v1Orders(id: string, cancelToken?: CancelToken): Promise<OrderDtoResult> {
+    v1Orders(id: string, cancelToken?: CancelToken): Promise<OrderDto> {
         let url_ = this.baseUrl + "/v1/orders/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -723,7 +710,7 @@ export class Client {
         });
     }
 
-    protected processV1Orders(response: AxiosResponse): Promise<OrderDtoResult> {
+    protected processV1Orders(response: AxiosResponse): Promise<OrderDto> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -738,19 +725,19 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<OrderDtoResult>(result200);
+            return Promise.resolve<OrderDto>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<OrderDtoResult>(null as any);
+        return Promise.resolve<OrderDto>(null as any);
     }
 
     /**
      * @return Success
      */
-    v1OrdersList(cancelToken?: CancelToken): Promise<OrderDtoIReadOnlyCollectionResult> {
+    v1OrdersList(cancelToken?: CancelToken): Promise<OrderDto[]> {
         let url_ = this.baseUrl + "/v1/orders/list";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -774,7 +761,7 @@ export class Client {
         });
     }
 
-    protected processV1OrdersList(response: AxiosResponse): Promise<OrderDtoIReadOnlyCollectionResult> {
+    protected processV1OrdersList(response: AxiosResponse): Promise<OrderDto[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -789,24 +776,26 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<OrderDtoIReadOnlyCollectionResult>(result200);
+            return Promise.resolve<OrderDto[]>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<OrderDtoIReadOnlyCollectionResult>(null as any);
+        return Promise.resolve<OrderDto[]>(null as any);
     }
 
     /**
      * @param name (optional) 
      * @param priceCurrency (optional) 
+     * @param brandName (optional) 
      * @param priceAmount (optional) 
      * @param pictureName (optional) 
      * @param sku (optional) 
+     * @param category (optional) 
      * @return Success
      */
-    v1ProductsCreate(name: string | undefined, priceCurrency: string | undefined, priceAmount: number | undefined, pictureName: string | undefined, sku: string | undefined, cancelToken?: CancelToken): Promise<GuidResult> {
+    v1ProductsCreate(name: string | undefined, priceCurrency: string | undefined, brandName: string | undefined, priceAmount: number | undefined, pictureName: string | undefined, sku: string | undefined, category: Category | undefined, cancelToken?: CancelToken): Promise<string> {
         let url_ = this.baseUrl + "/v1/products/create?";
         if (name === null)
             throw new Error("The parameter 'name' cannot be null.");
@@ -816,6 +805,10 @@ export class Client {
             throw new Error("The parameter 'priceCurrency' cannot be null.");
         else if (priceCurrency !== undefined)
             url_ += "priceCurrency=" + encodeURIComponent("" + priceCurrency) + "&";
+        if (brandName === null)
+            throw new Error("The parameter 'brandName' cannot be null.");
+        else if (brandName !== undefined)
+            url_ += "brandName=" + encodeURIComponent("" + brandName) + "&";
         if (priceAmount === null)
             throw new Error("The parameter 'priceAmount' cannot be null.");
         else if (priceAmount !== undefined)
@@ -828,6 +821,10 @@ export class Client {
             throw new Error("The parameter 'sku' cannot be null.");
         else if (sku !== undefined)
             url_ += "sku=" + encodeURIComponent("" + sku) + "&";
+        if (category === null)
+            throw new Error("The parameter 'category' cannot be null.");
+        else if (category !== undefined)
+            url_ += "category=" + encodeURIComponent("" + category) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -850,7 +847,7 @@ export class Client {
         });
     }
 
-    protected processV1ProductsCreate(response: AxiosResponse): Promise<GuidResult> {
+    protected processV1ProductsCreate(response: AxiosResponse): Promise<string> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -865,25 +862,23 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<GuidResult>(result200);
+            return Promise.resolve<string>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<GuidResult>(null as any);
+        return Promise.resolve<string>(null as any);
     }
 
     /**
-     * @param id (optional) 
      * @return Success
      */
-    v1ProductsGet(id: string | undefined, cancelToken?: CancelToken): Promise<ProductDtoResult> {
-        let url_ = this.baseUrl + "/v1/products/get?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+    v1Products(id: string, cancelToken?: CancelToken): Promise<ProductDto> {
+        let url_ = this.baseUrl + "/v1/products/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -902,11 +897,11 @@ export class Client {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processV1ProductsGet(_response);
+            return this.processV1Products(_response);
         });
     }
 
-    protected processV1ProductsGet(response: AxiosResponse): Promise<ProductDtoResult> {
+    protected processV1Products(response: AxiosResponse): Promise<ProductDto> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -921,19 +916,19 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<ProductDtoResult>(result200);
+            return Promise.resolve<ProductDto>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ProductDtoResult>(null as any);
+        return Promise.resolve<ProductDto>(null as any);
     }
 
     /**
      * @return Success
      */
-    v1ProductsList(cancelToken?: CancelToken): Promise<ProductDtoIReadOnlyCollectionResult> {
+    v1ProductsList(cancelToken?: CancelToken): Promise<ProductDto[]> {
         let url_ = this.baseUrl + "/v1/products/list";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -957,7 +952,7 @@ export class Client {
         });
     }
 
-    protected processV1ProductsList(response: AxiosResponse): Promise<ProductDtoIReadOnlyCollectionResult> {
+    protected processV1ProductsList(response: AxiosResponse): Promise<ProductDto[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -972,14 +967,20 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<ProductDtoIReadOnlyCollectionResult>(result200);
+            return Promise.resolve<ProductDto[]>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ProductDtoIReadOnlyCollectionResult>(null as any);
+        return Promise.resolve<ProductDto[]>(null as any);
     }
+}
+
+export enum Category {
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
 }
 
 export interface CustomerDto {
@@ -988,65 +989,20 @@ export interface CustomerDto {
     name?: string | undefined;
 }
 
-export interface CustomerDtoIReadOnlyCollectionResult {
-    success?: boolean;
-    errorMessage?: string | undefined;
-    value?: CustomerDto[] | undefined;
-}
-
-export interface CustomerDtoResult {
-    success?: boolean;
-    errorMessage?: string | undefined;
-    value?: CustomerDto;
-}
-
-export interface GuidResult {
-    success?: boolean;
-    errorMessage?: string | undefined;
-    value?: string;
-}
-
 export interface OrderDto {
     id?: string;
     customerId?: string;
 }
 
-export interface OrderDtoIReadOnlyCollectionResult {
-    success?: boolean;
-    errorMessage?: string | undefined;
-    value?: OrderDto[] | undefined;
-}
-
-export interface OrderDtoResult {
-    success?: boolean;
-    errorMessage?: string | undefined;
-    value?: OrderDto;
-}
-
 export interface ProductDto {
     id?: string;
     name?: string | undefined;
+    brand?: string | undefined;
     pictureName?: string | undefined;
     priceCurrency?: string | undefined;
     priceAmount?: number;
     sku?: string | undefined;
-}
-
-export interface ProductDtoIReadOnlyCollectionResult {
-    success?: boolean;
-    errorMessage?: string | undefined;
-    value?: ProductDto[] | undefined;
-}
-
-export interface ProductDtoResult {
-    success?: boolean;
-    errorMessage?: string | undefined;
-    value?: ProductDto;
-}
-
-export interface Result {
-    success?: boolean;
-    errorMessage?: string | undefined;
+    category?: string | undefined;
 }
 
 export interface Body {
@@ -1059,31 +1015,6 @@ export interface FileParameter {
     data: any;
     fileName: string;
 }
-
-export class ApiException extends Error {
-    override message: string;
-    status: number;
-    response: string;
-    headers: { [key: string]: any; };
-    result: any;
-
-    constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
-        super();
-
-        this.message = message;
-        this.status = status;
-        this.response = response;
-        this.headers = headers;
-        this.result = result;
-    }
-
-    protected isApiException = true;
-
-    static isApiException(obj: any): obj is ApiException {
-        return obj.isApiException === true;
-    }
-}
-
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
     var data = JSON.parse(response);
     if (result !== null && result !== undefined)
@@ -1091,13 +1022,19 @@ function throwException(message: string, status: number, response: string, heade
     else
         switch (status) {
             case 400:
-                toast.error(data.title)
+                if (data.errors) {
+                    const modelStateErrors: string[] = [];
+                    for (const key in data.errors) {
+                        modelStateErrors.push(data.errors[key])
+                    }
+                    throw modelStateErrors.flat();
+                }
                 break;
             case 401:
                 toast.error(data.title)
                 break;
             case 500:
-                toast.error(data.title)
+                router.navigate('/server-error', { state: { error: data } })
                 break;
             default:
                 break;

@@ -5,6 +5,9 @@ import { ProductDto } from "../../app/api/http-client";
 import PictureUrl from "../../tools/PicturesUrlFactory";
 import DisplayPrice from "../../tools/PriceFactory";
 import agent from "../../app/api/agent";
+import NotFound from "../../app/errors/NotFound";
+import sleep from "../../tools/sleep";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 
 export default function ProductDetailes() {
     const { id } = useParams<{ id: string }>();
@@ -13,14 +16,10 @@ export default function ProductDetailes() {
 
     useEffect(() => {
         agent
-            .v1ProductsGet(id)
+            .v1Products(id ?? "")
             .then(data => {
-                if (data.success) {
-                    setProduct(data.value!)
-                }
-                else {
-                    throw Error(data.errorMessage);
-                }
+                //await sleep()
+                setProduct(data)
             })
             .catch(error => console.log(error))
             .finally(() => setLoading(false))
@@ -28,18 +27,11 @@ export default function ProductDetailes() {
 
     if (loading)
     {
-        return (<Grid container spacing={5}>
-                    <Grid item xs={4}></Grid>
-                    <Grid item xs={4}>
-                        <Skeleton />
-                        <Skeleton animation="wave" />
-                        <Skeleton animation={false} />
-                    </Grid>
-                </Grid>)
+        return (<LoadingComponent />)
     }
 
     if (!product) {
-        return <h3>Product not found</h3>
+        return <NotFound />
     }
 
     return (
@@ -64,15 +56,15 @@ export default function ProductDetailes() {
                             </TableRow>
                             <TableRow>
                                 <TableCell>Type</TableCell>
-                                <TableCell></TableCell>
+                                <TableCell>{product.category}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Brand</TableCell>
-                                <TableCell></TableCell>
+                                <TableCell>{product.brand}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Quantity in stock</TableCell>
-                                <TableCell></TableCell>
+                                <TableCell>{product.sku}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

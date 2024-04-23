@@ -1,8 +1,8 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { ProductDto } from "../../app/api/HttpClient";
 import PictureUrl from "../../tools/PicturesUrlFactory";
 import DisplayPrice from "../../tools/PriceFactory";
+import { ProductDto } from "../../app/api/http-client";
 
 
 interface Props {

@@ -1,5 +1,6 @@
 ﻿using Application.Abstraction;
 using Application.Data;
+using Domain.Data;
 using Domain.Products;
 using IntegrationEvents;
 
@@ -25,7 +26,12 @@ namespace Application.Products.Create
                 Result<Guid>.CreateValidationProblem($"The picture {request.PictureName} has not been found!");
             }
 
-            var product = Product.Create(request.Name, request.PictureName, request.Price, request.Sku);
+            var product = Product.Create(request.Name,
+                request.Brand, 
+                request.PictureName, 
+                request.Price, 
+                request.Sku, 
+                request.Category);
 
             await _productRepository.AddAsync(product, cancellationToken);
 

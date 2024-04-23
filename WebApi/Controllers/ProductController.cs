@@ -20,9 +20,11 @@ namespace WebApi.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<Guid>> CreateAsync(string name,
             string priceCurrency,
+            string brandName,
             decimal priceAmount,
             string pictureName,
             string sku,
+            Category category,
             CancellationToken cancellationToken)
         {
             var price = Money.Create(priceCurrency, priceAmount);
@@ -31,19 +33,25 @@ namespace WebApi.Controllers
 
             var skuObj = Sku.Create(sku);
             if (skuObj is null)
-                return ValidationProblem("Sku data is invalid!");
+                return ValidationProblem($"{nameof(Sku)} data is invalid!");
+
+            var brand = Brand.Create(brandName);
+            if (brand is null)
+                return ValidationProblem($"{nameof(Brand)} data is invalid!");
 
             var command = new CreateProductCommand(name,
+                brand,
                 pictureName,
                 price,
-                skuObj);
+                skuObj,
+                category);
 
             var result = await _mediator.Send(command, cancellationToken);
 
             return ActionFromResult(result);
         }
 
-        [HttpGet("get")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetAsync(Guid id, CancellationToken cancellationToken)
         {
             var query = new GetProductQuery(new ProductId(id));
