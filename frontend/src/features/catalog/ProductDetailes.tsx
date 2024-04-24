@@ -2,7 +2,7 @@ import { Divider, Grid, Skeleton, Table, TableBody, TableCell, TableContainer, T
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ProductDto } from "../../app/api/http-client";
-import PictureUrl from "../../tools/PicturesUrlFactory";
+import PictureUrl from "../../tools/pictures-url-factory";
 import DisplayPrice from "../../tools/PriceFactory";
 import agent from "../../app/api/agent";
 import NotFound from "../../app/errors/NotFound";

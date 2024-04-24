@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import { useAppDispatch } from '../store/configureStore';
 
 function App() {
+    const dispatch = useAppDispatch();
+
     const [darkMode, setDarkMode] = useState(true);
     const paletteType = darkMode ? 'dark' : 'light'
     const theme = createTheme({
