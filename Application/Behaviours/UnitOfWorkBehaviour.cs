@@ -18,17 +18,18 @@ namespace Application.Behaviours
             RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
         {
-            if (request is not IDatabaseCommand || 
-                request is not IDatabaseCommand<TResponse>)
+            var requestType = request.GetType();
+            if (requestType.IsSubclassOf(typeof(IDatabaseCommand)) ||
+                requestType.IsSubclassOf(typeof(IDatabaseCommand<>)))
             {
-                await next();
+                var result = await next();
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                return result;
             }
 
-            var result = await next();
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return result;
+            return await next();
         }
     }
 }

@@ -5,8 +5,11 @@ using Application.Customers.List;
 using Domain.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json.Linq;
 using Presentation;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using WebApi.Abstraction;
 
 namespace WebApi.Controllers
@@ -19,14 +22,20 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult> CreateAsync(
+        public async Task<ActionResult<Guid>> CreateAsync(
             [Required] string email,
             [Required] string name,
             CancellationToken cancellationToken)
         {
             var command = new CreateCustomerCommand(email, name);
-
             var result = await _mediator.Send(command, cancellationToken);
+
+            Response.Cookies.Append("customer-id", 
+                result.Value.Value.ToString(), 
+                new CookieOptions()
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(14)
+            });
 
             return ActionFromResult(result);
         }

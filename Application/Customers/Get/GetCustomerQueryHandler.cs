@@ -16,7 +16,7 @@ namespace Application.Customers.Get
 
         public async Task<Result<CustomerDto>> Handle(GetCustomerQuery request, CancellationToken cancellationToken)
         {
-            var customer = await _customerRepository.FindAsync(request.CustomerId, cancellationToken);
+            var customer = await _customerRepository.TakeAsync(request.CustomerId, cancellationToken);
 
             if (customer == null)
             {

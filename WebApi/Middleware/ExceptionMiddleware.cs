@@ -32,7 +32,7 @@ namespace WebApi.Middleware
                 var response = new ProblemDetails
                 {
                     Status = 500,
-                    Detail = _env.IsDevelopment() ? ex.StackTrace?.ToString() : null,
+                    Detail = _env.IsDevelopment() ? ex.InnerException?.ToString() : null,
                     Title = ex.Message
                 };
 

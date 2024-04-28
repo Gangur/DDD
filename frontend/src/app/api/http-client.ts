@@ -683,6 +683,61 @@ export class Client {
     /**
      * @return Success
      */
+    v1OrdersAddLineItem(orderId: string, productId: string, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/v1/orders/add-line-item?";
+        if (orderId === undefined || orderId === null)
+            throw new Error("The parameter 'orderId' must be defined and cannot be null.");
+        else
+            url_ += "orderId=" + encodeURIComponent("" + orderId) + "&";
+        if (productId === undefined || productId === null)
+            throw new Error("The parameter 'productId' must be defined and cannot be null.");
+        else
+            url_ += "productId=" + encodeURIComponent("" + productId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1OrdersAddLineItem(_response);
+        });
+    }
+
+    protected processV1OrdersAddLineItem(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
     v1Orders(id: string, cancelToken?: CancelToken): Promise<OrderDto> {
         let url_ = this.baseUrl + "/v1/orders/{id}";
         if (id === undefined || id === null)
@@ -711,6 +766,60 @@ export class Client {
     }
 
     protected processV1Orders(response: AxiosResponse): Promise<OrderDto> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OrderDto>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<OrderDto>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    v1OrdersByCustomer(customerId: string, cancelToken?: CancelToken): Promise<OrderDto> {
+        let url_ = this.baseUrl + "/v1/orders/by-customer/{customerId}";
+        if (customerId === undefined || customerId === null)
+            throw new Error("The parameter 'customerId' must be defined.");
+        url_ = url_.replace("{customerId}", encodeURIComponent("" + customerId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain; x-api-version=1.0"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1OrdersByCustomer(_response);
+        });
+    }
+
+    protected processV1OrdersByCustomer(response: AxiosResponse): Promise<OrderDto> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -989,9 +1098,15 @@ export interface CustomerDto {
     name?: string | undefined;
 }
 
+export interface LineItemDto {
+    productId?: string;
+    quantity?: number;
+}
+
 export interface OrderDto {
     id?: string;
     customerId?: string;
+    lineItems?: LineItemDto[] | undefined;
 }
 
 export interface ProductDto {
@@ -1015,6 +1130,7 @@ export interface FileParameter {
     data: any;
     fileName: string;
 }
+
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
     var data = JSON.parse(response);
     if (result !== null && result !== undefined)

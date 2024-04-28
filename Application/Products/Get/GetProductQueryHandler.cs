@@ -16,7 +16,7 @@ namespace Application.Products.Get
 
         public async Task<Result<ProductDto>> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.FindAsync(request.ProductId, cancellationToken);
+            var product = await _productRepository.TakeAsync(request.ProductId, cancellationToken);
 
             if (product == null)
             {

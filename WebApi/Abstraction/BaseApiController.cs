@@ -1,5 +1,6 @@
 ﻿using Application.Data;
 using Application.Enums;
+using Domain.Abstraction;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,12 @@ namespace WebApi.Abstraction
         protected ActionResult ActionFromResult<T>(Result<T> result)
         {
             if (result.Success)
-                return Ok(result.Value);
+            {
+                if (result.Value is IEntityId)
+                    return Ok(((IEntityId)result.Value).Value);
+                else
+                    return Ok(result.Value);
+            }
             else
                 return HandelErrorResult(result.Type, result.ErrorMessage);
         }

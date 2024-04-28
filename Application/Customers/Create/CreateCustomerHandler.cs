@@ -3,7 +3,7 @@ using Application.Data;
 using Domain.Customers;
 namespace Application.Customers.Create
 {
-    internal sealed class CreateCustomerHandler : ICommandHandler<CreateCustomerCommand>
+    internal sealed class CreateCustomerHandler : ICommandHandler<CreateCustomerCommand, CustomerId>
     {
         private readonly ICustomerRepository _customerRepository;
 
@@ -12,13 +12,13 @@ namespace Application.Customers.Create
             _customerRepository = customerRepository;
         }
 
-        public async Task<Result> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CustomerId>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             var customer = Customer.Create(request.Email, request.Name);
 
             await _customerRepository.AddAsync(customer, cancellationToken);
 
-            return Result.CreateSuccessful();
+            return Result<CustomerId>.CreateSuccessful(customer.Id);
         }
     }
 }

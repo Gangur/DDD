@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Basket } from "../../app/models/basket";
+import { OrderDto } from "../../app/api/http-client";
 
 interface BasketState {
-    basket: Basket | undefined
+    basket: OrderDto | undefined
 }
 
 const initialState: BasketState = {
@@ -18,14 +18,14 @@ export const basketSlice = createSlice({
         },
         removeItem: (state, action) => {
             const { productId, quantity } = action.payload;
-            const itemIndex = state.basket?.items.findIndex(i => i.productId === productId)
+            const itemIndex = state.basket?.lineItems!.findIndex(i => i.productId === productId)
             if (itemIndex === -1 || itemIndex == undefined)
                 return;
 
-            state.basket!.items[itemIndex].quantity -= quantity;
+            state.basket!.lineItems![itemIndex].quantity! -= quantity;
 
-            if (state.basket!.items[itemIndex].quantity <= 0)
-                state.basket?.items.splice(itemIndex, 1);
+            if (state.basket!.lineItems![itemIndex].quantity! <= 0)
+                state.basket?.lineItems!.splice(itemIndex, 1);
                 
         }
     }

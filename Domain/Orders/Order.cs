@@ -15,6 +15,10 @@ namespace Domain.Orders
 
         public HashSet<LineItem> LineItems { get => _lineItems; }
 
+        public DateTime? Paid { get; private set; }
+
+        public DateTime? Completed { get; private set; }
+
         public static Order Create(Customer customer)
         {
             var order = new Order()
@@ -26,6 +30,11 @@ namespace Domain.Orders
             order.Raise(new OrderCreatedDomainEvent(order.Id));
 
             return order;
+        }
+
+        public LineItem? GetLineItemByProductId(ProductId productId)
+        {
+            return LineItems.FirstOrDefault(li => li.ProductId == productId);
         }
 
         public void AddLineItem(Product pruduct)

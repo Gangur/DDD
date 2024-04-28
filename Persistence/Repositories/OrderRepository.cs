@@ -1,8 +1,8 @@
 ﻿using Domain.Customers;
 using Domain.LineItems;
 using Domain.Orders;
+using Domain.Products;
 using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace Persistence.Repositories
 {
@@ -18,12 +18,23 @@ namespace Persistence.Repositories
         public async Task AddAsync(Order entity, CancellationToken cancellationToken)
             => await _context.AddAsync(entity, cancellationToken);
 
-        public async Task<Order?> FindAsync(OrderId entityId, CancellationToken cancellationToken)
-            => await _context.FindAsync<Order>(entityId, cancellationToken);
+        public ValueTask<Order?> FindAsync(OrderId entityId, CancellationToken cancellationToken)
+            => _context.FindAsync<Order>(entityId, cancellationToken);
 
-        public async Task<Order?> FindWithIncludedLineItemAsync(OrderId orderId, LineItemId listItemId, CancellationToken cancellationToken)
-            => await _context.GetAll<Order>()
+        public Task<Order?> TakeByCustomerWithLineItemsAsync(CustomerId customerId, CancellationToken cancellationToken)
+            => _context.GetQuery<Order>()
+                .Where(o => o.Paid == default && o.CustomerId == customerId)
+                .Include(o => o.LineItems)
+                .FirstOrDefaultAsync(cancellationToken);
+
+        public Task<Order?> FindWithIncludedLineItemAsync(OrderId orderId, LineItemId listItemId, CancellationToken cancellationToken)
+            => _context.GetSet<Order>()
                 .Include(o => o.LineItems.Where(li => li.Id == listItemId))
+                .FirstOrDefaultAsync(cancellationToken);
+
+        public Task<Order?> FindWithIncludedLineItemAsync(OrderId orderId, ProductId productId, CancellationToken cancellationToken)
+            => _context.GetSet<Order>()
+                .Include(o => o.LineItems.Where(li => li.ProductId == productId))
                 .FirstOrDefaultAsync(cancellationToken);
 
         public async Task<bool> HasOneLineItemAsync(OrderId orderId, CancellationToken cancellationToken)
@@ -33,10 +44,17 @@ namespace Persistence.Repositories
             return amount == 1;
         }
 
-        public async Task<ICollection<Order>> ListAsync(CancellationToken cancellationToken)
-            => await _context.GetQuery<Order>().ToListAsync(cancellationToken);
+        public Task<List<Order>> ListAsync(CancellationToken cancellationToken)
+            => _context.GetQuery<Order>()
+            .Include(o => o.LineItems)
+            .ToListAsync(cancellationToken);
 
         public void Remove(Order entity)
             => _context.Remove(entity);
+
+        public Task<Order?> TakeAsync(OrderId entityId, CancellationToken cancellationToken)
+            => _context.GetQuery<Order>()
+                .Include(o => o.LineItems)
+                .FirstOrDefaultAsync(o => o.Id == entityId, cancellationToken);
     }
 }

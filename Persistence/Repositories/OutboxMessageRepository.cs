@@ -19,7 +19,7 @@ namespace Persistence.Repositories
         }
 
         public Task<List<OutboxMessage>> ResiveUnprocessedMessagesAsync(int take, string type, CancellationToken cancellationToken)
-            => _context.GetAll<OutboxMessage>()
+            => _context.GetSet<OutboxMessage>()
                 .Where(m => m.ProcessedOnUtc == null)
                 .Where(m => m.Type == type)
                 .Take(take)

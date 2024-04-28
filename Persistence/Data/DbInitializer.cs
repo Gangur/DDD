@@ -37,14 +37,28 @@ namespace Persistence.Data
                        "(NEWID(), 'JohnBrown@hotmail.com', 'John Brown');",
             orders = 
                 $"INSERT INTO [{nameof(Order)}] " +
-                $"([{nameof(Order.Id)}] ,[{nameof(Order.CustomerId)}]) " +
-                $"SELECT [Id] = NEWID(), [{nameof(Order.CustomerId)}] = c.Id " +
+                $"([{nameof(Order.Id)}]," +
+                $"[{nameof(Order.CustomerId)}], " +
+                $"[{nameof(Order.Paid)}]) " +
+                $"SELECT [Id] = NEWID(), " +
+                $"[{nameof(Order.CustomerId)}] = c.Id, " +
+                $"[{nameof(Order.Paid)}] = GETDATE()" +
                 $"FROM [{nameof(Product)}] p " +
                     $"CROSS JOIN [{nameof(Customer)}] c;",
             lineItems = 
                 $"INSERT INTO [{nameof(LineItem)}] " +
-                $"([{nameof(LineItem.Id)}] ,[{nameof(LineItem.OrderId)}] ,[{nameof(LineItem.ProductId)}] ,[{nameof(LineItem.Price)}_{nameof(LineItem.Price.Currency)}], [{nameof(LineItem.Price)}_{nameof(LineItem.Price.Amount)}]) " +
-                $"SELECT  [Id] = NEWID(), [{nameof(LineItem.OrderId)}] = o.Id, [{nameof(LineItem.ProductId)}] = p.Id, [{nameof(LineItem.Price)}_{nameof(LineItem.Price.Currency)}] = p.Price_Currency, [{nameof(LineItem.Price)}_{nameof(LineItem.Price.Amount)}] = p.Price_Amount " +
+                $"([{nameof(LineItem.Id)}]," +
+                $"[{nameof(LineItem.OrderId)}]," +
+                $"[{nameof(LineItem.ProductId)}]," +
+                $"[{nameof(LineItem.Price)}_{nameof(LineItem.Price.Currency)}]," +
+                $"[{nameof(LineItem.Price)}_{nameof(LineItem.Price.Amount)}]," +
+                $"[{nameof(LineItem.Quantity)}])" +
+                $"SELECT  [Id] = NEWID(), " +
+                $"[{nameof(LineItem.OrderId)}] = o.Id, " +
+                $"[{nameof(LineItem.ProductId)}] = p.Id, " +
+                $"[{nameof(LineItem.Price)}_{nameof(LineItem.Price.Currency)}] = p.Price_Currency, " +
+                $"[{nameof(LineItem.Price)}_{nameof(LineItem.Price.Amount)}] = p.Price_Amount, " +
+                $"[{nameof(LineItem.Quantity)}] = 1" +
                 $"FROM [{nameof(Order)}] o " +
                     $"CROSS JOIN [{nameof(Product)}] p;";
 

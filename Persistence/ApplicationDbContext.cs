@@ -1,10 +1,9 @@
-﻿using Domain.Abstraction;
+﻿using Application.Abstraction;
+using Domain.Abstraction;
+using Domain.OutboxMessage;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Application.Abstraction;
-using Domain.OutboxMessage;
 using Newtonsoft.Json;
-using Persistence.Data;
 
 namespace Persistence
 {
@@ -12,7 +11,7 @@ namespace Persistence
     {
         private IPublisher _publisher;
 
-        public DbSet<T> GetAll<T>() where T : class => Set<T>();
+        public DbSet<T> GetSet<T>() where T : class => Set<T>();
         public IQueryable<T> GetQuery<T>() where T : class => Set<T>().AsNoTracking();
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> optionsBuilder, IPublisher publisher) : base(optionsBuilder)
@@ -55,7 +54,7 @@ namespace Persistence
                     })
                 }).ToList();
 
-            await GetAll<OutboxMessage>().AddRangeAsync(events, cancellationToken);
+            await GetSet<OutboxMessage>().AddRangeAsync(events, cancellationToken);
 
             var result = await base.SaveChangesAsync(cancellationToken);
 

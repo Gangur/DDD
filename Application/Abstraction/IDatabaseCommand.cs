@@ -1,7 +1,4 @@
-﻿using Application.Data;
-using MediatR;
-
-namespace Application.Abstraction
+﻿namespace Application.Abstraction
 {
     public interface IDatabaseCommand : ICommand
     {

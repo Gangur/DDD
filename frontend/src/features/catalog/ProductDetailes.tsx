@@ -1,13 +1,12 @@
-import { Divider, Grid, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ProductDto } from "../../app/api/http-client";
 import PictureUrl from "../../tools/pictures-url-factory";
-import DisplayPrice from "../../tools/PriceFactory";
 import agent from "../../app/api/agent";
 import NotFound from "../../app/errors/NotFound";
-import sleep from "../../tools/sleep";
 import LoadingComponent from "../../app/layout/LoadingComponent";
+import DisplayPrice from "../../tools/price-factory";
 
 export default function ProductDetailes() {
     const { id } = useParams<{ id: string }>();
@@ -18,7 +17,6 @@ export default function ProductDetailes() {
         agent
             .v1Products(id ?? "")
             .then(data => {
-                //await sleep()
                 setProduct(data)
             })
             .catch(error => console.log(error))

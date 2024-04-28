@@ -21,6 +21,8 @@ namespace Persistence.Configurations
                 .HasForeignKey(li => li.ProductId)
                 .IsRequired();
 
+            builder.HasIndex(li => new { li.ProductId, li.OrderId }).IsUnique();
+
             builder.OwnsOne(p => p.Price, priceBuilder =>
             {
                 priceBuilder.Property(m => m.Currency).HasMaxLength(3);

@@ -18,7 +18,8 @@ namespace Persistence
             services.AddDbContext<ApplicationDbContext>(
                 (sp, options) =>
                 {
-                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                    options
+                        .UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
                 });
 
             services.AddScoped<IUnitOfWork>(x => x.GetRequiredService<ApplicationDbContext>());

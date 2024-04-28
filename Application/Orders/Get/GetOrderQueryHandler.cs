@@ -16,14 +16,26 @@ namespace Application.Orders.Get
 
         public async Task<Result<OrderDto>> Handle(GetOrderQuery request, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.FindAsync(request.OrderId, cancellationToken);
+            Order? order = default;
+            if (request.OrderId != default)
+            {
+                order = await _orderRepository.TakeAsync(request.OrderId!, cancellationToken);
+            }
+            else if (request.CustomerId != default)
+            {
+                order = await _orderRepository
+                    .TakeByCustomerWithLineItemsAsync(request.CustomerId!, cancellationToken);
+            }
 
             if (order == null)
             {
                 return Result<OrderDto>.CreateNotFount("The order has not been found!");
             }
 
-            return Result<OrderDto>.CreateSuccessful(new OrderDto(order.Id.Value, order.CustomerId.Value));
+            return Result<OrderDto>.CreateSuccessful(new OrderDto(
+                order.Id.Value, 
+                order.CustomerId.Value,
+                order.LineItems.Select(li => new LineItemDto(li.ProductId.Value, li.Quantity)).ToList()));
         }
     }
 }

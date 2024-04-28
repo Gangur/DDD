@@ -1,6 +1,6 @@
 ﻿namespace Domain.OutboxMessage
 {
-    public sealed class OutboxMessage
+    public class OutboxMessage
     {
         public Guid Id { get; set; }
 

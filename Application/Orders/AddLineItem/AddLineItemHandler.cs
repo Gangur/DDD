@@ -19,21 +19,30 @@ namespace Application.Orders.AddLineItem
 
         public async Task<Result> Handle(AddLineItemCommand request, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.FindAsync(request.OrderId, cancellationToken);
+            var order = await _orderRepository.FindWithIncludedLineItemAsync(request.OrderId, request.ProductId, cancellationToken);
 
             if (order is null)
             {
                 return Result.CreateValidationProblem("The order has not been found!");
             }
 
-            var product = await _productRepository.FindAsync(request.ProductId, cancellationToken);
+            var lineItem = order.GetLineItemByProductId(request.ProductId);
 
-            if (product is null)
+            if (lineItem == default)
             {
-                return Result.CreateValidationProblem("The product has not been found!");
-            }
+                var product = await _productRepository.FindAsync(request.ProductId, cancellationToken);
 
-            order.AddLineItem(product);
+                if (product is null)
+                {
+                    return Result.CreateValidationProblem("The product has not been found!");
+                }
+
+                order.AddLineItem(product);
+            }
+            else
+            {
+                lineItem.Increment();
+            }
 
             return Result.CreateSuccessful();
         }

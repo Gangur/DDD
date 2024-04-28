@@ -6,7 +6,7 @@ using IntegrationEvents;
 
 namespace Application.Products.Create
 {
-    internal class CreateProductHandler : ICommandHandler<CreateProductCommand, Guid>
+    internal class CreateProductHandler : ICommandHandler<CreateProductCommand, ProductId>
     {
         private readonly IProductRepository _productRepository;
         private readonly IEventBus _eventBus;
@@ -19,7 +19,7 @@ namespace Application.Products.Create
             _blobService = blobService;
         }
 
-        public async Task<Result<Guid>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ProductId>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             if (!await _blobService.ExistsAsync(request.PictureName, cancellationToken))
             {
@@ -39,7 +39,7 @@ namespace Application.Products.Create
                 new ProductCreatedIntegrationEvent(product.Id.Value, product.Name, product.Price.Amount),
                 cancellationToken);
 
-            return Result<Guid>.CreateSuccessful(product.Id.Value);
+            return Result<ProductId>.CreateSuccessful(product.Id);
         }
     }
 }

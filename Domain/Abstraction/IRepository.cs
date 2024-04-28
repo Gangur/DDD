@@ -6,9 +6,11 @@
     {
         Task AddAsync(TEntity entity, CancellationToken cancellationToken);
 
-        Task<TEntity?> FindAsync(TEntityId entityId, CancellationToken cancellationToken);
+        ValueTask<TEntity?> FindAsync(TEntityId entityId, CancellationToken cancellationToken);
 
-        Task<ICollection<TEntity>> ListAsync(CancellationToken cancellationToken);
+        Task<TEntity?> TakeAsync(TEntityId entityId, CancellationToken cancellationToken);
+
+        Task<List<TEntity>> ListAsync(CancellationToken cancellationToken);
 
         void Remove(TEntity entity);
     }
