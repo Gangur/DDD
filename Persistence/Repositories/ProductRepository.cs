@@ -15,8 +15,8 @@ namespace Persistence.Repositories
         public async Task AddAsync(Product entity, CancellationToken cancellationToken)
             => await _context.AddAsync(entity, cancellationToken);
 
-        public ValueTask<Product?> FindAsync(ProductId entityId, CancellationToken cancellationToken)
-            => _context.FindAsync<Product>(entityId, cancellationToken);
+        public async Task<Product?> FindAsync(ProductId entityId, CancellationToken cancellationToken)
+            => await _context.FindAsync<Product>(entityId, cancellationToken);
 
         public Task<List<Product>> ListAsync(CancellationToken cancellationToken)
             => _context.GetQuery<Product>().ToListAsync(cancellationToken);

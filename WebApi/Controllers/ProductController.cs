@@ -48,7 +48,7 @@ namespace WebApi.Controllers
 
             var result = await _mediator.Send(command, cancellationToken);
 
-            return ActionFromResult(result);
+            return ActionFromIdResult(result);
         }
 
         [HttpGet("{id}")]

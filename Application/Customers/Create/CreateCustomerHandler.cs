@@ -14,7 +14,7 @@ namespace Application.Customers.Create
 
         public async Task<Result<CustomerId>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = Customer.Create(request.Email, request.Name);
+            var customer = Customer.Create();
 
             await _customerRepository.AddAsync(customer, cancellationToken);
 

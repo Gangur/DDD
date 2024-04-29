@@ -6,7 +6,7 @@
     {
         Task AddAsync(TEntity entity, CancellationToken cancellationToken);
 
-        ValueTask<TEntity?> FindAsync(TEntityId entityId, CancellationToken cancellationToken);
+        Task<TEntity?> FindAsync(TEntityId entityId, CancellationToken cancellationToken);
 
         Task<TEntity?> TakeAsync(TEntityId entityId, CancellationToken cancellationToken);
 

@@ -7,17 +7,21 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useAppDispatch } from '../store/configureStore';
 import agent from '../api/agent';
 import { setBasket } from '../../features/basket/basketSlice';
+import { getCustomerId } from '../../tools/cookies';
 
 function App() {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const buyerId = "";
+        const customerId = getCustomerId();
 
-        if (buyerId) {
-            agent.v1OrdersByCustomer(buyerId)
-                .then(order => dispatch(setBasket(order)))
+        if (customerId) {
+            agent.v1OrdersByCustomer(customerId)
+                .then(order => {
+                    dispatch(setBasket(order));
+                })
+                .catch(error => console.log(error))
                 .finally(() => setLoading(false))
         } else {
             setLoading(false);

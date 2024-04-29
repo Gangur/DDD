@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Data;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Abstraction;
 
 namespace WebApi.Controllers
@@ -12,23 +13,23 @@ namespace WebApi.Controllers
 
         [HttpGet("not-found")]
         public ActionResult GetNotFound()
-            => NotFound();
+            => ActionFromResult(Result.CreateNotFount("Not fount!"));
 
         [HttpGet("bad-request")]
         public ActionResult GetBadRequest()
-            => BadRequest(new ProblemDetails() { Title = "This is a bad request" });
+            => ActionFromResult(Result.CreateBadRequest("This is a bad request"));
 
         [HttpGet("unauthorized")]
         public ActionResult GetUnauthorized()
-            => Unauthorized();
+            => ActionFromResult(Result.CreateUnauthorized());
 
         [HttpGet("validation-problem")]
         public ActionResult GetValidationProblem()
-        {
-            ModelState.AddModelError("Problem 1", "This is validation problem 1");
-            ModelState.AddModelError("Problem 2", "This is validation problem 2");
-            return ValidationProblem();
-        }
+            => ActionFromResult(Result.CreateValidationProblem(new Dictionary<string, string>()
+            {
+                { "Problem 1", "This is validation problem 1" },
+                { "Problem 2", "This is validation problem 2" }
+            }));
 
         [HttpGet("server-error")]
         public ActionResult GetServerError()

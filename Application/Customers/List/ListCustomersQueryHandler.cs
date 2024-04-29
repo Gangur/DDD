@@ -20,7 +20,7 @@ namespace Application.Customers.List
 
             return Result<IReadOnlyCollection<CustomerDto>>
                 .CreateSuccessful(customers
-                    .Select(c => new CustomerDto(c.Id.Value, c.Email, c.Name))
+                    .Select(CustomerDto.Map)
                     .ToList());
         }
     }

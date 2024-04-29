@@ -19,17 +19,7 @@ namespace Application.Products.List
             var products = await _productRepository.ListAsync(cancellationToken);
 
             return Result<IReadOnlyCollection<ProductDto>>
-                .CreateSuccessful(products
-                    .Select(p => new ProductDto(
-                        p.Id.Value,
-                        p.Name,
-                        p.Brand.Name, 
-                        p.PictureName, 
-                        p.Price.Currency, 
-                        p.Price.Amount, 
-                        p.Sku.Value, 
-                        p.CategoryName))
-                    .ToList());
+                .CreateSuccessful(products.Select(ProductDto.Map).ToList());
         }
     }
 }

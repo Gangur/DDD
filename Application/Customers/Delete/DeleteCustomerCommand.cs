@@ -3,5 +3,5 @@ using Domain.Customers;
 
 namespace Application.Customers.Delete
 {
-    public sealed record DeleteCustomerCommand(CustomerId CustomerId) : IDatabaseCommand;
+    public sealed record DeleteCustomerCommand(CustomerId CustomerId) : ICommand;
 }

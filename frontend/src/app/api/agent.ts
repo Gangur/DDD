@@ -6,7 +6,8 @@ axios.defaults.baseURL = config.SERVER_URL;
 
 const agent = new Client(undefined, axios.create({
     baseURL: config.SERVER_URL,
-    transformResponse: data => data
+    transformResponse: data => data,
+    withCredentials: true
 }));
 
 export default agent;

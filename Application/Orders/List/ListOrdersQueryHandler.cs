@@ -19,13 +19,7 @@ namespace Application.Orders.List
             var orders = await _orderRepository.ListAsync(cancellationToken);
 
             return Result<IReadOnlyCollection<OrderDto>>
-                .CreateSuccessful(orders.Select(o => new OrderDto(
-                    o.Id.Value, 
-                    o.CustomerId.Value, 
-                    o.LineItems.Select(li => new LineItemDto(
-                        li.ProductId.Value, 
-                        li.Quantity)).ToList()))
-                .ToList());
+                .CreateSuccessful(orders.Select(OrderDto.Map).ToList());
         }
     }
 }

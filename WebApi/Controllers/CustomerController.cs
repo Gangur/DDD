@@ -2,14 +2,12 @@
 using Application.Customers.Delete;
 using Application.Customers.Get;
 using Application.Customers.List;
+using Application.Customers.Update;
 using Domain.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json.Linq;
 using Presentation;
 using System.ComponentModel.DataAnnotations;
-using System.Net;
 using WebApi.Abstraction;
 
 namespace WebApi.Controllers
@@ -22,20 +20,21 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<Guid>> CreateAsync(
-            [Required] string email,
-            [Required] string name,
-            CancellationToken cancellationToken)
+        public async Task<ActionResult<Guid>> CreateAsync(CancellationToken cancellationToken)
         {
-            var command = new CreateCustomerCommand(email, name);
+            var command = new CreateCustomerCommand();
+
             var result = await _mediator.Send(command, cancellationToken);
 
-            Response.Cookies.Append("customer-id", 
-                result.Value.Value.ToString(), 
-                new CookieOptions()
-            {
-                Expires = DateTimeOffset.UtcNow.AddDays(14)
-            });
+            return ActionFromIdResult(result);
+        }
+
+        [HttpPut("update")]
+        public async Task<ActionResult> UpdateAsync(CustomerDto customerDto, CancellationToken cancellationToken)
+        {
+            var command = new UpdateCustomerCommand(customerDto.Email, customerDto.Name);
+
+            var result = await _mediator.Send(command, cancellationToken);
 
             return ActionFromResult(result);
         }

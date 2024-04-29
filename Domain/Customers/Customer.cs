@@ -4,22 +4,19 @@ namespace Domain.Customers
 {
     public class Customer : BaseEntity<CustomerId>
     {
-        public Customer() { }
-        private Customer(string email, string name)
+        private Customer()
         {
             Id = new CustomerId(Guid.NewGuid());
-            Email = email;
-            Name = name;
         }
 
-        public string Email { get; private set; } = string.Empty;
+        public string? Email { get; private set; }
 
-        public string Name { get; private set; } = string.Empty;
+        public string? Name { get; private set; }
 
 
-        public static Customer Create(string email, string name)
+        public static Customer Create()
         {
-            var customer = new Customer(email, name);
+            var customer = new Customer();
 
             customer.Raise(new CustomerCreatedDomainEvent(customer.Id));
 

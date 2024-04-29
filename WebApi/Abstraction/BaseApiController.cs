@@ -17,7 +17,7 @@ namespace WebApi.Abstraction
             if (result.Success)
                 return Ok();
             else
-                return HandelErrorResult(result.Type, result.ErrorMessage);
+                return HandelErrorResult(result.Type, result.ValidationProblems!, result.ErrorMessage!);
         }
 
         protected ActionResult ActionFromResult<T>(Result<T> result)
@@ -30,16 +30,40 @@ namespace WebApi.Abstraction
                     return Ok(result.Value);
             }
             else
-                return HandelErrorResult(result.Type, result.ErrorMessage);
+                return HandelErrorResult(result.Type, result.ValidationProblems!, result.ErrorMessage!);
         }
 
-        private ActionResult HandelErrorResult(ResultType resultType, string error)
+        protected ActionResult ActionFromIdResult<T>(Result<T> result) where T : IEntityId
+        {
+            if (result.Success)
+            {
+                return Ok(result.Value.Value);
+            }
+            else
+                return HandelErrorResult(result.Type, result.ValidationProblems!, result.ErrorMessage!);
+        }
+
+        private ActionResult HandelErrorResult(ResultType resultType, Dictionary<string, string> validationProblems, string error)
             => resultType switch
             {
                 ResultType.NotFount => NotFound(error),
                 ResultType.Unauthorized => Unauthorized(error),
-                ResultType.ValidationProblem => ValidationProblem(error),
+                ResultType.BadRequest => HandelBadRequest(validationProblems, error),
                 _ => throw new NotImplementedException(),
             };
+
+        private ActionResult HandelBadRequest(Dictionary<string, string> validationProblems, string error)
+        {
+            if (string.IsNullOrWhiteSpace(error))
+            {
+                foreach (var item in validationProblems)
+                {
+                    ModelState.AddModelError(item.Key, item.Value);
+                }
+                return ValidationProblem();
+            }
+            else
+                return BadRequest(error);
+        }
     }
 }

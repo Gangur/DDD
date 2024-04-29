@@ -65,9 +65,13 @@ ArgumentException.ThrowIfNullOrEmpty(corsConf["FrontendAngular"]);
 
 app.UseCors(opt =>
 {
+    var frontendReact = corsConf["FrontendReact"]!;
+    var frontendAngular = corsConf["FrontendAngular"]!;
+
     opt.AllowAnyHeader()
        .AllowAnyMethod()
-       .WithOrigins(new [] { corsConf["FrontendReact"]!, corsConf["FrontendAngular"]! });
+       .AllowCredentials()
+       .WithOrigins(new [] { frontendReact, frontendAngular });
 });
 
 app.UseHttpsRedirection();

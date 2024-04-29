@@ -18,9 +18,8 @@ namespace Application.Behaviours
             RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
         {
-            var requestType = request.GetType();
-            if (requestType.IsSubclassOf(typeof(IDatabaseCommand)) ||
-                requestType.IsSubclassOf(typeof(IDatabaseCommand<>)))
+            var interfaces = request.GetType().GetInterfaces();
+            if (interfaces.Any(i => i.Name.Split('`').First() == nameof(ICommand)))
             {
                 var result = await next();
 

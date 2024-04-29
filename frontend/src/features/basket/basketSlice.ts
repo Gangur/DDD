@@ -25,7 +25,7 @@ export const basketSlice = createSlice({
             state.basket!.lineItems![itemIndex].quantity! -= quantity;
 
             if (state.basket!.lineItems![itemIndex].quantity! <= 0)
-                state.basket?.lineItems!.splice(itemIndex, 1);
+                state.basket!.lineItems!.splice(itemIndex, 1);
                 
         }
     }

@@ -32,10 +32,7 @@ namespace Application.Orders.Get
                 return Result<OrderDto>.CreateNotFount("The order has not been found!");
             }
 
-            return Result<OrderDto>.CreateSuccessful(new OrderDto(
-                order.Id.Value, 
-                order.CustomerId.Value,
-                order.LineItems.Select(li => new LineItemDto(li.ProductId.Value, li.Quantity)).ToList()));
+            return Result<OrderDto>.CreateSuccessful(OrderDto.Map(order));
         }
     }
 }

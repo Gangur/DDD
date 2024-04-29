@@ -23,7 +23,7 @@ namespace Application.Customers.Get
                 return Result<CustomerDto>.CreateNotFount("The customer has not been found!");
             }
 
-            return Result<CustomerDto>.CreateSuccessful(new CustomerDto(customer.Id.Value, customer.Email, customer.Name));
+            return Result<CustomerDto>.CreateSuccessful(CustomerDto.Map(customer));
         }
     }
 }

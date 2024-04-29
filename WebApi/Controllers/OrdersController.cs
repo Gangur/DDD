@@ -30,16 +30,17 @@ namespace WebApi.Controllers
 
             var result = await _mediator.Send(command, cancellationToken);
 
-            return ActionFromResult(result);
+            return ActionFromIdResult(result);
         }
 
         [HttpDelete("remove-line-item")]
-        public async Task<ActionResult> RemoveLineItemAsync(
+        public async Task<ActionResult<OrderDto>> RemoveLineItemAsync(
             [Required] Guid orderId,
-            [Required] Guid lineItemId,
+            [Required] Guid productId,
+            [Required] int quantity,
             CancellationToken cancellationToken)
         {
-            var command = new RemoveLineItemCommand(new OrderId(orderId), new LineItemId(lineItemId));
+            var command = new RemoveLineItemCommand(new OrderId(orderId), new ProductId(productId), quantity);
 
             var result = await _mediator.Send(command, cancellationToken);
 
@@ -47,7 +48,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add-line-item")]
-        public async Task<ActionResult> AddLineItemAsync(
+        public async Task<ActionResult<OrderDto>> AddLineItemAsync(
             [Required] Guid orderId,
             [Required] Guid productId,
             CancellationToken cancellationToken)

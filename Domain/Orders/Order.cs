@@ -32,36 +32,44 @@ namespace Domain.Orders
             return order;
         }
 
-        public LineItem? GetLineItemByProductId(ProductId productId)
+        public void AddLineItem(Product product)
         {
-            return LineItems.FirstOrDefault(li => li.ProductId == productId);
+            var lineItem = _lineItems.FirstOrDefault(li => li.ProductId == product.Id);
+
+            if (lineItem == default)
+            {
+                lineItem = LineItem.Create(
+                    new LineItemId(Guid.NewGuid()),
+                    Id,
+                    product);
+
+                _lineItems.Add(lineItem);
+
+                Raise(new LineItemAddedDomailEvent(lineItem.Id, Id));
+            }
+            else
+            {
+                lineItem.Increment();
+            }
         }
 
-        public void AddLineItem(Product pruduct)
+        public void RemoveLineItem(ProductId productId, int quantity = 1)
         {
-            var lineItem = new LineItem(
-                new LineItemId(Guid.NewGuid()), 
-                Id, 
-                pruduct.Id, 
-                pruduct.Price);
+            var lineItem = _lineItems.FirstOrDefault(li => li.ProductId == productId);
 
-            _lineItems.Add(lineItem);
-
-            Raise(new LineItemAddedDomailEvent(lineItem.Id, Id));
-        }
-
-        public void RemoveLineItem(LineItemId lineItemId)
-        {
-            var lineItem = _lineItems.FirstOrDefault(li => li.Id == lineItemId);
-
-            if (lineItem is null)
+            if (lineItem == default)
             {
                 return;
             }
+            else
+            {
+                lineItem.Decrement(quantity);
 
-            _lineItems.Remove(lineItem);
+                if (lineItem.Quantity <= 0)
+                    _lineItems.Remove(lineItem);
 
-            Raise(new LineItemRemovedDomainEvent(lineItem.Id, Id));
+                Raise(new LineItemRemovedDomainEvent(lineItem.Id, Id));
+            }
         }
     }
 }
