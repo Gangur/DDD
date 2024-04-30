@@ -22,7 +22,7 @@ export default function ProductCard({ product }: Props) {
     function handleAddItem(productId: string) {
         setLoading(true);
 
-        agent.v1OrdersAddLineItem(basket!.id!, productId)
+        agent.v1OrdersAddLineItem(basket!.id!, productId, 1)
             .then(order => dispatch(setBasket(order)))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));

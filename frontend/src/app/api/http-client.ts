@@ -748,7 +748,7 @@ export class Client {
     /**
      * @return Success
      */
-    v1OrdersAddLineItem(orderId: string, productId: string, cancelToken?: CancelToken): Promise<OrderDto> {
+    v1OrdersAddLineItem(orderId: string, productId: string, quantity: number, cancelToken?: CancelToken): Promise<OrderDto> {
         let url_ = this.baseUrl + "/v1/orders/add-line-item?";
         if (orderId === undefined || orderId === null)
             throw new Error("The parameter 'orderId' must be defined and cannot be null.");
@@ -758,6 +758,10 @@ export class Client {
             throw new Error("The parameter 'productId' must be defined and cannot be null.");
         else
             url_ += "productId=" + encodeURIComponent("" + productId) + "&";
+        if (quantity === undefined || quantity === null)
+            throw new Error("The parameter 'quantity' must be defined and cannot be null.");
+        else
+            url_ += "quantity=" + encodeURIComponent("" + quantity) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {

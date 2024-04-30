@@ -8,6 +8,7 @@ import { useAppDispatch } from '../store/configureStore';
 import agent from '../api/agent';
 import { setBasket } from '../../features/basket/basketSlice';
 import { getCustomerId } from '../../tools/cookies';
+import LoadingComponent from './LoadingComponent';
 
 function App() {
     const dispatch = useAppDispatch();
@@ -42,6 +43,9 @@ function App() {
     function handleThemeChange() {
         setDarkMode(!darkMode);
     }
+
+    if (loading)
+        return <LoadingComponent />
 
     return (
         <ThemeProvider theme={theme}>

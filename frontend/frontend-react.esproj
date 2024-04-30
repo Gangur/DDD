@@ -18,6 +18,5 @@
     <Folder Include="src\features\about\" />
     <Folder Include="src\features\contact\" />
     <Folder Include="src\features\home\" />
-    <Folder Include="src\features\checkout\" />
   </ItemGroup>
 </Project>

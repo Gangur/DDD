@@ -34,7 +34,7 @@ namespace Application.Orders.AddLineItem
                 return Result<OrderDto>.CreateValidationProblem("The product has not been found!");
             }
 
-            order.AddLineItem(product);
+            order.AddLineItem(product, request.Quantity);
 
             return Result<OrderDto>.CreateSuccessful(OrderDto.Map(order));
         }

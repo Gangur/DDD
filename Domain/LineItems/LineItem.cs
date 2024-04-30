@@ -20,9 +20,9 @@ namespace Domain.LineItems
 
         public Money Price { get; private set; }
 
-        public void Increment()
+        public void Increment(int quantity = 1)
         {
-            Quantity++;
+            Quantity += quantity;
         }
 
         public void Decrement(int quantity = 1)
@@ -31,7 +31,7 @@ namespace Domain.LineItems
                 Quantity -= quantity;
         }
 
-        public static LineItem Create(LineItemId id, OrderId orderId, Product product)
+        public static LineItem Create(LineItemId id, OrderId orderId, Product product, int quantity)
         {
             return new LineItem()
             {
@@ -40,7 +40,7 @@ namespace Domain.LineItems
                 Product = product,
                 Price = product.Price,
                 OrderId = orderId,
-                Quantity = 1
+                Quantity = quantity
             };
         }
     }

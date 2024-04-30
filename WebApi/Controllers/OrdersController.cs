@@ -4,7 +4,6 @@ using Application.Orders.Get;
 using Application.Orders.List;
 using Application.Orders.RemoveLineItem;
 using Domain.Customers;
-using Domain.LineItems;
 using Domain.Orders;
 using Domain.Products;
 using MediatR;
@@ -51,9 +50,10 @@ namespace WebApi.Controllers
         public async Task<ActionResult<OrderDto>> AddLineItemAsync(
             [Required] Guid orderId,
             [Required] Guid productId,
+            [Required] int quantity,
             CancellationToken cancellationToken)
         {
-            var command = new AddLineItemCommand(new OrderId(orderId), new ProductId(productId));
+            var command = new AddLineItemCommand(new OrderId(orderId), new ProductId(productId), quantity);
 
             var result = await _mediator.Send(command, cancellationToken);
 

@@ -5,5 +5,5 @@ using Presentation;
 
 namespace Application.Orders.AddLineItem
 {
-    public record AddLineItemCommand(OrderId OrderId, ProductId ProductId) : ICommand<OrderDto>;
+    public record AddLineItemCommand(OrderId OrderId, ProductId ProductId, int Quantity) : ICommand<OrderDto>;
 }

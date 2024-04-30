@@ -32,7 +32,7 @@ namespace Domain.Orders
             return order;
         }
 
-        public void AddLineItem(Product product)
+        public void AddLineItem(Product product, int quantity = 1)
         {
             var lineItem = _lineItems.FirstOrDefault(li => li.ProductId == product.Id);
 
@@ -41,7 +41,8 @@ namespace Domain.Orders
                 lineItem = LineItem.Create(
                     new LineItemId(Guid.NewGuid()),
                     Id,
-                    product);
+                    product,
+                    quantity);
 
                 _lineItems.Add(lineItem);
 
@@ -49,7 +50,7 @@ namespace Domain.Orders
             }
             else
             {
-                lineItem.Increment();
+                lineItem.Increment(quantity);
             }
         }
 

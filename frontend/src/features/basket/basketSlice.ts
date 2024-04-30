@@ -15,20 +15,8 @@ export const basketSlice = createSlice({
     reducers: {
         setBasket: (state, action) => {
             state.basket = action.payload
-        },
-        removeItem: (state, action) => {
-            const { productId, quantity } = action.payload;
-            const itemIndex = state.basket?.lineItems!.findIndex(i => i.productId === productId)
-            if (itemIndex === -1 || itemIndex == undefined)
-                return;
-
-            state.basket!.lineItems![itemIndex].quantity! -= quantity;
-
-            if (state.basket!.lineItems![itemIndex].quantity! <= 0)
-                state.basket!.lineItems!.splice(itemIndex, 1);
-                
         }
     }
 });
 
-export const { setBasket, removeItem } = basketSlice.actions;
+export const { setBasket } = basketSlice.actions;
