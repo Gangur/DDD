@@ -1166,35 +1166,35 @@ export enum Category {
 }
 
 export interface CustomerDto {
-    id?: string;
-    email?: string | undefined;
-    name?: string | undefined;
+    id: string;
+    email: string | undefined;
+    name: string | undefined;
 }
 
 export interface LineItemDto {
-    productId?: string;
-    productName?: string | undefined;
-    pictureName?: string | undefined;
-    priceAmount?: number;
-    priceCurrency?: string | undefined;
-    quantity?: number;
+    productId: string;
+    productName: string | undefined;
+    pictureName: string | undefined;
+    priceAmount: number;
+    priceCurrency: string | undefined;
+    quantity: number;
 }
 
 export interface OrderDto {
-    id?: string;
-    customerId?: string;
-    lineItems?: LineItemDto[] | undefined;
+    id: string;
+    customerId: string;
+    lineItems: LineItemDto[] | undefined;
 }
 
 export interface ProductDto {
-    id?: string;
-    name?: string | undefined;
-    brand?: string | undefined;
-    pictureName?: string | undefined;
-    priceCurrency?: string | undefined;
-    priceAmount?: number;
-    sku?: string | undefined;
-    category?: string | undefined;
+    id: string;
+    name: string | undefined;
+    brand: string | undefined;
+    pictureName: string | undefined;
+    priceCurrency: string | undefined;
+    priceAmount: number;
+    sku: string | undefined;
+    category: string | undefined;
 }
 
 export interface Body {
@@ -1208,37 +1208,45 @@ export interface FileParameter {
     fileName: string;
 }
 
+
 function throwException(
-  message: string,
-  status: number,
-  response: string,
-  headers: { [key: string]: any },
-  result?: any
+    message: string,
+    status: number,
+    response: string,
+    headers: { [key: string]: any },
+    result?: any
 ): any {
     if (result !== null && result !== undefined)
         throw result;
     else
-      switch (status) {
-        case 400:
-          if (status) {
-            const modelStateErrors: string[] = [];
-            const data = JSON.parse(response);
-            for (const key in data.errors) {
-              modelStateErrors.push(data.errors[key]);
-            }
-            throw modelStateErrors.flat();
-          }
-          break;
-        case 401:
-          toast.error(response);
-          break;
-        case 500:
-          const data = JSON.parse(response);
-          router.navigate("/server-error", { state: { error: data } });
-          break;
-        default:
-          break;
-      }
+        switch (status) {
+            case 400:
+                if (status) {
+                    const modelStateErrors: string[] = [];
+                    try {
+                        const data = JSON.parse(response);
+                        for (const key in data.errors) {
+                            modelStateErrors.push(data.errors[key]);
+                        }
+                        throw modelStateErrors.flat();
+                    } catch (e) {
+                        toast.error(response);
+                    }
+                }
+                break;
+            case 401:
+                toast.error(response);
+                break;
+            case 404:
+                throw response;
+                break;
+            case 500:
+                const data = JSON.parse(response);
+                router.navigate("/server-error", { state: { error: data } });
+                break;
+            default:
+                break;
+        }
 }
 
 function isAxiosError(obj: any): obj is AxiosError {

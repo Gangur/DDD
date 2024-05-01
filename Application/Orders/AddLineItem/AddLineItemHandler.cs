@@ -24,14 +24,14 @@ namespace Application.Orders.AddLineItem
 
             if (order is null)
             {
-                return Result<OrderDto>.CreateValidationProblem("The order has not been found!");
+                return Result<OrderDto>.CreateBadRequest("The order has not been found!");
             }
 
             var product = await _productRepository.FindAsync(request.ProductId, cancellationToken);
 
             if (product is null)
             {
-                return Result<OrderDto>.CreateValidationProblem("The product has not been found!");
+                return Result<OrderDto>.CreateBadRequest("The product has not been found!");
             }
 
             order.AddLineItem(product, request.Quantity);

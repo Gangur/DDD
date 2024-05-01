@@ -1,41 +1,31 @@
 import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ProductDto } from "../../app/api/http-client";
 import PictureUrl from "../../tools/pictures-url-factory";
-import agent from "../../app/api/agent";
 import NotFound from "../../app/errors/NotFound";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import DisplayPrice from "../../tools/price-factory";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { LoadingButton } from "@mui/lab";
-import { setBasket } from "../basket/basketSlice";
+import { addBasketItemAsync, removeBasketItemAsync } from "../basket/basketSlice";
+import { useSelector } from "react-redux";
+import { fetchProductAsync, productSelectors } from "./catalogSlice";
 
 export default function ProductDetailes() {
     const { id } = useParams<{ id: string }>();
-    const basket = useAppSelector(state => state.basket.basket);
+    const { basket, status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
-
-    const [product, setProduct] = useState<ProductDto | null>(null);
-    const [loading, setLoading] = useState(true);
+    const product = useSelector(state => productSelectors.selectById(state, id!));
+    const { status: productStatus } = useAppSelector(state => state.catalog);
     const [quantity, setQuantity] = useState(0);
-    const [submitting, setSubmitting] = useState(false);
 
     const item = basket?.lineItems?.find(li => li.productId == product?.id)
 
     useEffect(() => {
-        if (item) {
-            setQuantity(item.quantity!);
-        }
-
-        agent
-            .v1Products(id ?? "")
-            .then(data => {
-                setProduct(data)
-            })
-            .catch(error => console.log(error))
-            .finally(() => setLoading(false))
-    }, [id, item]);
+        if (item) setQuantity(item.quantity!);
+        if (!product && id) dispatch(fetchProductAsync(id))
+        
+    }, [id, item, dispatch, product]);
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         const value = parseInt(event.currentTarget.value);
@@ -45,26 +35,27 @@ export default function ProductDetailes() {
     }
 
     function handleUpdateCart() {
-        setSubmitting(true);
         if (!item || quantity > item.quantity!) {
-            const updateQuantity = item ? quantity - item.quantity! : quantity;
+            const quantityDif = item ? quantity - item.quantity! : quantity;
 
-            agent.v1OrdersAddLineItem(basket!.id!, product!.id!, updateQuantity)
-                .then(basket => dispatch(setBasket(basket)))
-                .catch(error => console.log(error))
-                .finally(() => setSubmitting(false))
+            dispatch(addBasketItemAsync({
+                orderId: basket!.id,
+                productId: product!.id,
+                quantity: quantityDif
+            }));
         }
         else {
-            const updateQuantity = item.quantity! - quantity;
+            const quantityDif = item.quantity! - quantity;
 
-            agent.v1OrdersRemoveLineItem(basket!.id!, product!.id!, updateQuantity)
-                .then(basket => dispatch(setBasket(basket)))
-                .catch(error => console.log(error))
-                .finally(() => setSubmitting(false))
+            dispatch(removeBasketItemAsync({
+                orderId: basket!.id,
+                productId: product!.id,
+                quantity: quantityDif
+            }));
         }
     }
 
-    if (loading)
+    if (productStatus.includes('pending'))
     {
         return (<LoadingComponent />)
     }
@@ -122,7 +113,7 @@ export default function ProductDetailes() {
                     <Grid item xs={6}>
                         <LoadingButton
                             disabled={item?.quantity === quantity || !item && quantity === 0}
-                            loading={submitting}
+                            loading={status.includes('pending')}
                             onClick={handleUpdateCart}
                             sx={{ height: '55px' }}
                             color='primary'

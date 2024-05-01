@@ -21,7 +21,7 @@ namespace Application.Orders.RemoveLineItem
 
             if (order is null)
             {
-                return Result<OrderDto>.CreateValidationProblem("The order has not been found!");
+                return Result<OrderDto>.CreateBadRequest("The order has not been found!");
             }
 
             order.RemoveLineItem(request.LineItemId, request.Quantity);
