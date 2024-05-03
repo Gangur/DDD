@@ -1,8 +1,8 @@
-﻿using Domain.Customers;
-using Domain.LineItems;
+﻿using Domain.Abstraction.Transport;
+using Domain.Customers;
 using Domain.Orders;
-using Domain.Products;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Extensions;
 
 namespace Persistence.Repositories
 {
@@ -31,12 +31,6 @@ namespace Persistence.Repositories
                     .ThenInclude(o => o.Product)
                 .FirstOrDefaultAsync(cancellationToken);
 
-        public Task<List<Order>> ListAsync(CancellationToken cancellationToken)
-            => _context.GetQuery<Order>()
-            .Include(o => o.LineItems)
-                .ThenInclude(li => li.Product)
-            .ToListAsync(cancellationToken);
-
         public void Remove(Order entity)
             => _context.Remove(entity);
 
@@ -45,5 +39,21 @@ namespace Persistence.Repositories
                 .Include(o => o.LineItems)
                     .ThenInclude(o => o.Product)
                 .FirstOrDefaultAsync(o => o.Id == entityId, cancellationToken);
+
+        public Task<int> CountAsync(ListParameters parameters, CancellationToken cancellationToken)
+            => _context.GetQuery<Order>().CountAsync(cancellationToken);
+
+        public Task<List<Order>> ListAsync(ListParameters parameters, CancellationToken cancellationToken)
+            => ApplyOrdering(_context.GetQuery<Order>()
+            .Include(o => o.LineItems)
+                .ThenInclude(li => li.Product), parameters)
+            .ToListAsync(cancellationToken);
+
+        public IQueryable<Order> ApplyOrdering(IQueryable<Order> query, ListParameters parameters)
+            => parameters.OrderBy switch
+            {
+                OrderOrderingTypes.Completed =>     query.ApplyBaseListParameters(parameters, p => p.Completed),
+                _ =>                                query.ApplyBaseListParameters(parameters, p => p.Id)
+            };
     }
 }

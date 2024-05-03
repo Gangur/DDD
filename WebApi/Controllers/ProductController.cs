@@ -1,6 +1,8 @@
 ﻿using Application.Products.Create;
 using Application.Products.Get;
+using Application.Products.GetBranda;
 using Application.Products.List;
+using Domain.Abstraction.Transport;
 using Domain.Data;
 using Domain.Products;
 using MediatR;
@@ -62,9 +64,21 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<ActionResult<IReadOnlyCollection<ProductDto>>> ListAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult<ListResultDto<ProductDto>>> ListAsync(
+            [FromQuery] ListParameters parameters, 
+            CancellationToken cancellationToken)
         {
-            var query = new ListProductsQuery();
+            var query = new ListProductsQuery(parameters);
+
+            var result = await _mediator.Send(query, cancellationToken);
+
+            return ActionFromResult(result);
+        }
+
+        [HttpGet("list-brands")]
+        public async Task<ActionResult<IReadOnlyCollection<string>>> ListBrandsAsync(CancellationToken cancellationToken)
+        {
+            var query = new ListBrandsQuery();
 
             var result = await _mediator.Send(query, cancellationToken);
 

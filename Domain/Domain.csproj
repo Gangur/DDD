@@ -17,8 +17,4 @@
     <ProjectReference Include="..\IntegrationEvents\IntegrationEvents.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Products\Parameters\" />
-  </ItemGroup>
-
 </Project>

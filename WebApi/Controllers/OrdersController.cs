@@ -3,6 +3,7 @@ using Application.Orders.Create;
 using Application.Orders.Get;
 using Application.Orders.List;
 using Application.Orders.RemoveLineItem;
+using Domain.Abstraction.Transport;
 using Domain.Customers;
 using Domain.Orders;
 using Domain.Products;
@@ -83,9 +84,10 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<ActionResult<IReadOnlyCollection<OrderDto>>> ListAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult<ListResultDto<OrderDto>>> ListAsync(
+            [FromQuery] ListParameters parameters, CancellationToken cancellationToken)
         {
-            var query = new ListOrdersQuery();
+            var query = new ListOrdersQuery(parameters);
 
             var result = await _mediator.Send(query, cancellationToken);
 

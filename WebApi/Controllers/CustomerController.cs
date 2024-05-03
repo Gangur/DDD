@@ -3,6 +3,7 @@ using Application.Customers.Delete;
 using Application.Customers.Get;
 using Application.Customers.List;
 using Application.Customers.Update;
+using Domain.Abstraction.Transport;
 using Domain.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -52,9 +53,10 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<ActionResult<IReadOnlyCollection<CustomerDto>>> ListAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult<ListResultDto<CustomerDto>>> ListAsync(
+            [FromQuery] ListParameters parameters, CancellationToken cancellationToken)
         {
-            var query = new ListCustomersQuery();
+            var query = new ListCustomersQuery(parameters);
 
             var result = await _mediator.Send(query, cancellationToken);
 
