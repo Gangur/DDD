@@ -1,5 +1,7 @@
 ﻿using Domain.Abstraction.Transport;
+using Domain.Data;
 using Domain.Products;
+using Domain.Products.Transport;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Extensions;
 
@@ -17,14 +19,14 @@ namespace Persistence.Repositories
         public async Task AddAsync(Product entity, CancellationToken cancellationToken)
             => await _context.AddAsync(entity, cancellationToken);
 
-        public Task<int> CountAsync(ListParameters parameters, CancellationToken cancellationToken)
-            => _context.GetQuery<Product>().CountAsync(cancellationToken);
+        public Task<int> CountAsync(ProductsListParameters parameters, CancellationToken cancellationToken)
+            => ApplyFilters(_context.GetQuery<Product>(), parameters).CountAsync(cancellationToken);
 
         public async Task<Product?> FindAsync(ProductId entityId, CancellationToken cancellationToken)
             => await _context.FindAsync<Product>(entityId, cancellationToken);
 
-        public Task<List<Product>> ListAsync(ListParameters parameters, CancellationToken cancellationToken)
-            => ApplyOrdering(_context.GetQuery<Product>(), parameters)
+        public Task<List<Product>> ListAsync(ProductsListParameters parameters, CancellationToken cancellationToken)
+            => ApplyOrdering(ApplyFilters(_context.GetQuery<Product>(), parameters), parameters)
                 .ToListAsync(cancellationToken);
 
         public IQueryable<Product> ApplyOrdering(IQueryable<Product> query, ListParameters parameters)
@@ -44,5 +46,14 @@ namespace Persistence.Repositories
 
         public async Task<IReadOnlyCollection<string>> ListBrandsAsync(CancellationToken cancellationToken)
             => await _context.GetQuery<Product>().GroupBy(p => p.Brand).Select(p => p.Key.Name).ToListAsync(cancellationToken);
+
+        private IQueryable<Product> ApplyFilters(IQueryable<Product> query, ProductsListParameters parameters)
+        {
+            if (parameters.Category != default)                     query = query.Where(p => p.Category == parameters.Category);
+            if (!string.IsNullOrEmpty(parameters.Brand))            query = query.Where(p => p.Brand == Brand.Create(parameters.Brand));
+            if (!string.IsNullOrEmpty(parameters.SearchString))     query = query.Where(p => EF.Functions.Like(p.Name, $"%{parameters.SearchString}%"));
+
+            return query;
+        }
     }
 }

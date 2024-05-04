@@ -1,9 +1,8 @@
 ﻿using Application.Abstraction;
 using Application.Data;
-using Application.Products.GetBranda;
 using Domain.Products;
 
-namespace Application.Products.GetBrands
+namespace Application.Products.ListBrands
 {
     public class ListBrandsQueryHandler : IQueryHandler<ListBrandsQuery, IReadOnlyCollection<string>>
     {

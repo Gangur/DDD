@@ -7,6 +7,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { ShopModule } from './shop/shop.module';
+import { API_BASE_URL, Client } from './api/http-client';
+
+function getBaseUrl() {
+  return 'https://localhost:44370/';
+}
 
 @NgModule({
   declarations: [
@@ -21,7 +26,8 @@ import { ShopModule } from './shop/shop.module';
     ShopModule
   ],
   providers: [
-
+    Client,
+    { provide: API_BASE_URL, useValue: 'https://localhost:44370' }
   ],
   bootstrap: [AppComponent]
 })

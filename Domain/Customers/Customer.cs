@@ -1,4 +1,5 @@
 ﻿using Domain.Abstraction;
+using Domain.Customers.Transport;
 
 namespace Domain.Customers
 {

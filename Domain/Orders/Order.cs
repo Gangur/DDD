@@ -1,6 +1,8 @@
 ﻿using Domain.Abstraction;
 using Domain.Customers;
 using Domain.LineItems;
+using Domain.LineItems.Transport;
+using Domain.Orders.Transport;
 using Domain.Products;
 
 namespace Domain.Orders

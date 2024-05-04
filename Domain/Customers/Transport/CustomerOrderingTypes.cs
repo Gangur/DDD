@@ -1,6 +1,6 @@
 ﻿using Domain.Products;
 
-namespace Domain.Customers
+namespace Domain.Customers.Transport
 {
     public static class CustomerOrderingTypes
     {

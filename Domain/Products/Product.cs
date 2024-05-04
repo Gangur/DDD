@@ -1,5 +1,6 @@
 ﻿using Domain.Abstraction;
 using Domain.Data;
+using Domain.Products.Transport;
 
 namespace Domain.Products
 {

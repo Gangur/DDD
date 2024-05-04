@@ -424,10 +424,30 @@ export class Client {
     }
 
     /**
+     * @param orderBy (optional) 
+     * @param descending (optional) 
+     * @param pageNumber (optional) 
+     * @param pageSize (optional) 
      * @return Success
      */
-    v1CustomeresList(cancelToken?: CancelToken): Promise<CustomerDto[]> {
-        let url_ = this.baseUrl + "/v1/customeres/list";
+    v1CustomeresList(orderBy: string | undefined, descending: boolean | undefined, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<CustomerDtoListResultDto> {
+        let url_ = this.baseUrl + "/v1/customeres/list?";
+        if (orderBy === null)
+            throw new Error("The parameter 'orderBy' cannot be null.");
+        else if (orderBy !== undefined)
+            url_ += "OrderBy=" + encodeURIComponent("" + orderBy) + "&";
+        if (descending === null)
+            throw new Error("The parameter 'descending' cannot be null.");
+        else if (descending !== undefined)
+            url_ += "Descending=" + encodeURIComponent("" + descending) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -450,7 +470,7 @@ export class Client {
         });
     }
 
-    protected processV1CustomeresList(response: AxiosResponse): Promise<CustomerDto[]> {
+    protected processV1CustomeresList(response: AxiosResponse): Promise<CustomerDtoListResultDto> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -465,13 +485,13 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<CustomerDto[]>(result200);
+            return Promise.resolve<CustomerDtoListResultDto>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CustomerDto[]>(null as any);
+        return Promise.resolve<CustomerDtoListResultDto>(null as any);
     }
 
     /**
@@ -917,10 +937,30 @@ export class Client {
     }
 
     /**
+     * @param orderBy (optional) 
+     * @param descending (optional) 
+     * @param pageNumber (optional) 
+     * @param pageSize (optional) 
      * @return Success
      */
-    v1OrdersList(cancelToken?: CancelToken): Promise<OrderDto[]> {
-        let url_ = this.baseUrl + "/v1/orders/list";
+    v1OrdersList(orderBy: string | undefined, descending: boolean | undefined, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<OrderDtoListResultDto> {
+        let url_ = this.baseUrl + "/v1/orders/list?";
+        if (orderBy === null)
+            throw new Error("The parameter 'orderBy' cannot be null.");
+        else if (orderBy !== undefined)
+            url_ += "OrderBy=" + encodeURIComponent("" + orderBy) + "&";
+        if (descending === null)
+            throw new Error("The parameter 'descending' cannot be null.");
+        else if (descending !== undefined)
+            url_ += "Descending=" + encodeURIComponent("" + descending) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -943,7 +983,7 @@ export class Client {
         });
     }
 
-    protected processV1OrdersList(response: AxiosResponse): Promise<OrderDto[]> {
+    protected processV1OrdersList(response: AxiosResponse): Promise<OrderDtoListResultDto> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -958,13 +998,13 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<OrderDto[]>(result200);
+            return Promise.resolve<OrderDtoListResultDto>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<OrderDto[]>(null as any);
+        return Promise.resolve<OrderDtoListResultDto>(null as any);
     }
 
     /**
@@ -1108,10 +1148,30 @@ export class Client {
     }
 
     /**
+     * @param orderBy (optional) 
+     * @param descending (optional) 
+     * @param pageNumber (optional) 
+     * @param pageSize (optional) 
      * @return Success
      */
-    v1ProductsList(cancelToken?: CancelToken): Promise<ProductDto[]> {
-        let url_ = this.baseUrl + "/v1/products/list";
+    v1ProductsList(orderBy: string | undefined, descending: boolean | undefined, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<ProductDtoListResultDto> {
+        let url_ = this.baseUrl + "/v1/products/list?";
+        if (orderBy === null)
+            throw new Error("The parameter 'orderBy' cannot be null.");
+        else if (orderBy !== undefined)
+            url_ += "OrderBy=" + encodeURIComponent("" + orderBy) + "&";
+        if (descending === null)
+            throw new Error("The parameter 'descending' cannot be null.");
+        else if (descending !== undefined)
+            url_ += "Descending=" + encodeURIComponent("" + descending) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -1134,7 +1194,7 @@ export class Client {
         });
     }
 
-    protected processV1ProductsList(response: AxiosResponse): Promise<ProductDto[]> {
+    protected processV1ProductsList(response: AxiosResponse): Promise<ProductDtoListResultDto> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1149,13 +1209,64 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<ProductDto[]>(result200);
+            return Promise.resolve<ProductDtoListResultDto>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ProductDto[]>(null as any);
+        return Promise.resolve<ProductDtoListResultDto>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    v1ProductsListBrands(cancelToken?: CancelToken): Promise<string[]> {
+        let url_ = this.baseUrl + "/v1/products/list-brands";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain; x-api-version=1.0"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1ProductsListBrands(_response);
+        });
+    }
+
+    protected processV1ProductsListBrands(response: AxiosResponse): Promise<string[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<string[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<string[]>(null as any);
     }
 }
 
@@ -1169,6 +1280,11 @@ export interface CustomerDto {
     id: string;
     email: string | undefined;
     name: string | undefined;
+}
+
+export interface CustomerDtoListResultDto {
+    readonly total: number;
+    readonly values: CustomerDto[] | undefined;
 }
 
 export interface LineItemDto {
@@ -1186,6 +1302,11 @@ export interface OrderDto {
     lineItems: LineItemDto[] | undefined;
 }
 
+export interface OrderDtoListResultDto {
+    readonly total: number;
+    readonly values: OrderDto[] | undefined;
+}
+
 export interface ProductDto {
     id: string;
     name: string | undefined;
@@ -1195,6 +1316,11 @@ export interface ProductDto {
     priceAmount: number;
     sku: string | undefined;
     category: string | undefined;
+}
+
+export interface ProductDtoListResultDto {
+    readonly total: number;
+    readonly values: ProductDto[] | undefined;
 }
 
 export interface Body {
@@ -1207,7 +1333,6 @@ export interface FileParameter {
     data: any;
     fileName: string;
 }
-
 
 function throwException(
     message: string,

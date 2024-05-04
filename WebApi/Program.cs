@@ -2,6 +2,7 @@ using Application;
 using Asp.Versioning.ApiExplorer;
 using Infrastructure;
 using Persistence;
+using System.Text.Json.Serialization;
 using WebApi;
 using WebApi.Configurations;
 using WebApi.Middleware;
@@ -20,7 +21,11 @@ IWebHostEnvironment environment = builder.Environment;
 //    return configurer;
 //});
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 
 builder.Services.AddVersioning();

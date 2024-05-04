@@ -1,4 +1,5 @@
-﻿using IntegrationEvents;
+﻿using Domain.Orders.Transport;
+using IntegrationEvents;
 using MediatR;
 using Rebus.Bus;
 

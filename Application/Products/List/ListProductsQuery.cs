@@ -1,8 +1,9 @@
 ﻿using Application.Abstraction;
-using Domain.Abstraction.Transport;
+using Domain.Products.Transport;
 using Presentation;
+using Presentation.Adstraction;
 
 namespace Application.Products.List
 {
-    public record ListProductsQuery(ListParameters ListParameters) : IQuery<ListResultDto<ProductDto>>;
+    public record ListProductsQuery(ProductsListParameters ListParameters) : IQuery<ListResultDto<ProductDto>>;
 }

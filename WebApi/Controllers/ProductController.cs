@@ -1,13 +1,14 @@
 ﻿using Application.Products.Create;
 using Application.Products.Get;
-using Application.Products.GetBranda;
 using Application.Products.List;
-using Domain.Abstraction.Transport;
+using Application.Products.ListBrands;
 using Domain.Data;
 using Domain.Products;
+using Domain.Products.Transport;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation;
+using Presentation.Adstraction;
 using WebApi.Abstraction;
 
 namespace WebApi.Controllers
@@ -65,7 +66,7 @@ namespace WebApi.Controllers
 
         [HttpGet("list")]
         public async Task<ActionResult<ListResultDto<ProductDto>>> ListAsync(
-            [FromQuery] ListParameters parameters, 
+            [FromQuery] ProductsListParameters parameters, 
             CancellationToken cancellationToken)
         {
             var query = new ListProductsQuery(parameters);

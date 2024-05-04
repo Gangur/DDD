@@ -1,4 +1,4 @@
-﻿namespace Domain.Abstraction.Transport
+﻿namespace Presentation.Adstraction
 {
     public class ListResultDto<T> where T : class
     {

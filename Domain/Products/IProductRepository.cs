@@ -1,9 +1,9 @@
 ﻿using Domain.Abstraction;
-using Domain.Abstraction.Transport;
+using Domain.Products.Transport;
 
 namespace Domain.Products
 {
-    public interface IProductRepository : IRepository<Product, ProductId, ListParameters>
+    public interface IProductRepository : IRepository<Product, ProductId, ProductsListParameters>
     {
         Task<IReadOnlyCollection<string>> ListBrandsAsync(CancellationToken cancellationToken);
     }

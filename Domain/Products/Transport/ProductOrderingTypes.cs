@@ -1,4 +1,4 @@
-﻿namespace Domain.Products
+﻿namespace Domain.Products.Transport
 {
     public static class ProductOrderingTypes
     {

@@ -1,4 +1,4 @@
-using Domain.Customers;
+using Domain.Customers.Transport;
 using Domain.OutboxMessage;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;

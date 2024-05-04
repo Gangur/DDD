@@ -1,5 +1,6 @@
 ﻿using Domain.Abstraction.Transport;
 using Domain.Customers;
+using Domain.Customers.Transport;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Extensions;
 

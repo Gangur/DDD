@@ -1,4 +1,4 @@
-﻿namespace Domain.Orders
+﻿namespace Domain.Orders.Transport
 {
     public static class OrderOrderingTypes
     {
