@@ -1347,8 +1347,8 @@ function throwException(
         switch (status) {
             case 400:
                 if (status) {
-                    const modelStateErrors: string[] = [];
                     try {
+                        const modelStateErrors: string[] = [];
                         const data = JSON.parse(response);
                         for (const key in data.errors) {
                             modelStateErrors.push(data.errors[key]);
