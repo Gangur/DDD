@@ -1,6 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Category, Client, ProductDtoListResultDto } from 'src/app/api/http-client';
-import { KeyValuePair } from '../../../models/keyvaluepair';
 
 @Component({
   selector: 'app-shop',
@@ -26,7 +25,9 @@ export class ShopComponent implements OnInit {
   pageNumber: number = 1;
   pageSize: number = 10;
 
-  client = inject(Client)
+  constructor(private client: Client) {
+
+  }
 
   ngOnInit(): void {
     this.getProducts();

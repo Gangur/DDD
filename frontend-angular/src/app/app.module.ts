@@ -6,8 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
-import { ShopModule } from './shop/shop.module';
 import { API_BASE_URL, Client } from './api/http-client';
+import { HomeModule } from './home/home.module';
 
 function getBaseUrl() {
   return 'https://localhost:44370/';
@@ -23,7 +23,7 @@ function getBaseUrl() {
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule,
-    ShopModule
+    HomeModule
   ],
   providers: [
     Client,

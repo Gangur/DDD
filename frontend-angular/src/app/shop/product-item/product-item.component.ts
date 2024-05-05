@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductDto } from 'src/app/api/http-client';
-import PictureUrl from 'src/tools/PicturesUrlFactory';
+import PictureUrl from '../../../tools/picturesurlfactory';
 
 @Component({
   selector: 'app-product-item',

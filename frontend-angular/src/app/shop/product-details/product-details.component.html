@@ -1,0 +1,28 @@
+<div class="row" *ngIf="product">
+    <div class="col-6">
+        <img src="{{pictureUrl}}" alt="{{product.name}}" class="w-100" />
+    </div>
+    <div class="col-6 mt-5">
+        <h2>{{product.name}}</h2>
+        <p>{{product.priceAmount | currency}}</p>
+        <div class="d-flex justify-content-start align-content-center">
+
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-danger">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+                <button type="button" class="btn btn-outline-danger">
+                    <span class="font-weight-bold">2</span>
+                </button>
+                <button type="button" class="btn btn-outline-danger">
+                    <i class="bi bi-dash-lg"></i>
+                </button>
+            </div>
+            <button class="btn btn-outline-secondary ms-4">Add to card</button>
+        </div>
+        <div class="row mt-4">
+            <h4>Description</h4>
+            <p></p>
+        </div>
+    </div>
+</div> 
