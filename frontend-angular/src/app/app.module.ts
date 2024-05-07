@@ -9,10 +9,7 @@ import { CoreModule } from './core/core.module';
 import { API_BASE_URL, Client } from './api/http-client';
 import { HomeModule } from './home/home.module';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
-
-function getBaseUrl() {
-  return 'https://localhost:44370/';
-}
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,7 +26,8 @@ function getBaseUrl() {
   providers: [
     Client,
     { provide: API_BASE_URL, useValue: 'https://localhost:44370' },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

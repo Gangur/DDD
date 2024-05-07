@@ -7,3 +7,11 @@
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
 
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+
+label.xng-breadcrumb-trail {
+  color: #dc3545;
+}
+
+li.xng-breadcrumb-item {
+  text-transform: capitalize;
+}
