@@ -9,7 +9,7 @@
             _domainEvents.Add(domainEvent);
         }
 
-        public IReadOnlyCollection<IDomainEvent<IEntityId>> DomainEvents { get => _domainEvents.ToList(); }
+        public IDomainEvent<IEntityId>[] DomainEvents { get => _domainEvents.ToArray(); }
 
         public void ClearDomainEvents()
             => _domainEvents.Clear();

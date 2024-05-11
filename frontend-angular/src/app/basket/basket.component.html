@@ -1,0 +1,101 @@
+<div class="container mt-5">
+    <div *ngIf="(basketService.basketSource$ | async) === null">
+        <p>There are no items in your basket</p>
+    </div>
+
+    <ng-container *ngIf="(basketService.basketSource$ | async) as basket">
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="bg-light text-uppercase">
+                        <tr>
+                            <th>
+                                <div class="py-2">
+                                    Product
+                                </div>
+                            </th>
+                            <th>
+                                <div class="py-2">
+                                    Price
+                                </div>
+                            </th>
+                            <th>
+                                <div class="py-2">
+                                    Quantity
+                                </div>
+                            </th>
+                            <th>
+                                <div class="py-2">
+                                    Total
+                                </div>
+                            </th>
+                            <th>
+                                <div class="py-2">
+                                    Remove
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of basket.lineItems">
+                            <th>
+                                <div class="p2 d-inline-block">
+                                    <img src="{{PictureUrl(item.pictureName!)}}"
+                                         alt="{{item.productName}}"
+                                         class="img-fluid"
+                                         style="max-height: 50px;" />
+                                    <div class="ms-3 d-inline-block align-middle">
+                                        <h5 class="mb-0">
+                                            <a routerLink="/shop/{{item.productId}}" class="text-dark text-decoration-none">
+                                                {{item.productName}}
+                                            </a>
+                                        </h5>
+                                        <span class="text-muted fst-italic">
+                                            Category: {{item.category}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </th>
+                            <td class="align-middle">
+                                <strong>
+                                    {{item.priceAmount / 100 | currency:item.priceCurrency}}
+                                </strong>
+                            </td>
+                            <td class="align-middle">
+                                <div class="btn-group" role="group" aria-label="products-quantity-control">
+                                    <button type="button" class="btn btn-outline-danger" (click)="basketService.removeLineItem(item.productId)">
+                                        <i class="bi bi-dash-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger">
+                                        <span class="font-weight-bold">{{item.quantity}}</span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" (click)="basketService.addLineItem(item.productId)">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <strong>
+                                    {{item.priceAmount * item.quantity / 100 | currency:item.priceCurrency}}
+                                </strong>
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-danger bi bi-trash3" (click)="basketService.removeLineItem(item.productId, item.quantity )"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row mb-5">
+                <div class="col-6 offset-6">
+                    <app-order-totals></app-order-totals>
+                    <div class="d-grid">
+                        <a routerLink="/checkout" class="btn btn-outline-danger py-2">
+                            Proceed to checkout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

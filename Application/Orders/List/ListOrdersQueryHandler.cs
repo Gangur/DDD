@@ -21,7 +21,7 @@ namespace Application.Orders.List
             var orders = await _orderRepository.ListAsync(request.ListParameters, cancellationToken);
 
             var listResult = ListResultDto<OrderDto>
-                .Create(ordersTotal, orders.Select(OrderDto.Map).ToList());
+                .Create(ordersTotal, orders.Select(OrderDto.Map).ToArray());
 
             return Result<ListResultDto<OrderDto>>
                 .CreateSuccessful(listResult);

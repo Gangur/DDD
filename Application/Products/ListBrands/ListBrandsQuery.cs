@@ -2,5 +2,5 @@
 
 namespace Application.Products.ListBrands
 {
-    public record ListBrandsQuery() : IQuery<IReadOnlyCollection<string>>;
+    public record ListBrandsQuery() : IQuery<string[]>;
 }

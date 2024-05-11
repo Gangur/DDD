@@ -9,31 +9,31 @@ import { Client } from '../../api/http-client';
 
 export class TestErrorComponent {
 
-  constructor(private client: Client) { }
+  constructor(private _client: Client) { }
 
   get404Error() {
-    this.client.v1BuggyNotFound().subscribe({
+    this._client.v1BuggyNotFound().subscribe({
       next: respoce => console.log(respoce),
       error: error => console.log(error),
     })
   }
 
   get500Error() {
-    this.client.v1BuggyServerError().subscribe({
+    this._client.v1BuggyServerError().subscribe({
       next: respoce => console.log(respoce),
       error: error => console.log(error),
     })
   }
 
   get400Error() {
-    this.client.v1BuggyBadRequest().subscribe({
+    this._client.v1BuggyBadRequest().subscribe({
       next: respoce => console.log(respoce),
       error: error => console.log(error),
     })
   }
 
   get400ValidationError() {
-    this.client.v1BuggyValidationProblem().subscribe({
+    this._client.v1BuggyValidationProblem().subscribe({
       next: respoce => console.log(respoce),
       error: error => console.log(error)
     })

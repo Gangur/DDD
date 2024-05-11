@@ -21,7 +21,7 @@ namespace Application.Products.List
             var products = await _productRepository.ListAsync(request.ListParameters, cancellationToken);
 
             var listResult = ListResultDto<ProductDto>
-                .Create(productsTotal, products.Select(ProductDto.Map).ToList());
+                .Create(productsTotal, products.Select(ProductDto.Map).ToArray());
 
             return Result<ListResultDto<ProductDto>>.CreateSuccessful(listResult);
         }

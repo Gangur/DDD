@@ -4,7 +4,7 @@ using Domain.Products;
 
 namespace Application.Products.ListBrands
 {
-    public class ListBrandsQueryHandler : IQueryHandler<ListBrandsQuery, IReadOnlyCollection<string>>
+    public class ListBrandsQueryHandler : IQueryHandler<ListBrandsQuery, string[]>
     {
         private readonly IProductRepository _productRepository;
 
@@ -13,7 +13,7 @@ namespace Application.Products.ListBrands
             _productRepository = productRepository;
         }
 
-        public async Task<Result<IReadOnlyCollection<string>>> Handle(ListBrandsQuery request, CancellationToken cancellationToken)
-            => Result<IReadOnlyCollection<string>>.CreateSuccessful(await _productRepository.ListBrandsAsync(cancellationToken));
+        public async Task<Result<string[]>> Handle(ListBrandsQuery request, CancellationToken cancellationToken)
+            => Result<string[]>.CreateSuccessful(await _productRepository.ListBrandsAsync(cancellationToken));
     }
 }

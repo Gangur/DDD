@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { BasketService } from '../../basket/basket.service';
+import { LineItemDto } from '../../api/http-client';
 
 @Component({
   selector: 'app-nav-bar',
@@ -7,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class NavBarComponent {
 
+  constructor(public basketService: BasketService) { }
+
+  getCount(items: LineItemDto[]) {
+    return items.reduce((sum, item) => sum + item.quantity, 0)
+  }
 }

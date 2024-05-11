@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router, private toastr: ToastrService) { }
+  constructor(private _router: Router, private _toastr: ToastrService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
@@ -30,22 +30,22 @@ export class ErrorInterceptor implements HttpInterceptor {
                     for (const key in data.errors) {
                       modelStateErrors.push(data.errors[key]);
                     }
-                    this.toastr.error(modelStateErrors.join('; ') + ';', 'Validation problems!')
+                    this._toastr.error(modelStateErrors.join('; ') + ';', 'Validation problems!')
                   } catch (e) {
-                    this.toastr.error(errorText, error.status.toString());
+                    this._toastr.error(errorText, error.status.toString());
                   }
                   break;
                 case 401:
-                  this.toastr.error(errorText, error.status.toString());
+                  this._toastr.error(errorText, error.status.toString());
                   break;
                 case 404:
-                  this.router.navigateByUrl('/not-found');
+                  this._router.navigateByUrl('/not-found');
                   break;
                 case 500:
                   const navigationExras: NavigationExtras = {
                     state: { error: { error: errorText, trace: error.message } }
                   };
-                  this.router.navigateByUrl('/server-error', navigationExras);
+                  this._router.navigateByUrl('/server-error', navigationExras);
                   break;
               }
             });

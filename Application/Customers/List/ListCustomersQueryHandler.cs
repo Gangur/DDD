@@ -22,7 +22,7 @@ namespace Application.Customers.List
 
             var listResult = ListResultDto<CustomerDto>.Create(customersTotal, customers
                     .Select(CustomerDto.Map)
-                    .ToList());
+                    .ToArray());
 
             return Result<ListResultDto<CustomerDto>>.CreateSuccessful(listResult);
         }

@@ -6,14 +6,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class BusyService {
   busyRequestCount = 0;
-  constructor(private spinnerService: NgxSpinnerService)
+  constructor(private _spinnerService: NgxSpinnerService)
   {
 
   }
 
   busy() {
     this.busyRequestCount++;
-    this.spinnerService.show(undefined, {
+    this._spinnerService.show(undefined, {
       type: 'ball-clip-rotate-multiple',
       bdColor: 'rgba(255,255,255,0.7)',
       color: '#333333'
@@ -24,7 +24,7 @@ export class BusyService {
     this.busyRequestCount--;
     if (this.busyRequestCount <= 0) {
       this.busyRequestCount = 0;
-      this.spinnerService.hide();
+      this._spinnerService.hide();
     }
   }
 }

@@ -25,9 +25,9 @@ namespace Persistence.Repositories
         public async Task<Product?> FindAsync(ProductId entityId, CancellationToken cancellationToken)
             => await _context.FindAsync<Product>(entityId, cancellationToken);
 
-        public Task<List<Product>> ListAsync(ProductsListParameters parameters, CancellationToken cancellationToken)
+        public Task<Product[]> ListAsync(ProductsListParameters parameters, CancellationToken cancellationToken)
             => ApplyOrdering(ApplyFilters(_context.GetQuery<Product>(), parameters), parameters)
-                .ToListAsync(cancellationToken);
+                .ToArrayAsync(cancellationToken);
 
         public IQueryable<Product> ApplyOrdering(IQueryable<Product> query, ListParameters parameters)
             => parameters.OrderBy switch
@@ -44,8 +44,8 @@ namespace Persistence.Repositories
             => _context.GetQuery<Product>()
                     .FirstOrDefaultAsync(p => p.Id == entityId, cancellationToken);
 
-        public async Task<IReadOnlyCollection<string>> ListBrandsAsync(CancellationToken cancellationToken)
-            => await _context.GetQuery<Product>().GroupBy(p => p.Brand).Select(p => p.Key.Name).ToListAsync(cancellationToken);
+        public async Task<string[]> ListBrandsAsync(CancellationToken cancellationToken)
+            => await _context.GetQuery<Product>().GroupBy(p => p.Brand).Select(p => p.Key.Name).ToArrayAsync(cancellationToken);
 
         private IQueryable<Product> ApplyFilters(IQueryable<Product> query, ProductsListParameters parameters)
         {

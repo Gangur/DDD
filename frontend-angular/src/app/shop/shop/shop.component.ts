@@ -25,7 +25,7 @@ export class ShopComponent implements OnInit {
   pageNumber: number = 1;
   pageSize: number = 10;
 
-  constructor(private client: Client) {
+  constructor(private _client: Client) {
 
   }
 
@@ -36,7 +36,7 @@ export class ShopComponent implements OnInit {
 
   getProducts() {
 
-    this.client.v1ProductsList(this.categorySelected,
+    this._client.v1ProductsList(this.categorySelected,
       this.brandSelected,
       this.searchTerm?.nativeElement.value,
       this.sortSelected.value,
@@ -48,7 +48,7 @@ export class ShopComponent implements OnInit {
   }
 
   getBrands() {
-    this.client.v1ProductsListBrands().subscribe({
+    this._client.v1ProductsListBrands().subscribe({
       next: respose => this.brands = respose!,
       error: error => console.log(error)
     });

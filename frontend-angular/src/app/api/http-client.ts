@@ -1287,6 +1287,7 @@ export interface CustomerDtoListResultDto {
 export interface LineItemDto {
   productId: string;
   productName: string | undefined;
+  category: string | undefined;
   pictureName: string | undefined;
   priceAmount: number;
   priceCurrency: string | undefined;

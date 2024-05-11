@@ -15,7 +15,7 @@ namespace Domain.Abstraction
 
         Task<TEntity?> TakeAsync(TEntityId entityId, CancellationToken cancellationToken);
 
-        Task<List<TEntity>> ListAsync(TListParameters parameters, CancellationToken cancellationToken);
+        Task<TEntity[]> ListAsync(TListParameters parameters, CancellationToken cancellationToken);
 
         Task<int> CountAsync(TListParameters parameters, CancellationToken cancellationToken);
 

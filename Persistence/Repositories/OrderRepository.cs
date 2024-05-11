@@ -44,11 +44,11 @@ namespace Persistence.Repositories
         public Task<int> CountAsync(ListParameters parameters, CancellationToken cancellationToken)
             => _context.GetQuery<Order>().CountAsync(cancellationToken);
 
-        public Task<List<Order>> ListAsync(ListParameters parameters, CancellationToken cancellationToken)
+        public Task<Order[]> ListAsync(ListParameters parameters, CancellationToken cancellationToken)
             => ApplyOrdering(_context.GetQuery<Order>()
             .Include(o => o.LineItems)
                 .ThenInclude(li => li.Product), parameters)
-            .ToListAsync(cancellationToken);
+            .ToArrayAsync(cancellationToken);
 
         public IQueryable<Order> ApplyOrdering(IQueryable<Order> query, ListParameters parameters)
             => parameters.OrderBy switch

@@ -24,9 +24,9 @@ namespace Persistence.Repositories
         public async Task<Customer?> FindAsync(CustomerId entityId, CancellationToken cancellationToken)
             => await _context.FindAsync<Customer>(entityId, cancellationToken);
 
-        public Task<List<Customer>> ListAsync(ListParameters parameters, CancellationToken cancellationToken)
+        public Task<Customer[]> ListAsync(ListParameters parameters, CancellationToken cancellationToken)
             => ApplyOrdering(_context.GetQuery<Customer>(), parameters)
-                .ToListAsync(cancellationToken);
+                .ToArrayAsync(cancellationToken);
 
         public IQueryable<Customer> ApplyOrdering(IQueryable<Customer> query, ListParameters parameters)
             => parameters.OrderBy switch

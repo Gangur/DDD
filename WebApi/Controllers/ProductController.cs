@@ -77,7 +77,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("list-brands")]
-        public async Task<ActionResult<IReadOnlyCollection<string>>> ListBrandsAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult<string[]>> ListBrandsAsync(CancellationToken cancellationToken)
         {
             var query = new ListBrandsQuery();
 

@@ -5,6 +5,6 @@ namespace Domain.Products
 {
     public interface IProductRepository : IRepository<Product, ProductId, ProductsListParameters>
     {
-        Task<IReadOnlyCollection<string>> ListBrandsAsync(CancellationToken cancellationToken);
+        Task<string[]> ListBrandsAsync(CancellationToken cancellationToken);
     }
 }
