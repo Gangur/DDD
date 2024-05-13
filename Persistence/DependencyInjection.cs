@@ -3,6 +3,8 @@ using Domain.Customers;
 using Domain.Orders;
 using Domain.OutboxMessage;
 using Domain.Products;
+using Domain.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -6,6 +6,7 @@ using Application.Customers.Update;
 using Domain.Abstraction.Transport;
 using Domain.Customers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation;
 using Presentation.Adstraction;
@@ -31,6 +32,7 @@ namespace WebApi.Controllers
             return ActionFromIdResult(result);
         }
 
+        [Authorize]
         [HttpPut("update")]
         public async Task<ActionResult> UpdateAsync(CustomerDto customerDto, CancellationToken cancellationToken)
         {
@@ -53,6 +55,7 @@ namespace WebApi.Controllers
             return ActionFromResult(result);
         }
 
+        [Authorize]
         [HttpGet("list")]
         public async Task<ActionResult<ListResultDto<CustomerDto>>> ListAsync(
             [FromQuery] ListParameters parameters, CancellationToken cancellationToken)
@@ -64,6 +67,7 @@ namespace WebApi.Controllers
             return ActionFromResult(result);
         }
 
+        [Authorize]
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> DeleteAsync(
             [Required] Guid id,

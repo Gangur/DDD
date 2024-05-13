@@ -43,8 +43,8 @@ namespace Application.Data
         public static Result CreateBadRequest(string errorMessage)
             => new Result(errorMessage, ResultType.BadRequest);
 
-        public static Result CreateUnauthorized()
-            => new Result("Unauthorized request failed!", ResultType.Unauthorized);
+        public static Result CreateUnauthorized(string? errorMessage = default)
+            => new Result(errorMessage ?? "Unauthorized request failed!", ResultType.Unauthorized);
     }
 
     public sealed record Result<T> : Result
@@ -75,7 +75,7 @@ namespace Application.Data
         public static new Result<T> CreateBadRequest(string errorMessage)
             => new Result<T>(errorMessage, ResultType.BadRequest);
 
-        public static new Result<T> CreateUnauthorized()
-            => new Result<T>("Unauthorized request failed!", ResultType.Unauthorized);
+        public static new Result<T> CreateUnauthorized(string? errorMessage = default)
+            => new Result<T>(errorMessage ?? "Unauthorized request failed!", ResultType.Unauthorized);
     }
 }

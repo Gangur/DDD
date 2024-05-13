@@ -2,8 +2,6 @@
 using Domain.Data;
 using Domain.Orders;
 using Domain.Products;
-using Remotion.Linq.Clauses;
-using System.Diagnostics;
 
 namespace Domain.LineItems
 {

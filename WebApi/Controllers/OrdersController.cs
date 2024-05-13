@@ -8,6 +8,7 @@ using Domain.Customers;
 using Domain.Orders;
 using Domain.Products;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation;
 using Presentation.Adstraction;
@@ -84,6 +85,7 @@ namespace WebApi.Controllers
             return ActionFromResult(result);
         }
 
+        [Authorize]
         [HttpGet("list")]
         public async Task<ActionResult<ListResultDto<OrderDto>>> ListAsync(
             [FromQuery] ListParameters parameters, CancellationToken cancellationToken)

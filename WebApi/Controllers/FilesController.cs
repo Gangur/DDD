@@ -1,13 +1,14 @@
 ﻿using Application.Files.Download;
 using Application.Files.Upload;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using WebApi.Abstraction;
 
 namespace WebApi.Controllers
 {
-
+    [Authorize]
     [Route("v{version:apiVersion}/files")]
     public class FilesController : BaseApiV1Controller
     {

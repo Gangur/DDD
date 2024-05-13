@@ -6,6 +6,7 @@ using Domain.Data;
 using Domain.Products;
 using Domain.Products.Transport;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation;
 using Presentation.Adstraction;
@@ -20,6 +21,7 @@ namespace WebApi.Controllers
         {
         }
 
+        [Authorize]
         [HttpPost("create")]
         public async Task<ActionResult<Guid>> CreateAsync(string name,
             string priceCurrency,

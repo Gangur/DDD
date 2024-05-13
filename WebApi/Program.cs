@@ -1,6 +1,8 @@
 using Application;
 using Asp.Versioning.ApiExplorer;
-using Infrastructure;
+using Domain.User;
+using Infrastructure.DependencyInjections;
+using Microsoft.AspNetCore.Identity;
 using Persistence;
 using System.Text.Json.Serialization;
 using WebApi;
@@ -11,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 IConfiguration configuration = builder.Configuration;
 IWebHostEnvironment environment = builder.Environment;
-
 
 //builder.Services.AddRebus(configure =>
 //{
@@ -31,11 +32,13 @@ builder.Services.AddControllers()
 builder.Services.AddVersioning();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(configuration);
+builder.Services.AddAuthenticationInfrastructure(configuration);
+
 builder.Services.AddPersistence(configuration);
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddCors();
 
@@ -53,14 +56,11 @@ var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionD
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
-        {
-            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
-                description.GroupName.ToUpperInvariant());
-        }
-    });
+    app.UseSwaggerUI();
+}
+else
+{
+    app.UseHttpsRedirection();
 }
 
 var corsConf = configuration.GetRequiredSection("Cors");
@@ -76,11 +76,14 @@ app.UseCors(opt =>
     opt.AllowAnyHeader()
        .AllowAnyMethod()
        .AllowCredentials()
-       .WithOrigins(new [] { frontendReact, frontendAngular });
+       .WithOrigins(new[] { frontendReact, frontendAngular });
 });
+
+app.UseStatusCodePages();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

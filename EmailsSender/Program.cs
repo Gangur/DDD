@@ -3,6 +3,7 @@ using EmailsSender.Configurations;
 using EmailsSender.Consumers;
 using EmailsSender.Services;
 using Infrastructure;
+using Infrastructure.DependencyInjections;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
