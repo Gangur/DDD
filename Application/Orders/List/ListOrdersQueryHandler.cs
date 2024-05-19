@@ -1,5 +1,6 @@
 ﻿using Application.Abstraction;
 using Application.Data;
+using Domain.Customers;
 using Domain.Orders;
 using Presentation;
 using Presentation.Adstraction;
@@ -21,7 +22,8 @@ namespace Application.Orders.List
             var orders = await _orderRepository.ListAsync(request.ListParameters, cancellationToken);
 
             var listResult = ListResultDto<OrderDto>
-                .Create(ordersTotal, orders.Select(OrderDto.Map).ToArray());
+                .Create(ordersTotal, Array.ConvertAll(orders,
+                    new Converter<Order, OrderDto>(OrderDto.Map)));
 
             return Result<ListResultDto<OrderDto>>
                 .CreateSuccessful(listResult);

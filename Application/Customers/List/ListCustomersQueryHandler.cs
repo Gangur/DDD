@@ -1,6 +1,7 @@
 ﻿using Application.Abstraction;
 using Application.Data;
 using Domain.Customers;
+using Domain.Products;
 using Presentation;
 using Presentation.Adstraction;
 
@@ -20,9 +21,9 @@ namespace Application.Customers.List
             var customersTotal = await _customerRepository.CountAsync(request.ListParameters, cancellationToken);
             var customers = await _customerRepository.ListAsync(request.ListParameters, cancellationToken);
 
-            var listResult = ListResultDto<CustomerDto>.Create(customersTotal, customers
-                    .Select(CustomerDto.Map)
-                    .ToArray());
+            var listResult = ListResultDto<CustomerDto>.Create(customersTotal, 
+                Array.ConvertAll(customers,
+                    new Converter<Customer, CustomerDto>(CustomerDto.Map)));
 
             return Result<ListResultDto<CustomerDto>>.CreateSuccessful(listResult);
         }
