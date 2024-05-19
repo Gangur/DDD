@@ -31,6 +31,12 @@ services:
       context: .
       dockerfile: EmailsSender/Dockerfile  
 
+  sms-sender:
+    image: ${DOCKER_REGISTRY-}consoleapp
+    build:
+      context: .
+      dockerfile: SmsSender/Dockerfile  
+
   frontend:
     build:
       context: frontend

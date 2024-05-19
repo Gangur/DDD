@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs;
 using Infrastructure.Blobs;
 using Infrastructure.MessageBroker;
+using Infrastructure.Sms;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,9 @@ namespace Infrastructure.DependencyInjections
             var blobsConnectionString = configuration.GetConnectionString("StorageAccount")!;
             services.AddSingleton(x => new BlobServiceClient(blobsConnectionString));
             services.AddSingleton<IBlobService, BlobService>();
+
+            services.ConfigureGrpc(configuration);
+            services.AddSingleton<ISmsService, SmsServiceImpl>();
 
             return services;
         }

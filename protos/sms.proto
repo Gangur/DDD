@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package SmsGRpc;
+
+message SmsRequest {
+    repeated string recipients = 1;
+    string message = 2;
+}
+
+message RpcResult {
+    bool success = 1;
+    string message = 2;
+}
+
+service SmsService {
+    rpc Send(SmsRequest) returns (RpcResult);
+}

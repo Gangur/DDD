@@ -15,7 +15,7 @@
       "moduleName": "",
       "namespace": "",
       "typeScriptVersion": 4.3,
-      "template": "Angular",
+      "template": "Axios",
       "promiseType": "Promise",
       "httpClass": "HttpClient",
       "withCredentials": false,

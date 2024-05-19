@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.MessageBroker
+﻿namespace Infrastructure.Settings
 {
     public sealed class MessageBrokerSettings
     {

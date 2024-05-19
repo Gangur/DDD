@@ -8,15 +8,10 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-import axios, { AxiosError } from "axios";
-import type {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  CancelToken,
-} from "axios";
-import { toast } from "react-toastify";
-import { router } from "../router/Routes";
+import axios, { AxiosError } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
+import { toast } from 'react-toastify';
+import { router } from '../router/Routes';
 
 export class Client {
     protected instance: AxiosInstance;
@@ -29,6 +24,225 @@ export class Client {
 
         this.baseUrl = baseUrl ?? "";
 
+    }
+
+    /**
+     * @return Success
+     */
+    v1AuthGetCurrentUser(cancelToken?: CancelToken): Promise<UserDto> {
+        let url_ = this.baseUrl + "/v1/auth/get-current-user";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain; x-api-version=1.0"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1AuthGetCurrentUser(_response);
+        });
+    }
+
+    protected processV1AuthGetCurrentUser(response: AxiosResponse): Promise<UserDto> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<UserDto>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<UserDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    v1AuthRegister(body: RegisterDto | undefined, cancelToken?: CancelToken): Promise<UserDto> {
+        let url_ = this.baseUrl + "/v1/auth/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json; x-api-version=1.0",
+                "Accept": "text/plain; x-api-version=1.0"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1AuthRegister(_response);
+        });
+    }
+
+    protected processV1AuthRegister(response: AxiosResponse): Promise<UserDto> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<UserDto>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<UserDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    v1AuthLogin(body: LoginDto | undefined, cancelToken?: CancelToken): Promise<UserDto> {
+        let url_ = this.baseUrl + "/v1/auth/login";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json; x-api-version=1.0",
+                "Accept": "text/plain; x-api-version=1.0"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1AuthLogin(_response);
+        });
+    }
+
+    protected processV1AuthLogin(response: AxiosResponse): Promise<UserDto> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<UserDto>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<UserDto>(null as any);
+    }
+
+    /**
+     * @param email (optional) 
+     * @return Success
+     */
+    v1AuthCheckEmail(email: string | undefined, cancelToken?: CancelToken): Promise<boolean> {
+        let url_ = this.baseUrl + "/v1/auth/check-email?";
+        if (email === null)
+            throw new Error("The parameter 'email' cannot be null.");
+        else if (email !== undefined)
+            url_ += "email=" + encodeURIComponent("" + email) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain; x-api-version=1.0"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processV1AuthCheckEmail(_response);
+        });
+    }
+
+    protected processV1AuthCheckEmail(response: AxiosResponse): Promise<boolean> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<boolean>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<boolean>(null as any);
     }
 
     /**
@@ -1148,14 +1362,29 @@ export class Client {
     }
 
     /**
+     * @param category (optional) 
+     * @param brand (optional) 
+     * @param searchString (optional) 
      * @param orderBy (optional) 
      * @param descending (optional) 
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return Success
      */
-    v1ProductsList(orderBy: string | undefined, descending: boolean | undefined, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<ProductDtoListResultDto> {
+    v1ProductsList(category: Category | undefined, brand: string | undefined, searchString: string | undefined, orderBy: string | undefined, descending: boolean | undefined, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<ProductDtoListResultDto> {
         let url_ = this.baseUrl + "/v1/products/list?";
+        if (category === null)
+            throw new Error("The parameter 'category' cannot be null.");
+        else if (category !== undefined)
+            url_ += "Category=" + encodeURIComponent("" + category) + "&";
+        if (brand === null)
+            throw new Error("The parameter 'brand' cannot be null.");
+        else if (brand !== undefined)
+            url_ += "Brand=" + encodeURIComponent("" + brand) + "&";
+        if (searchString === null)
+            throw new Error("The parameter 'searchString' cannot be null.");
+        else if (searchString !== undefined)
+            url_ += "SearchString=" + encodeURIComponent("" + searchString) + "&";
         if (orderBy === null)
             throw new Error("The parameter 'orderBy' cannot be null.");
         else if (orderBy !== undefined)
@@ -1271,9 +1500,9 @@ export class Client {
 }
 
 export enum Category {
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
+    Phones = "Phones",
+    Tablets = "Tablets",
+    Books = "Books",
 }
 
 export interface CustomerDto {
@@ -1293,7 +1522,13 @@ export interface LineItemDto {
     pictureName: string | undefined;
     priceAmount: number;
     priceCurrency: string | undefined;
+    category: Category;
     quantity: number;
+}
+
+export interface LoginDto {
+    login: string;
+    password: string;
 }
 
 export interface OrderDto {
@@ -1321,6 +1556,18 @@ export interface ProductDto {
 export interface ProductDtoListResultDto {
     readonly total: number;
     readonly values: ProductDto[] | undefined;
+}
+
+export interface RegisterDto {
+    email: string;
+    displayName: string;
+    password: string;
+}
+
+export interface UserDto {
+    email: string | undefined;
+    token: string | undefined;
+    displayName: string | undefined;
 }
 
 export interface Body {

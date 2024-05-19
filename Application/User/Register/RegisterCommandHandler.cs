@@ -11,11 +11,15 @@ namespace Application.User.Register
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IJwtProvider _jwtProvider;
+        private readonly ISmsService _smsService;
 
-        public RegisterCommandHandler(UserManager<AppUser> userManager, IJwtProvider jwtProvider)
+        public RegisterCommandHandler(UserManager<AppUser> userManager, 
+            IJwtProvider jwtProvider, 
+            ISmsService smsService)
         {
             _userManager = userManager;
             _jwtProvider = jwtProvider;
+            _smsService = smsService;
         }
 
         public async Task<Result<UserDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -37,6 +41,16 @@ namespace Application.User.Register
             }
 
             var token = _jwtProvider.GenerateToken(user);
+
+#if DEBUG
+            await _smsService.SendAsync($"User {user.UserName} has been created!",
+                new string[] { "+1(111)-111-1111" },
+                cancellationToken);
+#else
+            _ = _smsService.SendAsync($"User {user.UserName} has been created!", 
+                new string[] { user.PhoneNumber! }, 
+                cancellationToken);
+#endif
 
             return Result<UserDto>.CreateSuccessful(UserDto.Create(user.Email!, user.UserName!, token));
         }

@@ -44,6 +44,9 @@ services:
   email-sender:
     restart: on-failure 
 
+  sms-sender:
+    restart: on-failure 
+
   frontend:
     volumes:
       - ".:/app"
