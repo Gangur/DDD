@@ -8,4 +8,4 @@ Hi there, it is just my sandbox where I play with some of technology, such as:
 - gRPC;
 - SQL;
 
-Thank you for coming here, and have a beautiful day!
+Thank you for coming here!
