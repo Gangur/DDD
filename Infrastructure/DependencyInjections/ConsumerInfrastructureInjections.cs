@@ -28,6 +28,17 @@ namespace Infrastructure.DependencyInjections
                         h.Password(messageBrokerSettings.Password);
                     });
 
+                    configuratior.ReceiveEndpoint("input-queue", e =>
+                    {
+                        e.Bind("exchange-name", x =>
+                        {
+                            x.Durable = true;
+                            x.AutoDelete = true;
+                            x.ExchangeType = "direct";
+                            x.RoutingKey = "8675309";
+                        });
+                    });
+
                     configuratior.ConfigureEndpoints(context);
                 });
             });

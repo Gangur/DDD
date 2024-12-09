@@ -7,7 +7,7 @@ export default function About() {
     const [validationErrors, setValidationErrors] = useState<string[]>([])
 
     function getValidationError() {
-        agent.v1BuggyValidationProblem()
+        agent.buggy.validationProblem()
             .then(() => console.log('shold not see this'))
             .catch(error => setValidationErrors(error))
     }
@@ -16,10 +16,10 @@ export default function About() {
         <Container>
             <Typography gutterBottom variant='h2'>Errors for testing purposes</Typography>
             <ButtonGroup fullWidth>
-                <Button variant='contained' onClick={() => agent.v1BuggyBadRequest()}>Test 400 Bad Request Error</Button>
-                <Button variant='contained' onClick={() => agent.v1BuggyUnauthorized()}>Test 401 Unauthorized Error</Button>
+                <Button variant='contained' onClick={() => agent.buggy.badRequest()}>Test 400 Bad Request Error</Button>
+                <Button variant='contained' onClick={() => agent.buggy.unauthorized()}>Test 401 Unauthorized Error</Button>
                 <Button variant='contained' component={Link} to='/not-found' style={{ textAlign: 'center' }}>Test 404 Not Found Error</Button>
-                <Button variant='contained' onClick={() => agent.v1BuggyServerError()}>Test 500 Server Error</Button>
+                <Button variant='contained' onClick={() => agent.buggy.serverError()}>Test 500 Server Error</Button>
                 <Button variant='contained' onClick={getValidationError}>Test Validation Error</Button>
             </ButtonGroup>
             {validationErrors.length > 0 &&

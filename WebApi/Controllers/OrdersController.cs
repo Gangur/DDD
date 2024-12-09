@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         {
         }
 
-        [HttpPost("create")]
+        [HttpPost("create/{customerId}")]
         public async Task<ActionResult<Guid>> CreateAsync(
             [Required] Guid customerId,
             CancellationToken cancellationToken)
@@ -35,7 +35,7 @@ namespace WebApi.Controllers
             return ActionFromIdResult(result);
         }
 
-        [HttpDelete("remove-line-item")]
+        [HttpDelete("remove-line-item/{orderId}/{productId}")]
         public async Task<ActionResult<OrderDto>> RemoveLineItemAsync(
             [Required] Guid orderId,
             [Required] Guid productId,
@@ -49,7 +49,7 @@ namespace WebApi.Controllers
             return ActionFromResult(result);
         }
 
-        [HttpPost("add-line-item")]
+        [HttpPost("add-line-item/{orderId}/{productId}")]
         public async Task<ActionResult<OrderDto>> AddLineItemAsync(
             [Required] Guid orderId,
             [Required] Guid productId,
@@ -63,7 +63,7 @@ namespace WebApi.Controllers
             return ActionFromResult(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<ActionResult<OrderDto>> GetAsync(
             [Required] Guid id,
             CancellationToken cancellationToken)

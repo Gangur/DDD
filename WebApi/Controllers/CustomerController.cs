@@ -34,7 +34,7 @@ namespace WebApi.Controllers
 
         [Authorize]
         [HttpPut("update")]
-        public async Task<ActionResult> UpdateAsync(CustomerDto customerDto, CancellationToken cancellationToken)
+        public async Task<ActionResult> UpdateAsync([FromBody] CustomerDto customerDto, CancellationToken cancellationToken)
         {
             var command = new UpdateCustomerCommand(customerDto.Email, customerDto.Name);
 
@@ -43,7 +43,7 @@ namespace WebApi.Controllers
             return ActionFromResult(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<ActionResult<CustomerDto>> GetAsync(
             [Required] Guid id,
             CancellationToken cancellationToken)

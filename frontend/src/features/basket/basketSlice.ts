@@ -25,7 +25,7 @@ export const addBasketItemAsync = createAsyncThunk<OrderDto | undefined,
         'basket/addBasketItemAsync',
         async ({ orderId, productId, quantity }, thunkApi) => {
             try {
-                return await agent.v1OrdersAddLineItem(orderId, productId, quantity)
+                return await agent.orders.addLineItem(orderId, productId, quantity)
             }
             catch (error: any) {
                 return thunkApi.rejectWithValue({ error: error });
@@ -42,7 +42,7 @@ export const removeBasketItemAsync = createAsyncThunk<OrderDto | undefined,
         'basket/removeBasketItemAsync',
         async ({ orderId, productId, quantity }, thunkApi) => {
             try {
-                return await agent.v1OrdersRemoveLineItem(orderId, productId, quantity)
+                return await agent.orders.removeLineItem(orderId, productId, quantity)
             }
             catch (error: any) {
                 return thunkApi.rejectWithValue({ error: error });

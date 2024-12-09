@@ -8,14 +8,13 @@ import DisplayPrice from "../../tools/price-factory";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { LoadingButton } from "@mui/lab";
 import { addBasketItemAsync, removeBasketItemAsync } from "../basket/basketSlice";
-import { useSelector } from "react-redux";
 import { fetchProductAsync, productSelectors } from "./catalogSlice";
 
 export default function ProductDetailes() {
     const { id } = useParams<{ id: string }>();
     const { basket, status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
-    const product = useSelector(state => productSelectors.selectById(state, id!));
+    const product = useAppSelector(state => productSelectors.selectById(state, id!));
     const { status: productStatus } = useAppSelector(state => state.catalog);
     const [quantity, setQuantity] = useState(0);
 
@@ -39,8 +38,8 @@ export default function ProductDetailes() {
             const quantityDif = item ? quantity - item.quantity! : quantity;
 
             dispatch(addBasketItemAsync({
-                orderId: basket!.id,
-                productId: product!.id,
+                orderId: basket!.id!,
+                productId: product!.id!,
                 quantity: quantityDif
             }));
         }
@@ -48,8 +47,8 @@ export default function ProductDetailes() {
             const quantityDif = item.quantity! - quantity;
 
             dispatch(removeBasketItemAsync({
-                orderId: basket!.id,
-                productId: product!.id,
+                orderId: basket!.id!,
+                productId: product!.id!,
                 quantity: quantityDif
             }));
         }

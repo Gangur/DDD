@@ -1,17 +1,41 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+﻿import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { Category, ProductDto, ProductDtoListResultDto } from "../../app/api/http-client";
 import agent from "../../app/api/agent";
-import { RootState } from "@reduxjs/toolkit/query";
+import { ProductParams } from "../../app/models/product-params";
+import { RootState } from "../../app/store/configureStore";
 
-const productsAdapter = createEntityAdapter<ProductDto>();
+const productsAdapter = createEntityAdapter({
+    selectId: (entity: ProductDto) => entity.id!,
+    sortComparer: (a, b) => a.id!.localeCompare(b.id!),
+  });
+
+interface CatalogState {
+    productsLoaded: boolean; 
+    filtersLoaded: boolean;
+    status: string;
+    brands: string[];
+    categories: string[];
+    productParams: ProductParams;
+}
 
 const _defaultState = 'idle';
 
-export const fetchProductsAsync = createAsyncThunk<ProductDtoListResultDto>(
+export const fetchProductsAsync = createAsyncThunk<ProductDtoListResultDto, void, { state: RootState }>(
     'catalog/fetchProductsAsync',
-     async (_, thunkApi) => {
-         try {
-             return await agent.v1ProductsList(undefined, undefined, undefined, undefined, false, 1, 10);
+    async (_, thunkApi) => {
+        const params = thunkApi.getState().catalog.productParams;
+
+        try {
+            const result = await agent
+                .products.list(params.category,
+                    params.brand,
+                    params.searchTerm,
+                    params.orderBy,
+                    params.descending, 
+                    params.pageNumber, 
+                    params.pageSize);
+
+            return result;
         }
         catch (error: any) {
             return thunkApi.rejectWithValue({ error: error });
@@ -23,7 +47,7 @@ export const fetchProductAsync = createAsyncThunk<ProductDto, string>(
     'catalog/fetchProductAsync',
     async (productId, thunkApi) => {
         try {
-            return await agent.v1Products(productId);
+            return await agent.products.get(productId);
         }
         catch (error: any) {
             return thunkApi.rejectWithValue({ error: error });
@@ -35,7 +59,7 @@ export const fetchFiltersAsync = createAsyncThunk(
     'catalog/fetchFilters',
     async (_, thunkAPI) => {
         try {
-            return await agent.v1ProductsListBrands();
+            return await agent.products.listBrands();
         }
         catch (error) {
             return thunkAPI.rejectWithValue({ error: error })
@@ -43,16 +67,37 @@ export const fetchFiltersAsync = createAsyncThunk(
     }
 )
 
+function initParams() {
+    return {
+        pageNumber: 1,
+        pageSize: 10,
+        orderBy: 'Name',
+        descending: false
+    }
+}
+
 export const catalogSlice = createSlice({
     name: 'catalog',
-    initialState: productsAdapter.getInitialState({
+    initialState: productsAdapter.getInitialState<CatalogState>({
         productsLoaded: false,
         filtersLoaded: false,
         status: _defaultState,
-        brands: [] as string[],
-        categories: [] as string[]
+        brands: [],
+        categories: [],
+        productParams: initParams()
     }),
-    reducers: {},
+    reducers: {
+        setProductParams: (state, action) => {
+            state.productsLoaded = false;
+            state.productParams = {
+                ...state.productParams,
+                ...action.payload
+            }
+        },
+        resetProductParams: (state) => {
+            state.productParams = initParams(); 
+        }
+    },
     extraReducers: (builder => {
         builder.addCase(fetchProductsAsync.pending, (state) => {
             state.status = 'pendingFetchProducts'
@@ -98,4 +143,5 @@ export const catalogSlice = createSlice({
     })
 });
 
-export const productSelectors = productsAdapter.getSelectors((state: RootState) => state.catalog)
+export const productSelectors = productsAdapter.getSelectors((state: RootState) => state.catalog);
+export const { setProductParams, resetProductParams } = catalogSlice.actions;

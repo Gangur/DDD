@@ -12,6 +12,7 @@
     <None Include=".nginx\nginx.conf" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="src\app\models\" />
     <Folder Include="src\app\store\" />
     <Folder Include="src\app\router\" />
     <Folder Include="src\features\catalog\" />

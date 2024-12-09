@@ -52,8 +52,8 @@ export default function BasketPage() {
                                     <LoadingButton
                                         loading={status === 'pendingRemoveItem-' + item.productId}
                                         onClick={() => dispatch(removeBasketItemAsync({
-                                            orderId: basket.id,
-                                            productId: item.productId,
+                                            orderId: basket.id!,
+                                            productId: item.productId!,
                                             quantity: 1
                                         }))}
                                         color='error'>
@@ -63,8 +63,8 @@ export default function BasketPage() {
                                     <LoadingButton
                                         loading={status === 'pendingAddItem-' + item.productId}
                                         onClick={() => dispatch(addBasketItemAsync({
-                                            orderId: basket.id,
-                                            productId: item.productId,
+                                            orderId: basket.id!,
+                                            productId: item.productId!,
                                             quantity: 1
                                         }))}
                                         color='secondary'>
@@ -76,9 +76,9 @@ export default function BasketPage() {
                                     <LoadingButton
                                         loading={status === 'pendingRemoveItem-' + item.productId} 
                                         onClick={() => dispatch(removeBasketItemAsync({
-                                            orderId: basket.id,
-                                            productId: item.productId,
-                                            quantity: item.quantity
+                                            orderId: basket.id!,
+                                            productId: item.productId!,
+                                            quantity: item.quantity!
                                         }))} 
                                         color='error'>
                                         <Delete />

@@ -14,10 +14,10 @@ export function getCustomerId() {
   let customerId = cookies.get(customerKey);
 
   if (!customerId || customerId == "undefined") {
-    agent.v1CustomeresCreate().then((customerId) => {
+    agent.customeres.create().then((customerId) => {
       setCookie(customerKey, customerId);
       agent
-        .v1OrdersCreate(customerId)
+        .orders.create(customerId)
         .then((orderId) => setCookie(orderKey, orderId));
     });
   }

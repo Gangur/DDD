@@ -58,7 +58,7 @@ namespace Persistence
                     })
                 }).ToList();
 
-            await GetSet<OutboxMessage>().AddRangeAsync(events, cancellationToken);
+            await AddRangeAsync(events, cancellationToken);
 
             var result = await base.SaveChangesAsync(cancellationToken);
 

@@ -20,7 +20,7 @@ namespace Infrastructure.MessageBroker
 
         public Task SendAsync<T>(T message, CancellationToken cancellationToken)
             where T : class
-                => Task.Run(() =>
+                => Task.Run(async () =>
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
@@ -29,8 +29,8 @@ namespace Infrastructure.MessageBroker
                         Uri = new Uri($"amqp://{_username}:{_password}@{_host}/")
                     };
 
-                    using var connection = factory.CreateConnection();
-                    using var channel = connection.CreateModel();
+                    using var connection = await factory.CreateConnectionAsync();
+                    using var channel = await connection.CreateChannelAsync();
 
                     var ttl = new Dictionary<string, object>
                     {
@@ -39,11 +39,12 @@ namespace Infrastructure.MessageBroker
 
                     var messageType = (typeof(T));
 
-                    channel.ExchangeDeclare(messageType.FullName, ExchangeType.Direct, arguments: ttl);
+                    await channel.ExchangeDeclareAsync(messageType.FullName ?? throw new NullReferenceException()
+                        , ExchangeType.Direct, arguments: ttl!);
 
                     var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
 
-                    channel.BasicPublish(messageType.Name, $"{messageType.Name.ToLower()}.init", null, body);
+                    //await channel.BasicPublishAsync(messageType.Name, $"{messageType.Name.ToLower()}.init", null, body);
                 });
     }
 }

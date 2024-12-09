@@ -1,8 +1,6 @@
 using Application;
 using Asp.Versioning.ApiExplorer;
-using Domain.User;
 using Infrastructure.DependencyInjections;
-using Microsoft.AspNetCore.Identity;
 using Persistence;
 using System.Text.Json.Serialization;
 using WebApi;

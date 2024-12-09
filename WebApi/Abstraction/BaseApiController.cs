@@ -24,8 +24,10 @@ namespace WebApi.Abstraction
         {
             if (result.Success)
             {
-                if (result.Value is IEntityId)
-                    return Ok(((IEntityId)result.Value).Value);
+                var idResult = result.Value as IEntityId;
+
+                if (idResult != default)
+                    return Ok(idResult.Value);
                 else
                     return Ok(result.Value);
             }

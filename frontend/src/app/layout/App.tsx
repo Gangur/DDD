@@ -18,7 +18,7 @@ function App() {
         const customerId = getCustomerId();
 
         if (customerId) {
-            agent.v1OrdersByCustomer(customerId)
+            agent.customeres.get(customerId)
                 .then(order => {
                     dispatch(setBasket(order));
                 })

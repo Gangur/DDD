@@ -27,11 +27,11 @@ namespace WebApi.Middleware
             {
                 _logger.LogError(ex, ex.Message);
                 context.Response.ContentType = "application/json";
-                context.Response.StatusCode = 500;
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
                 var response = new ProblemDetails
                 {
-                    Status = 500,
+                    Status = StatusCodes.Status500InternalServerError,
                     Detail = _env.IsDevelopment() ? ex.InnerException?.ToString() : null,
                     Title = ex.Message
                 };

@@ -56,7 +56,7 @@ namespace WebApi.Controllers
             return ActionFromIdResult(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<ActionResult<ProductDto>> GetAsync(Guid id, CancellationToken cancellationToken)
         {
             var query = new GetProductQuery(new ProductId(id));
