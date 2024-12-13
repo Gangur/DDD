@@ -3,8 +3,8 @@ import { Category } from "../api/http-client";
 export interface ProductParams {
     orderBy: string;
     searchTerm?: string;
-    category?: Category;
-    brand?: string;
+    categories?: Category[];
+    brands?: string[];
     pageNumber: number;
     pageSize: number;
     descending: boolean

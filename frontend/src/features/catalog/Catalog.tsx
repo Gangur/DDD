@@ -1,19 +1,22 @@
-import LoadingComponent from "../../app/layout/LoadingComponent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import ProductList from "./ProductList";
 import { useEffect } from "react";
-import { fetchFiltersAsync, fetchProductsAsync, productSelectors } from "./catalogSlice";
-import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, Pagination, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { fetchFiltersAsync, fetchProductsAsync, productSelectors, setPageNumer, setProductParams } from "./catalogSlice";
+import { Grid, Paper } from "@mui/material";
+import ProductSearch from "./ProductSearch";
+import RadiooButtonGroup from "../../app/components/RadioButtonGroup";
+import CheckboxButtons from "../../app/components/CheckBoxButtons";
+import AppPagination from "../../app/components/AppPagination";
 
 const sortOptions = [
     { name: 'Alphabetical', order: 'Name', descending: false },
-    { name: 'Price: Hight to low', order: 'Price', descending: false },
-    { name: 'Price: Low to hight', order: 'Price', descending: true },
+    { name: 'Price: Hight to low', order: 'Price', descending: true },
+    { name: 'Price: Low to hight', order: 'Price', descending: false },
 ]
 
 export default function Ctatalog() {
     const products = useAppSelector(productSelectors.selectAll);
-    const { productsLoaded, filtersLoaded, status, categories, brands } = useAppSelector(state => state.catalog)
+    const { productsLoaded, filtersLoaded, categories, brands, productParams, productsTotal } = useAppSelector(state => state.catalog)
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -24,41 +27,49 @@ export default function Ctatalog() {
         if (!filtersLoaded) dispatch(fetchFiltersAsync())
     }, [filtersLoaded, dispatch])
 
-    if (status.includes('pending')) return <LoadingComponent />
+    //if (status.includes('pending')) return <LoadingComponent />
+
+    let pagesCount = productsTotal / productParams.pageSize;
+    if (pagesCount % 1 > 0)
+    {
+        pagesCount++;
+        pagesCount = Math.floor(pagesCount);
+    }
 
     return (
         (
             <Grid container sx={{ mb: 2 }} spacing={4}>
                 <Grid item xs={3}>
                     <Paper sx={{ mb: 2 }}>
-                        <TextField
-                            label='Search products'
-                            variant='outlined'
-                            fullWidth
-                        />
+                        <ProductSearch />
                     </Paper>
                     <Paper sx={{mb: 2, p: 2}}>
-                        <FormControl>
-                            <RadioGroup>
-                                {sortOptions.map(({ name }) => (
-                                    <FormControlLabel key={name} value={name} control={<Radio />} label={name} />
-                                ))}
-                            </RadioGroup>
-                        </FormControl>
+                        <RadiooButtonGroup 
+                            selectedValue={sortOptions.find(x => x.order === productParams.orderBy && x.descending === productParams.descending)?.name || ''}
+                            options={sortOptions}
+                            onChange={(event: any) => {
+                                const selected = sortOptions.find(x => x.name == event.target.value);
+                                dispatch(setProductParams(
+                                    {
+                                        orderBy: selected?.order, 
+                                        descending: selected?.descending
+                                    }))
+                            }}
+                        />
                     </Paper>
                     <Paper sx={{ mb: 2, p: 2 }}>
-                        <FormGroup>
-                            {brands.map(brand => (
-                                <FormControlLabel key={brand} control={<Checkbox />} label={brand} />
-                            ))}
-                        </FormGroup>
+                        <CheckboxButtons
+                            items={brands}
+                            checked={productParams.brands}
+                            onChange={(items: string[]) => dispatch(setProductParams({brands: items}))}
+                        />
                     </Paper>
                     <Paper sx={{ mb: 2, p: 2 }}>
-                        <FormGroup>
-                            {categories.map(category => (
-                                <FormControlLabel key={category} control={<Checkbox />} label={category} />
-                            ))}
-                        </FormGroup>
+                        <CheckboxButtons
+                            items={categories}
+                            checked={productParams.categories}
+                            onChange={(items: string[]) => dispatch(setProductParams({categories: items}))}
+                        />
                     </Paper>
                 </Grid>
                 <Grid item xs={9}>
@@ -66,17 +77,12 @@ export default function Ctatalog() {
                 </Grid>
                 <Grid item xs={3} />
                 <Grid item xs={9}>
-                    <Box display='flex' justifyContent='space-between' alignItems='center'>
-                        <Typography>
-                            Displaying 1-6 of 20 items
-                        </Typography>
-                        <Pagination
-                            color='secondary'
-                            size='large'
-                            count={10}
-                            page={1}
-                        />
-                    </Box>
+                    <AppPagination 
+                        productParams={productParams}
+                        productsTotal={productsTotal}
+                        pagesCount={pagesCount}
+                        onPageChange={(page: number) => dispatch(setPageNumer({pageNumber: page}))}
+                    />
                 </Grid>
             </Grid>
         )

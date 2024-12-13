@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useAppDispatch } from '../store/configureStore';
 import agent from '../api/agent';
 import { setBasket } from '../../features/basket/basketSlice';
-import { getCustomerId } from '../../tools/cookies';
+import { getCustomerIdAsync } from '../../tools/cookies';
 import LoadingComponent from './LoadingComponent';
 
 function App() {
@@ -15,18 +15,18 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const customerId = getCustomerId();
-
-        if (customerId) {
-            agent.orders.byCustomer(customerId)
-                .then(order => {
-                    dispatch(setBasket(order));
-                })
-                .catch(error => console.log(error))
-                .finally(() => setLoading(false))
-        } else {
-            setLoading(false);
-        }
+        getCustomerIdAsync().then((customerId) => {
+            if (customerId)  {
+                agent.orders.byCustomer(customerId)
+                    .then(order => {
+                        dispatch(setBasket(order));
+                    })
+                    .catch(error => console.log(error))
+                    .finally(() => setLoading(false))
+            } else {
+                setLoading(false);
+            }
+        });
     }, [dispatch]);
 
     const [darkMode, setDarkMode] = useState(true);

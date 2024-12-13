@@ -1425,8 +1425,8 @@ export class ProductsClient {
     }
 
     /**
-     * @param category (optional) 
-     * @param brand (optional) 
+     * @param categories (optional) 
+     * @param brands (optional) 
      * @param searchString (optional) 
      * @param orderBy (optional) 
      * @param descending (optional) 
@@ -1434,16 +1434,16 @@ export class ProductsClient {
      * @param pageSize (optional) 
      * @return OK
      */
-    list(category?: Category | undefined, brand?: string | undefined, searchString?: string | undefined, orderBy?: string | undefined, descending?: boolean | undefined, pageNumber?: number | undefined, pageSize?: number | undefined, cancelToken?: CancelToken): Promise<ProductDtoListResultDto> {
+    list(categories?: Category[] | undefined, brands?: string[] | undefined, searchString?: string | undefined, orderBy?: string | undefined, descending?: boolean | undefined, pageNumber?: number | undefined, pageSize?: number | undefined, cancelToken?: CancelToken): Promise<ProductDtoListResultDto> {
         let url_ = this.baseUrl + "/v1/products/list?";
-        if (category === null)
-            throw new Error("The parameter 'category' cannot be null.");
-        else if (category !== undefined)
-            url_ += "Category=" + encodeURIComponent("" + category) + "&";
-        if (brand === null)
-            throw new Error("The parameter 'brand' cannot be null.");
-        else if (brand !== undefined)
-            url_ += "Brand=" + encodeURIComponent("" + brand) + "&";
+        if (categories === null)
+            throw new Error("The parameter 'categories' cannot be null.");
+        else if (categories !== undefined)
+            categories && categories.forEach(item => { url_ += "Categories=" + encodeURIComponent("" + item) + "&"; });
+        if (brands === null)
+            throw new Error("The parameter 'brands' cannot be null.");
+        else if (brands !== undefined)
+            brands && brands.forEach(item => { url_ += "Brands=" + encodeURIComponent("" + item) + "&"; });
         if (searchString === null)
             throw new Error("The parameter 'searchString' cannot be null.");
         else if (searchString !== undefined)

@@ -5,8 +5,7 @@ import { ProductParams } from "../../app/models/product-params";
 import { RootState } from "../../app/store/configureStore";
 
 const productsAdapter = createEntityAdapter({
-    selectId: (entity: ProductDto) => entity.id!,
-    sortComparer: (a, b) => a.id!.localeCompare(b.id!),
+    selectId: (entity: ProductDto) => entity.id!
   });
 
 interface CatalogState {
@@ -16,6 +15,7 @@ interface CatalogState {
     brands: string[];
     categories: string[];
     productParams: ProductParams;
+    productsTotal: number;
 }
 
 const _defaultState = 'idle';
@@ -23,12 +23,13 @@ const _defaultState = 'idle';
 export const fetchProductsAsync = createAsyncThunk<ProductDtoListResultDto, void, { state: RootState }>(
     'catalog/fetchProductsAsync',
     async (_, thunkApi) => {
-        const params = thunkApi.getState().catalog.productParams;
+        const state = thunkApi.getState();
+        const params = state.catalog.productParams;
 
         try {
             const result = await agent
-                .products.list(params.category,
-                    params.brand,
+                .products.list(params.categories,
+                    params.brands,
                     params.searchTerm,
                     params.orderBy,
                     params.descending, 
@@ -70,7 +71,7 @@ export const fetchFiltersAsync = createAsyncThunk(
 function initParams() {
     return {
         pageNumber: 1,
-        pageSize: 10,
+        pageSize: 9,
         orderBy: 'Name',
         descending: false
     }
@@ -84,15 +85,24 @@ export const catalogSlice = createSlice({
         status: _defaultState,
         brands: [],
         categories: [],
-        productParams: initParams()
+        productParams: initParams(),
+        productsTotal: 0
     }),
     reducers: {
         setProductParams: (state, action) => {
             state.productsLoaded = false;
             state.productParams = {
                 ...state.productParams,
+                ...action.payload,
+                pageNumber: 1
+            };
+        },
+        setPageNumer: (state, action) => {
+            state.productsLoaded = false;
+            state.productParams = {
+                ...state.productParams,
                 ...action.payload
-            }
+            };
         },
         resetProductParams: (state) => {
             state.productParams = initParams(); 
@@ -104,6 +114,7 @@ export const catalogSlice = createSlice({
         });
         builder.addCase(fetchProductsAsync.fulfilled, (state, action) => {
             productsAdapter.setAll(state, action.payload.values!);
+            state.productsTotal = action.payload.total;
             state.status = _defaultState;
             state.productsLoaded = true;
         });
@@ -144,4 +155,4 @@ export const catalogSlice = createSlice({
 });
 
 export const productSelectors = productsAdapter.getSelectors((state: RootState) => state.catalog);
-export const { setProductParams, resetProductParams } = catalogSlice.actions;
+export const { setProductParams, resetProductParams, setPageNumer } = catalogSlice.actions;

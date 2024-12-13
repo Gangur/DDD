@@ -9,17 +9,16 @@ function setCookie(key: string, value: string | number) {
 const customerKey = "customer-id";
 const orderKey = "order-id";
 
-export function getCustomerId() {
+export async function getCustomerIdAsync() {
   // eslint-disable-next-line prefer-const
   let customerId = cookies.get(customerKey);
 
   if (!customerId || customerId == "undefined") {
-    agent.customeres.create().then((customerId) => {
-      setCookie(customerKey, customerId);
-      agent
-        .orders.create(customerId)
-        .then((orderId) => setCookie(orderKey, orderId));
-    });
+    const customerId = await agent.customeres.create();
+    setCookie(customerKey, customerId);
+
+    const orderId = await agent.orders.create(customerId);
+    setCookie(orderKey, orderId);
   }
 
   return customerId;

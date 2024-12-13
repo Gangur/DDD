@@ -5,10 +5,10 @@ namespace Domain.Products.Transport
 {
     public class ProductsListParameters : ListParameters
     {
-        public Category? Category { get; set; }
+        public Category[] Categories { get; set; } = Array.Empty<Category>();
 
-        public string? Brand { get; set; }
+        public string[] Brands { get; set; } = Array.Empty<string>();
 
-        public string? SearchString { get; set; }
+        public string SearchString { get; set; } = string.Empty;
     }
 }

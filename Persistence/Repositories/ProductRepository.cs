@@ -49,9 +49,9 @@ namespace Persistence.Repositories
 
         private IQueryable<Product> ApplyFilters(IQueryable<Product> query, ProductsListParameters parameters)
         {
-            if (parameters.Category != default)                     query = query.Where(p => p.Category == parameters.Category);
-            if (!string.IsNullOrEmpty(parameters.Brand))            query = query.Where(p => p.Brand == Brand.Create(parameters.Brand));
-            if (!string.IsNullOrEmpty(parameters.SearchString))     query = query.Where(p => EF.Functions.Like(p.Name, $"%{parameters.SearchString}%"));
+            if (parameters.Categories.Any())            query = query.Where(p => parameters.Categories.Contains(p.Category));
+            if (parameters.Brands.Any())                query = query.Where(p => parameters.Brands.Select(b => Brand.Create(b)).Contains(p.Brand));
+            if (parameters.SearchString.HasValue())     query = query.Where(p => EF.Functions.Like(p.Name, $"%{parameters.SearchString}%"));
 
             return query;
         }

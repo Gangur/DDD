@@ -23,9 +23,12 @@ namespace Persistence.Data
                             "(NEWID(), 'Phone 1', 'Samsung', 'phone.png', 'EUR', 320000, '4225-7276-32342', 1)," +
                             "(NEWID(), 'Phone 2', 'Xiaomi', 'phone.png', 'USD', 100000, '4225-7276-32342', 1)," +
                             "(NEWID(), 'Phone 3', 'Apple', 'phone.png', 'USD', 200000, '4225-7276-32342', 1)," +
+                            "(NEWID(), 'Phone 4', 'Apple', 'phone.png', 'USD', 220000, '4225-7276-32342', 1)," +
+                            "(NEWID(), 'Phone 5', 'Apple', 'phone.png', 'EUR', 240000, '4225-7276-32342', 1)," +
                             "(NEWID(), 'Book 1', 'Mystery','book.png', 'EUR', 1050, '5131-2252-36336', 3)," +
                             "(NEWID(), 'Book 2', 'Umbrella','book.png', 'EUR', 1200, '5131-2252-36336', 3)," +
                             "(NEWID(), 'Book 3', 'Mystery','book.png', 'USD', 1000, '5131-2252-36336', 3)," +
+                            "(NEWID(), 'Book 4', 'Umbrella','book.png', 'EUR', 200, '5131-2252-36336', 3)," +
                             "(NEWID(), 'Tablet 1', 'Xiaomi','tablet.png', 'EUR', 40000, '1431-7622-38653', 2)," +
                             "(NEWID(), 'Tablet 2', 'Samsung','tablet.png', 'EUR', 73000, '1431-7622-38653', 2)," +
                             "(NEWID(), 'Tablet 3', 'Apple','tablet.png', 'EUR', 112000, '1431-7622-38653', 2);",
