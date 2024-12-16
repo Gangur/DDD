@@ -55,7 +55,7 @@ namespace WebApi.Controllers
             return ActionFromResult(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("list")]
         public async Task<ActionResult<ListResultDto<CustomerDto>>> ListAsync(
             [FromQuery] ListParameters parameters, CancellationToken cancellationToken)

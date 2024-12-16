@@ -1,10 +1,30 @@
 import {  Alert, AlertTitle, Button, ButtonGroup, Container, List, ListItem, ListItemText, Typography } from "@mui/material";
 import agent from "../../app/api/agent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { AgGridReact } from "ag-grid-react";
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
+import { CustomerDto } from "../../app/api/http-client";
 
 export default function About() {
     const [validationErrors, setValidationErrors] = useState<string[]>([])
+
+    useEffect(() => {
+        agent.customeres.list('name', true, 1, 50)
+            .then(c => setRowData(c.values))
+            .catch(error => setValidationErrors(error));
+    }, []);
+
+    const [rowData, setRowData] = useState<CustomerDto[] | undefined>([])
+
+    const [colDefs] = useState([
+        { field: "id", flex: 1 },
+        { field: "email", flex: 2 },
+        { field: "name", flex: 2 }
+    ]);
+
+    // Register all Community features
+    ModuleRegistry.registerModules([AllCommunityModule]);
 
     function getValidationError() {
         agent.buggy.validationProblem()
@@ -33,6 +53,12 @@ export default function About() {
                         ))}
                     </List>
                 </Alert>}
+                <div style={{ height: 500, marginTop: 30 }}>
+                    <AgGridReact
+                        rowData={rowData}
+                        columnDefs={colDefs}
+                    />
+                </div>
         </Container>
     )
 }
