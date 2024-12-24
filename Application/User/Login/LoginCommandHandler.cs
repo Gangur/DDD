@@ -26,7 +26,7 @@ namespace Application.User.Login
 
             if (user == null)
             {
-                return Result<UserDto>.CreateBadRequest($"User {request.Login} has not been found!");
+                return Result<UserDto>.CreateUnauthorized($"User {request.Login} has not been found!");
             }
 
             var singResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);

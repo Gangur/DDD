@@ -11,6 +11,7 @@ const onResponse = (response: AxiosResponse): AxiosResponse<any, any> => {
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
     const status = error.status;
     const errorMessage = error.message;
+    const apiErrorMessage = error.response?.data;
 
     switch (status) {
         case 400:
@@ -28,7 +29,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
           }
           break;
         case 401:
-          toast.error(errorMessage);
+          toast.error(apiErrorMessage ? apiErrorMessage as string : errorMessage);
           break;
         case 404:
           break;

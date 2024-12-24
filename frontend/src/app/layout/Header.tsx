@@ -2,6 +2,7 @@ import { ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
+import SignInMenu from "./SignInMenu";
 
 interface Props {
     darkMode: boolean;
@@ -33,6 +34,7 @@ const navStyles = {
 
 export default function Header({ darkMode, handleThemeChange }: Props) {
     const { basket } = useAppSelector(state => state.basket);
+    const {user} = useAppSelector(state => state.account);
     const itemCount = basket?.lineItems?.reduce((sum, item) => sum + item.quantity!, 0) ?? 0;
 
     return (
@@ -68,8 +70,9 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
                             <ShoppingCart />
                         </Badge>
                     </IconButton>
-
-
+                    {user ? (
+                        <SignInMenu />
+                    ) : (
                     <List sx={{ display: 'flex' }}>
                         {rightLinks.map(item => (
                             <ListItem
@@ -81,7 +84,7 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
                                 {item.title.toUpperCase()}
                             </ListItem>
                         ))}
-                    </List>
+                    </List>)}
                 </Box>
             </Toolbar>
         </AppBar>

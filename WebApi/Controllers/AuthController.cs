@@ -8,12 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation;
 using System.Security.Claims;
 using WebApi.Abstraction;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebApi.Controllers
 {
-    [AllowAnonymous]
     [Route("v{version:apiVersion}/auth")]
     public class AuthController : BaseApiV1Controller
     {
