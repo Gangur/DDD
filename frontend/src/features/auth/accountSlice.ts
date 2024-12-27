@@ -3,6 +3,7 @@ import { LoginDto, UserDto } from "../../app/api/http-client";
 import { FieldValues } from "react-hook-form";
 import agent from "../../app/api/agent";
 import { router } from "../../app/router/Routes";
+import { toast } from "react-toastify";
 
 interface AccountState {
     user: UserDto | undefined;
@@ -27,8 +28,10 @@ export const signInUser = createAsyncThunk<UserDto | undefined, FieldValues>(
 );
 
 export const fetchCurrentUser = createAsyncThunk<UserDto | undefined>(
-    'account/signInUser',
+    'account/fetchCurrentUser',
     async (_, thunkAPI) => {
+        thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem('user')!)));
+        
         try {
             const user = await agent.auth.getCurrentUser();
             localStorage.setItem('user', JSON.stringify(user))
@@ -36,6 +39,11 @@ export const fetchCurrentUser = createAsyncThunk<UserDto | undefined>(
         }
         catch (error: any) {
             return thunkAPI.rejectWithValue({error: error.data})
+        }
+    },
+    {
+        condition: () => {
+            if (!localStorage.getItem('user')) return false;
         }
     }
 );
@@ -48,9 +56,18 @@ export const accountSlice = createSlice({
             state.user = undefined;
             localStorage.removeItem('user');
             router.navigate('/');
+         },
+         setUser: (state, action) => {
+            state.user = action.payload;
          }
     },
     extraReducers: (builder => {
+        builder.addCase(fetchCurrentUser.rejected, (state) => {
+            state.user = undefined;
+            localStorage.removeItem('user');
+            toast.error('Session expired - please login again');
+            router.navigate('/');
+        })
         builder.addMatcher(isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled), (state: any, action) => {
             state.user = action.payload;
         });
@@ -60,4 +77,4 @@ export const accountSlice = createSlice({
     })
 });
 
-export const { signOut } = accountSlice.actions;
+export const { signOut, setUser } = accountSlice.actions;

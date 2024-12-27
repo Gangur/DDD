@@ -1,4 +1,5 @@
 using Application;
+using Application.Auth;
 using Asp.Versioning.ApiExplorer;
 using Infrastructure.DependencyInjections;
 using Persistence;
@@ -39,9 +40,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddCors();
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.Lax;
+});
 
 var app = builder.Build();
 
+app.UseMiddleware<AuthMiddleware>();
+app.UseMiddleware<TransactionMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();
 
 #if DEBUG
@@ -80,6 +88,8 @@ app.UseCors(opt =>
 app.UseStatusCodePages();
 
 app.UseHttpsRedirection();
+
+app.UseCookiePolicy();
 
 app.UseAuthentication();
 app.UseAuthorization();

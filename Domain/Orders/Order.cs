@@ -4,6 +4,7 @@ using Domain.LineItems;
 using Domain.LineItems.Transport;
 using Domain.Orders.Transport;
 using Domain.Products;
+using Domain.User;
 
 namespace Domain.Orders
 {
@@ -15,11 +16,20 @@ namespace Domain.Orders
 
         public CustomerId CustomerId { get; private set; }
 
-        public HashSet<LineItem> LineItems { get => _lineItems; }
-
         public DateTime? Paid { get; private set; }
 
         public DateTime? Completed { get; private set; }
+
+        public Guid? AppUserId { get; private set; }
+
+        public AppUser AppUser { get; private set; }
+
+        public HashSet<LineItem> LineItems { get => _lineItems; }
+
+        public void AssignUser(AppUser appUser)
+        {
+            AppUserId = appUser.Id;
+        }
 
         public static Order Create(Customer customer)
         {

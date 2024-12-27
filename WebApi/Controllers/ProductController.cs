@@ -75,6 +75,18 @@ namespace WebApi.Controllers
 
             var result = await _mediator.Send(query, cancellationToken);
 
+            var cookieOptions = new CookieOptions()
+            {
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = false,
+                SameSite = SameSiteMode.Strict,
+                Domain = "localhost",
+                Expires = DateTime.UtcNow.AddDays(14)
+            };
+
+            Response.Cookies.Append("testCookie", "Cookie content", cookieOptions);
+
             return ActionFromResult(result);
         }
 

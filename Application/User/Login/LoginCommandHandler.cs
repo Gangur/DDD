@@ -3,20 +3,24 @@ using Application.Data;
 using Domain.User;
 using Microsoft.AspNetCore.Identity;
 using Presentation;
+using Domain.Extensions;
+using Domain.Orders;
 
 namespace Application.User.Login
 {
     public class LoginCommandHandler : ICommandHandler<LoginCommand, UserDto>
     {
-        private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IOrderRepository _orderRepository;
         private readonly IJwtProvider _jwtProvider;
 
-        public LoginCommandHandler(SignInManager<AppUser> signInManager,
-            UserManager<AppUser> userManager, IJwtProvider jwtProvider)
+        public LoginCommandHandler(
+            UserManager<AppUser> userManager,
+            IOrderRepository orderRepository,
+            IJwtProvider jwtProvider)
         {
-            _signInManager = signInManager;
             _userManager = userManager;
+            _orderRepository = orderRepository;
             _jwtProvider = jwtProvider;
         }
         
@@ -29,21 +33,24 @@ namespace Application.User.Login
                 return Result<UserDto>.CreateUnauthorized($"User {request.Login} has not been found!");
             }
 
-            var singResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-
-            if (singResult.IsLockedOut)
-            {
-                return Result<UserDto>.CreateUnauthorized($"User {request.Login} is locked out!");
-            }
-
-            if (!singResult.Succeeded)
+            if (!await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 return Result<UserDto>.CreateUnauthorized();
             }
 
             var token = _jwtProvider.GenerateToken(user);
 
-            user.LastLogin = DateTime.UtcNow;
+            if (request.OrderId.HasValue())
+            {
+                var order = await _orderRepository.FindAsync(request.OrderId!, cancellationToken);
+
+                if (order != default)
+                {
+                    order.AssignUser(user);
+                }
+            }
+
+            user.UpDateLastLogin();
 
             return Result<UserDto>.CreateSuccessful(UserDto.Create(user.Email!, user.UserName!, token));
         }

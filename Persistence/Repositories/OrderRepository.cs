@@ -32,6 +32,13 @@ namespace Persistence.Repositories
                     .ThenInclude(o => o.Product)
                 .FirstOrDefaultAsync(cancellationToken);
 
+        public Task<Order?> TakeByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+            => _context.GetQuery<Order>()
+                .Where(o => o.Paid == default && o.AppUserId == userId)
+                .Include(o => o.LineItems)
+                    .ThenInclude(o => o.Product)
+                .FirstOrDefaultAsync(cancellationToken);
+
         public void Remove(Order entity)
             => _context.Remove(entity);
 

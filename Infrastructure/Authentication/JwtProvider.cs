@@ -25,8 +25,9 @@ namespace Infrastructure.Authentication
             {
                 Subject = new ClaimsIdentity(new[]
                 {
+                    new Claim("id", user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-                    new Claim(JwtRegisteredClaimNames.GivenName, user.UserName!)
+                    new Claim(JwtRegisteredClaimNames.GivenName, user.DisplayName!)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(5),
                 Issuer = _options.Issuer,

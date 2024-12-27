@@ -1,4 +1,5 @@
 ﻿using Application.Abstraction;
+using Application.Auth;
 using Application.Data;
 using Domain.Orders;
 using Presentation;
@@ -8,10 +9,14 @@ namespace Application.Orders.Get
     internal sealed class GetOrderQueryHandler : IQueryHandler<GetOrderQuery, OrderDto>
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly AuthService _authService;
 
-        public GetOrderQueryHandler(IOrderRepository orderRepository)
+        public GetOrderQueryHandler(
+            IOrderRepository orderRepository, 
+            AuthService authService)
         {
             _orderRepository = orderRepository;
+            _authService = authService;
         }
 
         public async Task<Result<OrderDto>> Handle(GetOrderQuery request, CancellationToken cancellationToken)
@@ -25,6 +30,10 @@ namespace Application.Orders.Get
             {
                 order = await _orderRepository
                     .TakeByCustomerWithLineItemsAsync(request.CustomerId!, cancellationToken);
+            }
+            else
+            {
+                order = await _orderRepository.TakeByUserIdAsync(_authService.UserId, cancellationToken);
             }
 
             if (order == null)

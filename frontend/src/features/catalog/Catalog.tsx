@@ -1,12 +1,14 @@
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import ProductList from "./ProductList";
 import { useEffect } from "react";
-import { fetchFiltersAsync, fetchProductsAsync, productSelectors, setPageNumer, setProductParams } from "./catalogSlice";
+import { fetchFiltersAsync, setPageNumer, setProductParams } from "./catalogSlice";
 import { Grid, Paper } from "@mui/material";
 import ProductSearch from "./ProductSearch";
 import RadiooButtonGroup from "../../app/components/RadioButtonGroup";
 import CheckboxButtons from "../../app/components/CheckBoxButtons";
 import AppPagination from "../../app/components/AppPagination";
+import { useFetchProductsQuery } from "./catalogApi";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 
 const sortOptions = [
     { name: 'Alphabetical', order: 'Name', descending: false },
@@ -15,19 +17,21 @@ const sortOptions = [
 ]
 
 export default function Ctatalog() {
-    const products = useAppSelector(productSelectors.selectAll);
-    const { productsLoaded, filtersLoaded, categories, brands, productParams, productsTotal } = useAppSelector(state => state.catalog)
+    //const products = useAppSelector(productSelectors.selectAll);
+    const { filtersLoaded, categories, brands, productParams, productsTotal } = useAppSelector(state => state.catalog)
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        if (!productsLoaded) dispatch(fetchProductsAsync())
-    }, [productsLoaded, dispatch]);
+    const { data, isLoading } = useFetchProductsQuery();
+
+    //useEffect(() => {
+    //    if (!productsLoaded) dispatch(fetchProductsAsync())
+    //}, [productsLoaded, dispatch]);
 
     useEffect(() => {
         if (!filtersLoaded) dispatch(fetchFiltersAsync())
     }, [filtersLoaded, dispatch])
 
-    //if (status.includes('pending')) return <LoadingComponent />
+    if (isLoading) return <LoadingComponent />
 
     let pagesCount = productsTotal / productParams.pageSize;
     if (pagesCount % 1 > 0)
@@ -37,7 +41,6 @@ export default function Ctatalog() {
     }
 
     return (
-        (
             <Grid container sx={{ mb: 2 }} spacing={4}>
                 <Grid item xs={3}>
                     <Paper sx={{ mb: 2 }}>
@@ -73,7 +76,7 @@ export default function Ctatalog() {
                     </Paper>
                 </Grid>
                 <Grid item xs={9}>
-                    <ProductList products={products} />
+                    <ProductList products={data?.values || []} />
                 </Grid>
                 <Grid item xs={3} />
                 <Grid item xs={9}>
@@ -85,6 +88,5 @@ export default function Ctatalog() {
                     />
                 </Grid>
             </Grid>
-        )
     );
 }

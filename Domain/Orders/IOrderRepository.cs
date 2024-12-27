@@ -7,5 +7,7 @@ namespace Domain.Orders
     public interface IOrderRepository : IRepository<Order, OrderId, ListParameters>
     {
         Task<Order?> TakeByCustomerWithLineItemsAsync(CustomerId customerId, CancellationToken cancellationToken);
+
+        Task<Order?> TakeByUserIdAsync(Guid userId, CancellationToken cancellationToken);
     }
 }

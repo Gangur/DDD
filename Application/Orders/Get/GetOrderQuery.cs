@@ -7,6 +7,8 @@ namespace Application.Orders.Get
 {
     public record GetOrderQuery : IQuery<OrderDto>
     {
+        public GetOrderQuery() { }
+
         public GetOrderQuery(OrderId orderId)
         {
             OrderId = orderId;

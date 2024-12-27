@@ -20,8 +20,12 @@ namespace Persistence.Configurations
                 .HasForeignKey(o => o.CustomerId)
                 .IsRequired();
 
+            builder.HasOne(o => o.AppUser)
+                .WithMany()
+                .HasForeignKey(o => o.AppUserId);
+
             builder.HasMany(o => o.LineItems)
-                .WithOne()
+                .WithOne(li => li.Order)
                 .HasForeignKey(li => li.OrderId);
         }
     }

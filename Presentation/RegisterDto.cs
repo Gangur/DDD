@@ -9,7 +9,7 @@ namespace Presentation
         public string Email {  get; set; } = string.Empty;
 
         [Required]
-        [StringLength(100)]
+        [Length(3, 100)]
         public string DisplayName { get; set; } = string.Empty;
 
         [Required]

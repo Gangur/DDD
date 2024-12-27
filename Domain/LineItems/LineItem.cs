@@ -18,6 +18,8 @@ namespace Domain.LineItems
 
         public Money Price { get; private set; }
 
+        public Order Order { get; private set; }
+
         public void Increment(int quantity = 1)
         {
             Quantity += quantity;

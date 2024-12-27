@@ -8,16 +8,16 @@ import DisplayPrice from "../../tools/price-factory";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { LoadingButton } from "@mui/lab";
 import { addBasketItemAsync, removeBasketItemAsync } from "../basket/basketSlice";
-import { fetchProductAsync, productSelectors } from "./catalogSlice";
+import { fetchProductAsync } from "./catalogSlice";
+import { useFetchProductDetailsQuery } from "./catalogApi";
 
 export default function ProductDetailes() {
     const { id } = useParams<{ id: string }>();
-    const { basket, status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
-    const product = useAppSelector(state => productSelectors.selectById(state, id!));
-    const { status: productStatus } = useAppSelector(state => state.catalog);
-    const [quantity, setQuantity] = useState(0);
+    const { basket, status } = useAppSelector(state => state.basket);
+    const { data: product, isLoading} = useFetchProductDetailsQuery(id!);
 
+    const [quantity, setQuantity] = useState(0);
     const item = basket?.lineItems?.find(li => li.productId == product?.id)
 
     useEffect(() => {
@@ -54,7 +54,7 @@ export default function ProductDetailes() {
         }
     }
 
-    if (productStatus.includes('pending'))
+    if (isLoading)
     {
         return (<LoadingComponent />)
     }

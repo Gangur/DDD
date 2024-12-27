@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { OrderDto } from "../../app/api/http-client";
 import agent from "../../app/api/agent";
+import { getCustomerIdAsync } from "../../tools/cookies";
 
 interface BasketState {
     basket: OrderDto | undefined
@@ -15,6 +16,18 @@ const initialState: BasketState = {
     basket: undefined,
     status: 'idle'
 }
+
+export const fetchBasketAsync = createAsyncThunk<OrderDto | undefined>(
+    'basket/fetchBasketAsync',
+    async (_, thunkAPI) => {
+        try {
+            return await agent.orders.byCustomer(await getCustomerIdAsync());
+        }
+        catch (error: any){
+            return thunkAPI.rejectWithValue(error.data)
+        }
+    }
+)
 
 export const addBasketItemAsync = createAsyncThunk<OrderDto | undefined,
     {
@@ -63,14 +76,6 @@ export const basketSlice = createSlice({
             console.log(action);
             state.status = 'pendingAddItem-' + action.meta.arg.productId;
         });
-        builder.addCase(addBasketItemAsync.fulfilled, (state, action) => {
-            state.basket = action.payload;
-            setDefaultStatus(state);
-        });
-        builder.addCase(addBasketItemAsync.rejected, (state, action) => {
-            console.log(action);
-            setDefaultStatus(state);
-        });
 
         builder.addCase(removeBasketItemAsync.pending, (state, action) => {
             console.log(action);
@@ -84,7 +89,17 @@ export const basketSlice = createSlice({
             console.log(action);
             setDefaultStatus(state);
         });
+
+        builder.addMatcher(isAnyOf(addBasketItemAsync.fulfilled, fetchBasketAsync.fulfilled), (state, action) => {
+            state.basket = action.payload;
+            setDefaultStatus(state);
+        });
+        builder.addMatcher(isAnyOf(addBasketItemAsync.rejected, fetchBasketAsync.rejected), (state, action) => {
+            console.log(action);
+            setDefaultStatus(state);
+        });
     })
 });
 
 export const { setBasket } = basketSlice.actions;
+

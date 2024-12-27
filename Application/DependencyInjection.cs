@@ -1,4 +1,5 @@
-﻿using Application.Behaviours;
+﻿using Application.Auth;
+using Application.Behaviours;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -13,6 +14,8 @@ namespace Application
 
                 config.AddOpenBehavior(typeof(UnitOfWorkBehaviour<,>));
             });
+
+            services.AddScoped<AuthService>();
 
             return services;
         }

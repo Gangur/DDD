@@ -2,7 +2,6 @@
 using Application.Data;
 using Domain.User;
 using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json.Linq;
 using Presentation;
 
 namespace Application.User.Register
@@ -28,9 +27,10 @@ namespace Application.User.Register
             {
                 Email = request.Email,
                 UserName = request.Email,
-                DisplayName = request.DisplayName,
-                LastLogin = DateTime.UtcNow
+                DisplayName = request.DisplayName
             };
+
+            user.UpDateLastLogin();
 
             var createResult = await _userManager.CreateAsync(user, request.Password);
 
@@ -43,9 +43,9 @@ namespace Application.User.Register
             var token = _jwtProvider.GenerateToken(user);
 
 #if DEBUG
-            await _smsService.SendAsync($"User {user.UserName} has been created!",
-                new string[] { "+1(111)-111-1111" },
-                cancellationToken);
+            //await _smsService.SendAsync($"User {user.UserName} has been created!",
+            //    new string[] { "+1(111)-111-1111" },
+            //    cancellationToken);
 #else
             _ = _smsService.SendAsync($"User {user.UserName} has been created!", 
                 new string[] { user.PhoneNumber! }, 

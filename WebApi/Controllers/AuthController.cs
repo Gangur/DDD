@@ -2,9 +2,11 @@
 using Application.User.Get;
 using Application.User.Login;
 using Application.User.Register;
+using Domain.Orders;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Persistence.Extensions;
 using Presentation;
 using System.Security.Claims;
 using WebApi.Abstraction;
@@ -49,7 +51,12 @@ namespace WebApi.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken)
         {
-            var query = new LoginCommand(loginDto.Login, loginDto.Password);
+            var orderId = Request.Cookies["order-id"]; // TO-DO Doesn't work
+
+            var query = new LoginCommand(
+                loginDto.Login, 
+                loginDto.Password, 
+                orderId.HasValue() ? new OrderId(new Guid(orderId!)) : default);
 
             var result = await _mediator.Send(query, cancellationToken);
 

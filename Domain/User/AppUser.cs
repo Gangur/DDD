@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Orders;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain.User
 {
@@ -6,6 +7,11 @@ namespace Domain.User
     {
         public string DisplayName { get; set; } = string.Empty;
 
-        public DateTime LastLogin { get; set; }
+        public DateTime LastLogin { get; private set; }
+
+        public void UpDateLastLogin()
+        {
+            LastLogin = DateTime.UtcNow;
+        }
     }
 }

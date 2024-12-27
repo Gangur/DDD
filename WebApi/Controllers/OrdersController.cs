@@ -3,6 +3,7 @@ using Application.Orders.Create;
 using Application.Orders.Get;
 using Application.Orders.List;
 using Application.Orders.RemoveLineItem;
+using Castle.Core.Resource;
 using Domain.Abstraction.Transport;
 using Domain.Customers;
 using Domain.Orders;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation;
 using Presentation.Adstraction;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using WebApi.Abstraction;
 namespace WebApi.Controllers
 {
@@ -76,9 +78,20 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("by-customer/{customerId}")]
-        public async Task<ActionResult<OrderDto>> GetIncompletedIfExistAsync([Required] Guid customerId, CancellationToken cancellationToken)
+        public async Task<ActionResult<OrderDto>> GetByCustoperAsync([Required] Guid customerId, CancellationToken cancellationToken)
         {
             var query = new GetOrderQuery(new CustomerId(customerId));
+
+            var result = await _mediator.Send(query, cancellationToken);
+
+            return ActionFromResult(result);
+        }
+
+        [Authorize]
+        [HttpGet("by-user")]
+        public async Task<ActionResult<OrderDto>> GetByUserAsync(CancellationToken cancellationToken)
+        {
+            var query = new GetOrderQuery();
 
             var result = await _mediator.Send(query, cancellationToken);
 
