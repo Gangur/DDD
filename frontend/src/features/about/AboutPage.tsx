@@ -1,12 +1,17 @@
 import {  Alert, AlertTitle, Button, ButtonGroup, Container, List, ListItem, ListItemText, Typography } from "@mui/material";
 import agent from "../../app/api/agent";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { AgGridReact } from "ag-grid-react";
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
+import { AllCommunityModule, ColDef, ColGroupDef, ModuleRegistry } from 'ag-grid-community'; 
 import { CustomerDto } from "../../app/api/http-client";
+import { useLazyGet400ErrorQuery, useLazyGet401ErrorQuery, useLazyGet404ErrorQuery, useLazyGet500ErrorQuery, useLazyGetValidationErrorQuery } from "./errorApi";
 
 export default function About() {
+    const [trigger400Error] = useLazyGet400ErrorQuery();
+    const [trigger401Error] = useLazyGet401ErrorQuery();
+    const [trigger404Error] = useLazyGet404ErrorQuery();
+    const [trigger500Error] = useLazyGet500ErrorQuery();
+    const [triggerValidateionError] = useLazyGetValidationErrorQuery();
     const [validationErrors, setValidationErrors] = useState<string[]>([])
 
     useEffect(() => {
@@ -18,7 +23,7 @@ export default function About() {
     const [rowData, setRowData] = useState<CustomerDto[] | undefined>([])
 
     
-    const [colDefs] = useState([
+    const [colDefs] = useState<(ColDef<any> | ColGroupDef<any>)[] | null>([
         { field: "id", flex: 1 },
         { field: "email", flex: 2 },
         { field: "name", flex: 2 }
@@ -27,21 +32,15 @@ export default function About() {
     // Register all Community features
     ModuleRegistry.registerModules([AllCommunityModule]);
 
-    function getValidationError() {
-        agent.buggy.validationProblem()
-            .then(() => console.log('shold not see this'))
-            .catch(error => setValidationErrors(error))
-    }
-
     return (
         <Container>
             <Typography gutterBottom variant='h2'>Errors for testing purposes</Typography>
             <ButtonGroup fullWidth>
-                <Button variant='contained' onClick={() => agent.buggy.badRequest()}>Test 400 Bad Request Error</Button>
-                <Button variant='contained' onClick={() => agent.buggy.unauthorized()}>Test 401 Unauthorized Error</Button>
-                <Button variant='contained' component={Link} to='/not-found' style={{ textAlign: 'center' }}>Test 404 Not Found Error</Button>
-                <Button variant='contained' onClick={() => agent.buggy.serverError()}>Test 500 Server Error</Button>
-                <Button variant='contained' onClick={getValidationError}>Test Validation Error</Button>
+                <Button variant='contained' onClick={() => trigger400Error()}>Test 400 Bad Request Error</Button>
+                <Button variant='contained' onClick={() => trigger401Error()}>Test 401 Unauthorized Error</Button>
+                <Button variant='contained' onClick={() => trigger404Error()} style={{ textAlign: 'center' }}>Test 404 Not Found Error</Button>
+                <Button variant='contained' onClick={() => trigger500Error()}>Test 500 Server Error</Button>
+                <Button variant='contained' onClick={() => triggerValidateionError()}>Test Validation Error</Button>
             </ButtonGroup>
             {validationErrors.length > 0 &&
                 <Alert severity='error'>

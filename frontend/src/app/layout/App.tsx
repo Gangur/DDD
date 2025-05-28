@@ -1,22 +1,20 @@
 import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import Header from './Header';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
-import { useAppDispatch } from '../store/configureStore';
-import { fetchBasketAsync } from '../../features/basket/basketSlice';
-import LoadingComponent from './LoadingComponent';
+import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import { fetchCurrentUser } from '../../features/auth/accountSlice';
+import { setDarkMode } from './uiSlice';
 
 function App() {
     const dispatch = useAppDispatch();
-    const [loading, setLoading] = useState(true);
+    const {darkMode} = useAppSelector(state => state.ui);
 
     const initApp = useCallback(async () => {
         try {
             await dispatch(fetchCurrentUser());
-            await dispatch(fetchBasketAsync())
         }
         catch (error) {
             console.log(error);
@@ -24,11 +22,9 @@ function App() {
     }, [dispatch])
 
     useEffect(() => {
-        initApp()
-        .then(() => setLoading(false));
+        initApp();
     }, [initApp]);
 
-    const [darkMode, setDarkMode] = useState(true);
     const paletteType = darkMode ? 'dark' : 'light'
     const theme = createTheme({
         palette: {
@@ -40,11 +36,11 @@ function App() {
     });
 
     function handleThemeChange() {
-        setDarkMode(!darkMode);
+        dispatch(setDarkMode(!darkMode));
     }
 
-    if (loading)
-        return <LoadingComponent />
+    //if (isLoading)
+    //    return <LoadingComponent />
 
     return (
         <ThemeProvider theme={theme}>

@@ -4,16 +4,15 @@ import PictureUrl from "../../tools/pictures-url-factory";
 import { ProductDto } from "../../app/api/http-client";
 import DisplayPrice from "../../tools/price-factory";
 import { LoadingButton } from "@mui/lab";
-import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { addBasketItemAsync } from "../basket/basketSlice";
+import { useAddBasketItemMutation } from "../basket/basketApi";
+import { getCookieOrderId } from "../../tools/cookies";
 
 interface Props {
     product: ProductDto;
 }
 
 export default function ProductCard({ product }: Props) {
-    const dispatch = useAppDispatch();
-    const { basket, status } = useAppSelector(state => state.basket);
+    const [addBasketItem, { isLoading }] = useAddBasketItemMutation();
 
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -43,8 +42,8 @@ export default function ProductCard({ product }: Props) {
             </CardContent>
             <CardActions>
                 <LoadingButton
-                    loading={status === 'pendingAddItem-' + product.id}
-                    onClick={() => dispatch(addBasketItemAsync({ orderId: basket!.id!, productId: product.id!, quantity: 1 }))}
+                    loading={isLoading}
+                    onClick={() => addBasketItem({ orderId: getCookieOrderId(), productId: product.id, quantity: 1 })}
                     size="small">Add to the order</LoadingButton>
                 <Button component={Link} to={`/catalog/${product.id}`} size="small">View</Button>
             </CardActions>

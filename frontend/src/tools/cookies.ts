@@ -3,6 +3,10 @@ import agent from "../app/api/agent";
 import { store } from "../app/store/configureStore";
 
 const cookies = new Cookies();
+
+const customerKey = "customer-id";
+const orderKey = "order-id";
+
 function setCookie(key: string, value: string | number) {
   cookies.set(key, value, { path: "/" });
 }
@@ -11,16 +15,13 @@ export function getCookie(key: string) {
   return cookies.get(key);
 }
 
-const customerKey = "customer-id";
-const orderKey = "order-id";
-
-export async function getCustomerIdAsync() {
+export async function ensureIDsExistence() {
   // eslint-disable-next-line prefer-const
   let customerId = cookies.get(customerKey);
 
   if (!customerId || customerId == "undefined") {
     if (!store.getState().account.user) {
-      const customerId = await agent.customeres.create();
+      customerId = await agent.customeres.create();
       setCookie(customerKey, customerId);
 
       const orderId = await agent.orders.create(customerId);
@@ -34,4 +35,12 @@ export async function getCustomerIdAsync() {
   }
 
   return customerId;
+}
+
+export function getCookieCustomerId() {
+  return cookies.get(customerKey);
+}
+
+export function getCookieOrderId() {
+  return cookies.get(orderKey);
 }

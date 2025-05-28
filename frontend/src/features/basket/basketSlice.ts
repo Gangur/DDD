@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { OrderDto } from "../../app/api/http-client";
 import agent from "../../app/api/agent";
-import { getCustomerIdAsync } from "../../tools/cookies";
+import { ensureIDsExistence } from "../../tools/cookies";
 
 interface BasketState {
     basket: OrderDto | undefined
@@ -21,7 +21,7 @@ export const fetchBasketAsync = createAsyncThunk<OrderDto | undefined>(
     'basket/fetchBasketAsync',
     async (_, thunkAPI) => {
         try {
-            return await agent.orders.byCustomer(await getCustomerIdAsync());
+            return await agent.orders.byCustomer(await ensureIDsExistence());
         }
         catch (error: any){
             return thunkAPI.rejectWithValue(error.data)

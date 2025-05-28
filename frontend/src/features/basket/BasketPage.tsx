@@ -2,17 +2,23 @@ import { Box, Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, 
 import DisplayPrice from "../../tools/price-factory";
 import { Add, Delete, Remove } from "@mui/icons-material";
 import PictureUrl from "../../tools/pictures-url-factory";
-import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { addBasketItemAsync, removeBasketItemAsync } from "./basketSlice";
 import { LoadingButton } from "@mui/lab";
 import BasketSummary from "./BasketSummary";
 import { Link } from "react-router-dom";
+import { useAddBasketItemMutation, useFetchBasketQuery, useRemoveBasketItemMutation } from "./basketApi";
+import { getCookieCustomerId } from "../../tools/cookies";
 
 export default function BasketPage() {
-    const { basket, status } = useAppSelector(state => state.basket);
-    const dispatch = useAppDispatch();
+    const {data: basket, isLoading} = useFetchBasketQuery(getCookieCustomerId());
 
-    if (!basket) return <Typography variant='h3'>Your basket is empty</Typography>
+    const [addBasketItem, { isLoading: isLoadingAddBasketItem}] = useAddBasketItemMutation();
+    const [removeBasketItem, { isLoading: isLoadingRemoveBasketItem}] = useRemoveBasketItemMutation();
+
+    if (isLoading) 
+        return  <Typography variant='h3'>Loading basket...</Typography>
+
+    if (!basket || basket.lineItems?.length == 0) 
+        return <Typography variant='h3'>Your basket is empty</Typography>
 
     const total = basket.lineItems!.reduce((sum, item) => {
         let local = item.priceAmount! * item.quantity!;
@@ -50,23 +56,23 @@ export default function BasketPage() {
                                 <TableCell align="right">{DisplayPrice(item.priceAmount, item.priceCurrency)}</TableCell>
                                 <TableCell align="right">
                                     <LoadingButton
-                                        loading={status === 'pendingRemoveItem-' + item.productId}
-                                        onClick={() => dispatch(removeBasketItemAsync({
+                                        loading={isLoadingRemoveBasketItem}
+                                        onClick={() => removeBasketItem({
                                             orderId: basket.id!,
                                             productId: item.productId!,
                                             quantity: 1
-                                        }))}
+                                        })}
                                         color='error'>
                                         <Remove />
                                     </LoadingButton>
                                     {item.quantity}
                                     <LoadingButton
-                                        loading={status === 'pendingAddItem-' + item.productId}
-                                        onClick={() => dispatch(addBasketItemAsync({
+                                        loading={isLoadingAddBasketItem}
+                                        onClick={() => addBasketItem({
                                             orderId: basket.id!,
                                             productId: item.productId!,
                                             quantity: 1
-                                        }))}
+                                        })}
                                         color='secondary'>
                                         <Add />
                                     </LoadingButton>
@@ -74,12 +80,12 @@ export default function BasketPage() {
                                 <TableCell align="right">{DisplayPrice(item.priceAmount! * item.quantity!, item.priceCurrency)}</TableCell>
                                 <TableCell align="right">
                                     <LoadingButton
-                                        loading={status === 'pendingRemoveItem-' + item.productId} 
-                                        onClick={() => dispatch(removeBasketItemAsync({
+                                        loading={isLoadingRemoveBasketItem} 
+                                        onClick={() => removeBasketItem({
                                             orderId: basket.id!,
                                             productId: item.productId!,
                                             quantity: item.quantity!
-                                        }))} 
+                                        })} 
                                         color='error'>
                                         <Delete />
                                     </LoadingButton>

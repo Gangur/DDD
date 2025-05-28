@@ -1,58 +1,29 @@
 import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PictureUrl from "../../tools/pictures-url-factory";
 import NotFound from "../../app/errors/NotFound";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import DisplayPrice from "../../tools/price-factory";
-import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { LoadingButton } from "@mui/lab";
-import { addBasketItemAsync, removeBasketItemAsync } from "../basket/basketSlice";
-import { fetchProductAsync } from "./catalogSlice";
 import { useFetchProductDetailsQuery } from "./catalogApi";
+import { useAddBasketItemMutation, useFetchBasketQuery, useRemoveBasketItemMutation } from "../basket/basketApi";
+import { getCookieCustomerId } from "../../tools/cookies";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export default function ProductDetailes() {
     const { id } = useParams<{ id: string }>();
-    const dispatch = useAppDispatch();
-    const { basket, status } = useAppSelector(state => state.basket);
-    const { data: product, isLoading} = useFetchProductDetailsQuery(id!);
-
+    const { data: product, isLoading } = useFetchProductDetailsQuery(id || '');
+    const { data: basket } = useFetchBasketQuery(getCookieCustomerId());
+    const item = basket?.lineItems?.find(i => i.productId === id);
     const [quantity, setQuantity] = useState(0);
-    const item = basket?.lineItems?.find(li => li.productId == product?.id)
+
+    const [removeBasketItem, { isLoading: isLoadingRemoveBasketItem}] = useRemoveBasketItemMutation();
+    const [addBasketItem, { isLoading: isLoadingAddBasketItem}] = useAddBasketItemMutation();
 
     useEffect(() => {
-        if (item) setQuantity(item.quantity!);
-        if (!product && id) dispatch(fetchProductAsync(id))
-        
-    }, [id, item, dispatch, product]);
-
-    function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-        const value = parseInt(event.currentTarget.value);
-        if (value > 0) {
-            setQuantity(value);
-        }
-    }
-
-    function handleUpdateCart() {
-        if (!item || quantity > item.quantity!) {
-            const quantityDif = item ? quantity - item.quantity! : quantity;
-
-            dispatch(addBasketItemAsync({
-                orderId: basket!.id!,
-                productId: product!.id!,
-                quantity: quantityDif
-            }));
-        }
-        else {
-            const quantityDif = item.quantity! - quantity;
-
-            dispatch(removeBasketItemAsync({
-                orderId: basket!.id!,
-                productId: product!.id!,
-                quantity: quantityDif
-            }));
-        }
-    }
+        if (item) 
+            setQuantity(item.quantity);
+    }, [item])
 
     if (isLoading)
     {
@@ -61,6 +32,29 @@ export default function ProductDetailes() {
 
     if (!product) {
         return <NotFound />
+    }
+
+    const handleUpdateCart = () => {
+        const updatedQuantity = item ? Math.abs(quantity - item.quantity) : quantity;
+        if (!item || quantity > item.quantity) {
+            addBasketItem({
+                orderId: basket!.id, 
+                productId: product.id,
+                quantity: updatedQuantity});
+        }
+        else {
+            removeBasketItem({
+                orderId: basket!.id,
+                productId: product.id,
+                quantity: updatedQuantity
+            });
+        }
+    }
+
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const value = +event.currentTarget.value;
+
+        if (value >= 0) setQuantity(value); 
     }
 
     return (
@@ -112,7 +106,7 @@ export default function ProductDetailes() {
                     <Grid item xs={6}>
                         <LoadingButton
                             disabled={item?.quantity === quantity || !item && quantity === 0}
-                            loading={status.includes('pending')}
+                            loading={isLoadingAddBasketItem || isLoadingRemoveBasketItem}
                             onClick={handleUpdateCart}
                             sx={{ height: '55px' }}
                             color='primary'

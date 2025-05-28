@@ -1,8 +1,10 @@
 import { ShoppingCart } from "@mui/icons-material";
-import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Box, IconButton, LinearProgress, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
 import SignInMenu from "./SignInMenu";
+import { useFetchBasketQuery } from "../../features/basket/basketApi";
+import { getCookieCustomerId } from "../../tools/cookies";
 
 interface Props {
     darkMode: boolean;
@@ -33,9 +35,10 @@ const navStyles = {
 }
 
 export default function Header({ darkMode, handleThemeChange }: Props) {
-    const { basket } = useAppSelector(state => state.basket);
-    const {user} = useAppSelector(state => state.account);
-    const itemCount = basket?.lineItems?.reduce((sum, item) => sum + item.quantity!, 0) ?? 0;
+    const { data: basket } = useFetchBasketQuery(getCookieCustomerId());
+    const { user } = useAppSelector(state => state.account);
+    const itemCount = basket?.lineItems?.reduce((sum, item) => sum + item.quantity!, 0) || 0;
+    const {isLoading} = useAppSelector(state => state.ui);
 
     return (
         <AppBar position='static' sx={{ mb: 4 }}>
@@ -87,6 +90,11 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
                     </List>)}
                 </Box>
             </Toolbar>
+            {isLoading && (
+                <Box sx={{width: '100%'}}>
+                    <LinearProgress color="secondary"/>
+                </Box>
+            )}
         </AppBar>
     )
 }

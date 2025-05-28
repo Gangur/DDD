@@ -54,7 +54,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
 const instance = axios.create({
   baseURL: config.SERVER_URL,
   transformResponse: (data) => data,
-  withCredentials: true,
+  withCredentials: true
 });
 
 instance.defaults.baseURL = config.SERVER_URL;
