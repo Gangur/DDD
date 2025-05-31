@@ -22,7 +22,7 @@ namespace Application.Customers.Delete
 
             if (customer is null)
             {
-                return Result.CreateNotFount("The customer has not been found!");
+                return Result.CreateNotFound("The customer has not been found!");
             }
 
             _customerRepository.Remove(customer);

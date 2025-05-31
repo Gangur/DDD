@@ -37,8 +37,8 @@ namespace Application.Data
         public static Result CreateValidationProblem(string validationProblem)
             => new Result(new Dictionary<string, string> { { "Validation problem!", validationProblem} }, ResultType.BadRequest);
 
-        public static Result CreateNotFount(string errorMessage)
-            => new Result(errorMessage, ResultType.NotFount);
+        public static Result CreateNotFound(string errorMessage)
+            => new Result(errorMessage, ResultType.NotFound);
 
         public static Result CreateBadRequest(string errorMessage)
             => new Result(errorMessage, ResultType.BadRequest);
@@ -69,8 +69,8 @@ namespace Application.Data
         public static new Result<T> CreateValidationProblem(string validationProblem)
             => new Result<T>(new Dictionary<string, string> { { "Validation problem!", validationProblem } }, ResultType.BadRequest);
 
-        public static new Result<T> CreateNotFount(string errorMessage)
-            => new Result<T>(errorMessage, ResultType.NotFount);
+        public static new Result<T> CreateNotFound(string errorMessage)
+            => new Result<T>(errorMessage, ResultType.NotFound);
 
         public static new Result<T> CreateBadRequest(string errorMessage)
             => new Result<T>(errorMessage, ResultType.BadRequest);

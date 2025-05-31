@@ -20,7 +20,7 @@ namespace Application.Customers.Get
 
             if (customer == null)
             {
-                return Result<CustomerDto>.CreateNotFount("The customer has not been found!");
+                return Result<CustomerDto>.CreateNotFound("The customer has not been found!");
             }
 
             return Result<CustomerDto>.CreateSuccessful(CustomerDto.Map(customer));

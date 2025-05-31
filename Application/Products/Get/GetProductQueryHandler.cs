@@ -20,7 +20,7 @@ namespace Application.Products.Get
 
             if (product == null)
             {
-                return Result<ProductDto>.CreateNotFount("The product has not been found!");
+                return Result<ProductDto>.CreateNotFound("The product has not been found!");
             }
 
             return Result<ProductDto>.CreateSuccessful(ProductDto.Map(product));

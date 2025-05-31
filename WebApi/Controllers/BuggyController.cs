@@ -13,7 +13,7 @@ namespace WebApi.Controllers
 
         [HttpGet("not-found")]
         public ActionResult GetNotFound()
-            => ActionFromResult(Result.CreateNotFount("Not fount!"));
+            => ActionFromResult(Result.CreateNotFound("Not fount!"));
 
         [HttpGet("bad-request")]
         public ActionResult GetBadRequest()

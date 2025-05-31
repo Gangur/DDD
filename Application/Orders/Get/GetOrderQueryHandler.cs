@@ -38,7 +38,7 @@ namespace Application.Orders.Get
 
             if (order == null)
             {
-                return Result<OrderDto>.CreateNotFount("The order has not been found!");
+                return Result<OrderDto>.CreateNotFound("The order has not been found!");
             }
 
             return Result<OrderDto>.CreateSuccessful(OrderDto.Map(order));

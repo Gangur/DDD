@@ -48,7 +48,7 @@ namespace WebApi.Abstraction
         private ActionResult HandelErrorResult(ResultType resultType, Dictionary<string, string> validationProblems, string error)
             => resultType switch
             {
-                ResultType.NotFount => NotFound(error),
+                ResultType.NotFound => NotFound(error),
                 ResultType.Unauthorized => Unauthorized(error),
                 ResultType.BadRequest => HandelBadRequest(validationProblems, error),
                 _ => throw new NotImplementedException(),

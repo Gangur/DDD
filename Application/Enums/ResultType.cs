@@ -4,7 +4,7 @@
     {
         BadRequest = 400,
         Unauthorized = 401,
-        NotFount = 404,
+        NotFound = 404,
         Success = 200
     }
 }
